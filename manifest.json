@@ -3,9 +3,9 @@
 "short_name": "GestorPro",
 "start_url": "./index.html",
 "display": "standalone",
-"background_color": "#4f46e5",
+"background_color": "#ffffff",
 "theme_color": "#4f46e5",
-"description": "Control profesional de inventario, ventas y fiados para tu negocio",
+"description": "Control profesional de inventario, ventas y fiados",
 "icons": [
 {
 "src": "./icon-192.png",

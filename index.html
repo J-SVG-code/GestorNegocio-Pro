@@ -1,27 +1,53 @@
 <script>
-    // 1. Forzar Modo Pro permanente y bloquear anuncios o videos
-    localStorage.setItem('gestorpro_modo_pro', 'true');
-    localStorage.setItem('isPro', 'true');
-    localStorage.setItem('modoPro', 'true');
-    localStorage.setItem('ads_removed', 'true');
-    localStorage.setItem('pro_version', 'true');
-    localStorage.setItem('videoVisto', 'true');
-    
-    window.esPro = true;
-    window.modoProActivo = true;
-    window.verificarPro = function() { return true; };
-    window.esUsuarioPro = function() { return true; };
-    window.mostrarAnuncio = function(cb) { if(cb) cb(); };
-    window.verVideoPremio = function(cb) { if(cb) cb(); };
+    // 1. Interceptar localStorage para asegurar respuestas afirmativas
+    const originalGetItem = Storage.prototype.getItem;
+    Storage.prototype.getItem = function(key) {
+        const val = originalGetItem.call(this, key);
+        const k = key.toLowerCase();
+        if (k.includes('pro') || k.includes('premium') || k.includes('ad') || k.includes('video') || k.includes('suscr') || k.includes('modo') || k.includes('visto')) {
+            return 'true';
+        }
+        return val;
+    };
+
+    // 2. Forzar variables globales de estado Pro como verdaderas
+    ['isPro', 'modoPro', 'pro', 'premium', 'isPremium', 'modoProActivo', 'esPro', 'anuncioVisto', 'videoVisto'].forEach(varName => {
+        Object.defineProperty(window, varName, {
+            get: function() { return true; },
+            set: function(v) {},
+            configurable: true
+        });
+    });
+
+    // 3. Interceptar las alertas del navegador para bloquear el aviso de anuncios y dejar pasar la acción
+    const originalAlert = window.alert;
+    window.alert = function(msg) {
+        if (typeof msg === 'string' && (msg.toLowerCase().includes('modo pro') || msg.toLowerCase().includes('anuncio') || msg.toLowerCase().includes('exclusiva'))) {
+            console.log("Aviso de anuncios bloqueado automáticamente.");
+            return; // Evita que aparezca el popup pidiendo ver videos
+        }
+        return originalAlert.apply(this, arguments);
+    };
+
+    // 4. Funciones de validación forzadas a retornar true
+    window.verificarPro = () => true;
+    window.esUsuarioPro = () => true;
+    window.chequearPro = () => true;
+    window.validarPro = () => true;
+    window.checkPro = () => true;
+    window.isUserPro = () => true;
+    window.mostrarAnuncio = (cb) => { if(cb) cb(); };
+    window.verVideoPremio = (cb) => { if(cb) cb(); };
+    window.cargarAnuncio = (cb) => { if(cb) cb(); };
 </script>
 <style>
-    /* Ocultar botones o banners de publicidad o videos */
+    /* Ocultar cualquier botón o banner de anuncios o videos */
     .ver-video-btn, .ad-banner, .rewarded-ad, [id*="video"], [class*="anuncio"] {
         display: none !important;
     }
 </style>
 
-<!-- 2. Firebase Firestore con tus credenciales para Sincronización en Tiempo Real -->
+<!-- Firebase Firestore para Sincronización en Tiempo Real -->
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/13.3.0/firebase-app.js";
   import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/13.3.0/firebase-firestore.js";
@@ -39,7 +65,6 @@
   const db = getFirestore(app);
   const docRef = doc(db, "negocios", "principal");
 
-  // Función global para enviar tus datos a la nube al guardar cambios
   window.sincronizarNube = async function(datos) {
     try {
       await setDoc(docRef, { data: JSON.stringify(datos), actualizado: Date.now() });
@@ -48,23 +73,19 @@
     }
   };
 
-  // Recibir cambios en tiempo real desde cualquier otro dispositivo
   onSnapshot(docRef, (snap) => {
     if (snap.exists() && snap.data().data) {
       const nubeRemota = snap.data().data;
       const actualLocal = localStorage.getItem('gestorpro_datos');
       if (nubeRemota !== actualLocal) {
         localStorage.setItem('gestorpro_datos', nubeRemota);
-        // Refrescar la interfaz automáticamente si tu app usa estas funciones
         if (typeof renderizarApp === 'function') renderizarApp();
         else if (typeof cargarDatos === 'function') cargarDatos();
-        else location.reload(); // Recarga limpia si no encuentra la función exacta
       }
     }
   });
 </script>
 
-    
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GestorPro - Control de Negocio</title>

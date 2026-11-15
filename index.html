@@ -8,6 +8,8 @@
     <link rel="manifest" href="./manifest.json">
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google AdMob Script -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-app-pub-3645077961178424~5519013340" crossorigin="anonymous"></script>
 </head>
 <body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col">
 
@@ -23,7 +25,7 @@
                 <p>📊 <b>Resumen Financiero:</b> Inversión, ventas, ganancias y deudas.</p>
                 <p>📦 <b>Inventario & Costos:</b> Precios de compra, venta y gastos extra.</p>
                 <p>🤝 <b>Ventas & Fiados:</b> Controla créditos y abonos de clientes.</p>
-                <p>⭐ <b>Modo Pro:</b> Desbloquea multinegocios, socios y sin anuncios de forma permanente.</p>
+                <p>⭐ <b>Modo Pro:</b> Desbloquea multinegocios, socios y sin anuncios por 12 horas.</p>
             </div>
             <button type="button" onclick="cerrarOnboarding()" class="w-full bg-blue-600 text-white font-medium py-2.5 rounded-xl text-sm hover:bg-blue-700 transition shadow-md">Comenzar a Usar</button>
         </div>
@@ -81,7 +83,7 @@
 
             <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-100 space-y-2">
                 <h3 class="text-sm font-semibold text-slate-700">Reportes Ejecutivos (Función Pro)</h3>
-                <p class="text-xs text-slate-500">Genera y descarga un informe completo listo para WPS Office. <span class="text-emerald-600 font-medium">Modo Pro permanente activo.</span></p>
+                <p class="text-xs text-slate-500">Genera y descarga un informe completo listo para WPS Office. <span class="text-amber-600 font-medium">Requiere Modo Pro activo.</span></p>
                 <button type="button" onclick="generarReportePDF()" class="w-full bg-red-600 text-white font-medium py-2 rounded-lg text-xs hover:bg-red-700 transition flex items-center justify-center gap-2">
                     📄 Generar Reporte PDF / WPS
                 </button>
@@ -243,9 +245,9 @@
         <!-- Pestaña 5: Ajustes y Modo Pro -->
         <section id="tab-ajustes" class="space-y-4 hidden">
             <div class="bg-blue-50 border border-blue-200 p-4 rounded-xl space-y-2 text-xs text-blue-900">
-                <p class="font-bold text-sm text-blue-950">✨ Beneficios del Modo Pro:</p>
+                <p class="font-bold text-sm text-blue-950">✨ Beneficios del Modo Pro (por 12 Horas):</p>
                 <div class="space-y-1">
-                    <p>🚫 <b>Experiencia sin Anuncios:</b> Publicidad eliminada de forma permanente.</p>
+                    <p>🚫 <b>Experiencia sin Anuncios:</b> Oculta automáticamente los banners publicitarios de AdMob.</p>
                     <p>🏢 <b>Multinegocios Ilimitados:</b> Crea y gestiona varias tiendas de forma independiente.</p>
                     <p>🔗 <b>Sincronización con Socios:</b> Comparte datos al instante con tu equipo de trabajo.</p>
                     <p>📄 <b>Reportes Avanzados:</b> Descarga informes ejecutivos completos para WPS Office.</p>
@@ -254,7 +256,7 @@
 
             <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-100 space-y-3">
                 <h2 class="text-md font-semibold text-slate-700">🏢 Mis Negocios (Multicuenta Pro)</h2>
-                <p class="text-xs text-slate-500">Crea y administra múltiples negocios libremente.</p>
+                <p class="text-xs text-slate-500">Crear múltiples negocios requiere tener el Modo Pro activo.</p>
                 <div class="flex gap-2">
                     <input type="text" id="nuevo-negocio-nombre" class="flex-1 p-2 text-xs border rounded-lg" placeholder="Nombre del nuevo negocio">
                     <button type="button" onclick="crearNegocio()" class="bg-blue-600 text-white px-3 py-2 rounded-lg text-xs font-medium hover:bg-blue-700 transition">Crear</button>
@@ -265,10 +267,11 @@
             <div class="bg-gradient-to-br from-amber-500 to-orange-600 text-white p-4 rounded-xl shadow-md space-y-3">
                 <div class="flex justify-between items-center">
                     <h2 class="text-md font-bold">⭐ GestorPro Modo PRO</h2>
-                    <span id="badge-pro-estado" class="bg-emerald-500 text-white text-xs px-2 py-0.5 rounded font-semibold">Permanente</span>
+                    <span id="badge-pro-estado" class="bg-red-500 text-white text-xs px-2 py-0.5 rounded font-semibold">Inactivo</span>
                 </div>
-                <p id="texto-pro-estado" class="text-xs text-amber-100">El Modo Pro está activo de forma permanente. Todas las funciones prémium y sin anuncios están desbloqueadas.</p>
+                <p id="texto-pro-estado" class="text-xs text-amber-100">El Modo Pro está inactivo. Ve el anuncio bonificado para activarlo por 12 horas y desbloquear todas las funciones.</p>
                 <div class="space-y-2 pt-2">
+                    <button type="button" onclick="verAnuncioBonificadoPro()" class="w-full bg-amber-700 text-white font-semibold py-2 rounded-lg text-xs hover:bg-amber-800 transition shadow">🎬 Ver Anuncio Bonificado (Activar 12h)</button>
                     <button type="button" onclick="generarTokenSincronizacion()" class="w-full bg-white text-orange-700 font-semibold py-2 rounded-lg text-xs hover:bg-amber-50 transition shadow">🔗 Sincronizar con Socios / Empleados (Pro)</button>
                     <div class="flex gap-2">
                         <input type="text" id="token-socio" class="flex-1 p-2 text-xs rounded-lg text-slate-800" placeholder="Código de socio">
@@ -291,6 +294,17 @@
 
     </main>
 
+    <!-- Contenedor Fijo de Anuncio Banner AdMob -->
+    <div id="admob-banner-container" class="fixed bottom-12 left-0 right-0 bg-white border-t border-slate-200 shadow-lg h-12 flex flex-col justify-center items-center z-30 max-w-md mx-auto overflow-hidden">
+        <ins class="adsbygoogle"
+             style="display:inline-block;width:320px;height:50px"
+             data-ad-client="ca-app-pub-3645077961178424~5519013340"
+             data-ad-slot="3411899761"></ins>
+        <script>
+             (adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
+    </div>
+
     <!-- Barra de Navegación Inferior -->
     <nav class="bg-white border-t border-slate-200 fixed bottom-0 left-0 right-0 shadow-lg z-40">
         <div class="max-w-md mx-auto flex justify-around p-1.5">
@@ -302,7 +316,45 @@
         </div>
     </nav>
 
-    <!-- Script de Lógica Principal -->
+    <!-- Script de Lógica Principal + Firebase Firestore Sync -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/13.3.0/firebase-app.js";
+        import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/13.3.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyAiXgqBk_tHsz5Ukar-YuvhZPQcg57Ss8g",
+            authDomain: "gestorpro-sync-8b047.firebaseapp.com",
+            projectId: "gestorpro-sync-8b047",
+            storageBucket: "gestorpro-sync-8b047.firebasestorage.app",
+            messagingSenderId: "644496640474",
+            appId: "1:644496640474:web:d158f3647eb748627a58e3"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const docRef = doc(db, "negocios", "principal");
+
+        window.sincronizarNube = async function(datos) {
+            try {
+                await setDoc(docRef, { data: JSON.stringify(datos), actualizado: Date.now() });
+            } catch(e) {
+                console.error("Error al sincronizar con la nube:", e);
+            }
+        };
+
+        onSnapshot(docRef, (snap) => {
+            if (snap.exists() && snap.data().data) {
+                const nubeRemota = snap.data().data;
+                const actualLocal = localStorage.getItem('gestorpro_datos');
+                if (nubeRemota !== actualLocal) {
+                    localStorage.setItem('gestorpro_datos', nubeRemota);
+                    if (typeof renderizarApp === 'function') renderizarApp();
+                    else if (typeof cargarDatos === 'function') cargarDatos();
+                }
+            }
+        });
+    </script>
+
     <script>
         // Registro del Service Worker para PWABuilder
         if ('serviceWorker' in navigator) {
@@ -336,25 +388,51 @@
         function persistir() {
             localStorage.setItem('multinegocios', JSON.stringify(negocios));
             localStorage.setItem('negocioActualId', negocioActualId);
+            if (typeof window.sincronizarNube === 'function') {
+                window.sincronizarNube(localStorage.getItem('multinegocios'));
+            }
             renderizarTodo();
         }
 
-        // MODO PRO PERMANENTE
         function esProActivo() {
-            return true;
+            const expira = localStorage.getItem('proExpira');
+            return expira && Date.now() < parseInt(expira);
         }
 
         function verificarEstadoPro() {
             const badge = document.getElementById('badge-pro-estado');
             const texto = document.getElementById('texto-pro-estado');
+            const bannerAd = document.getElementById('admob-banner-container');
             
-            if(badge) {
-                badge.innerText = "Permanente";
-                badge.className = "bg-emerald-500 text-white text-xs px-2 py-0.5 rounded font-semibold";
+            if(esProActivo()) {
+                const expira = parseInt(localStorage.getItem('proExpira'));
+                const horasRestantes = Math.ceil((expira - Date.now()) / (1000 * 60 * 60));
+                if(badge) {
+                    badge.innerText = "Activo";
+                    badge.className = "bg-emerald-500 text-white text-xs px-2 py-0.5 rounded font-semibold";
+                }
+                if(texto) {
+                    texto.innerText = `Modo Pro activo por unas ${horasRestantes} horas más. ¡Disfruta la app sin anuncios y con funciones ilimitadas!`;
+                }
+                if(bannerAd) bannerAd.classList.add('hidden');
+            } else {
+                if(badge) {
+                    badge.innerText = "Inactivo";
+                    badge.className = "bg-red-500 text-white text-xs px-2 py-0.5 rounded font-semibold";
+                }
+                if(texto) {
+                    texto.innerText = "El Modo Pro está inactivo. Ve el anuncio bonificado para activarlo por 12 horas y desbloquear multinegocios, socios y sin publicidad.";
+                }
+                if(bannerAd) bannerAd.classList.remove('hidden');
             }
-            if(texto) {
-                texto.innerText = "El Modo Pro está activo de forma permanente. Disfruta la app sin anuncios y con funciones ilimitadas.";
-            }
+        }
+
+        function verAnuncioBonificadoPro() {
+            alert('🎬 Reproduciendo anuncio bonificado de AdMob (ID: 2400081326)... ¡Gracias!');
+            const tiempoExpiracion = Date.now() + (12 * 60 * 60 * 1000); // 12 Horas exactas
+            localStorage.setItem('proExpira', tiempoExpiracion);
+            verificarEstadoPro();
+            alert('¡Modo Pro activado con éxito por 12 horas!');
         }
 
         function actualizarSelectNegocios() {
@@ -380,6 +458,11 @@
         }
 
         function crearNegocio() {
+            if(!esProActivo()) {
+                alert('⚠️ Crear múltiples negocios es una función exclusiva del Modo Pro. Ve el anuncio bonificado en Ajustes para activarlo.');
+                cambiarTab('ajustes');
+                return;
+            }
             const input = document.getElementById('nuevo-negocio-nombre');
             const nombre = input.value.trim();
             if(!nombre) return alert('Escribe un nombre para el negocio.');
@@ -706,7 +789,7 @@
             const invertidoProd = (neg.inventario || []).reduce((acc, p) => acc + (p.inversionTotal || 0), 0);
             const ventasTotales = (neg.ventas || []).reduce((acc, v) => acc + (v.total || 0), 0);
             const gananciaNeta = (neg.ventas || []).reduce((acc, v) => acc + (v.ganancia || 0), 0);
-            const faltaPorVender = (neg.inventario || []).reduce((acc, p) => acc + ((p.venta || 0) * (p.stock || 0)), 0);
+            const faltaByVender = (neg.inventario || []).reduce((acc, p) => acc + ((p.venta || 0) * (p.stock || 0)), 0);
             const deudasPendientes = (neg.deudas || []).reduce((acc, d) => acc + (d.pendiente || 0), 0);
 
             const elCap = document.getElementById('res-capital-inicial');
@@ -718,7 +801,7 @@
             const elGan = document.getElementById('res-ganancia');
             if(elGan) elGan.innerText = `$${gananciaNeta.toFixed(2)}`;
             const elFal = document.getElementById('res-falta-vender');
-            if(elFal) elFal.innerText = `$${faltaPorVender.toFixed(2)}`;
+            if(elFal) elFal.innerText = `$${faltaByVender.toFixed(2)}`;
             const elDeu = document.getElementById('res-deudas');
             if(elDeu) elDeu.innerText = `$${deudasPendientes.toFixed(2)}`;
 
@@ -733,13 +816,19 @@
         }
 
         function generarReportePDF() {
+            if(!esProActivo()) {
+                alert('🔒 Descargar reportes ejecutivos es una función exclusiva del Modo Pro. Ve el anuncio bonificado en Ajustes para activarla.');
+                cambiarTab('ajustes');
+                return;
+            }
+
             try {
                 const neg = obtenerNegocio();
                 const capitalInicial = neg.capitalInicial || 0;
                 const invertidoProd = (neg.inventario || []).reduce((acc, p) => acc + (p.inversionTotal || 0), 0);
                 const ventasTotales = (neg.ventas || []).reduce((acc, v) => acc + (v.total || 0), 0);
                 const gananciaNeta = (neg.ventas || []).reduce((acc, v) => acc + (v.ganancia || 0), 0);
-                const faltaPorVender = (neg.inventario || []).reduce((acc, p) => acc + ((p.venta || 0) * (p.stock || 0)), 0);
+                const faltaByVender = (neg.inventario || []).reduce((acc, p) => acc + ((p.venta || 0) * (p.stock || 0)), 0);
                 const deudasPendientes = (neg.deudas || []).reduce((acc, d) => acc + (d.pendiente || 0), 0);
 
                 const contenidoHtml = `<!DOCTYPE html>
@@ -767,7 +856,7 @@
                         <p><b>Invertido en Productos:</b> $${invertidoProd.toFixed(2)}</p>
                         <p><b>Ventas Totales:</b> $${ventasTotales.toFixed(2)}</p>
                         <p><b>Ganancia Neta:</b> $${gananciaNeta.toFixed(2)}</p>
-                        <p><b>Falta por Vender:</b> $${faltaPorVender.toFixed(2)}</p>
+                        <p><b>Falta por Vender:</b> $${faltaByVender.toFixed(2)}</p>
                         <p><b>Deudas Pendientes (Fiados):</b> $${deudasPendientes.toFixed(2)}</p>
                     </div>
 
@@ -807,12 +896,22 @@
         }
 
         function generarTokenSincronizacion() {
+            if(!esProActivo()) {
+                alert('🔒 Sincronizar con socios es una función exclusiva del Modo Pro. Ve el anuncio bonificado en Ajustes para activarla.');
+                cambiarTab('ajustes');
+                return;
+            }
             const neg = obtenerNegocio();
             const tokenData = btoa(JSON.stringify(neg));
             prompt("Código Pro de Sincronización (Compártelo con tu socio):", tokenData);
         }
 
         function conectarSocio() {
+            if(!esProActivo()) {
+                alert('🔒 Conectar con socios es una función exclusiva del Modo Pro. Ve el anuncio bonificado en Ajustes para activarla.');
+                cambiarTab('ajustes');
+                return;
+            }
             const token = document.getElementById('token-socio').value.trim();
             if(!token) return alert('Pega el código.');
             try {

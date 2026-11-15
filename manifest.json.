@@ -1,0 +1,17 @@
+{
+  "name": "GestorPro",
+  "short_name": "GestorPro",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#2563eb",
+  "description": "Gestión total de inventario, ventas, fiados, capital, deudas y múltiples negocios desde tu móvil.",
+  "icons": [
+    {
+      "src": "https://cdn-icons-png.flaticon.com/512/2933/2933700.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

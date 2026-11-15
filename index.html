@@ -1,40 +1,69 @@
 <script>
-    // Forzar Modo Pro en todas las variantes de almacenamiento
+    // 1. Forzar Modo Pro permanente y bloquear anuncios o videos
     localStorage.setItem('gestorpro_modo_pro', 'true');
     localStorage.setItem('isPro', 'true');
     localStorage.setItem('modoPro', 'true');
     localStorage.setItem('ads_removed', 'true');
     localStorage.setItem('pro_version', 'true');
     localStorage.setItem('videoVisto', 'true');
-    localStorage.setItem('pro', 'true');
-
-    // Variables globales por si el sistema las lee directo
+    
     window.esPro = true;
     window.modoProActivo = true;
-    window.usuarioPro = true;
-
-    // Sobrescribir funciones comunes de verificación para que devuelvan true siempre
     window.verificarPro = function() { return true; };
     window.esUsuarioPro = function() { return true; };
-    window.comprobarPro = function() { return true; };
-
-    // LA TRAMPA: Si la app intenta abrir un video o anuncio, lo interceptamos y damos el premio al instante
-    window.mostrarAnuncio = function(callback) { if(callback) callback(); };
-    window.verVideoPremio = function(callback) { if(callback) callback(); };
-    window.reproducirVideoAnuncio = function(callback) { if(callback) callback(); };
-    
-    // Si usa alguna alerta de video bloqueado, la evitamos
-    window.alert = function(msg) {
-        console.log("Alerta interceptada:", msg);
-    };
+    window.mostrarAnuncio = function(cb) { if(cb) cb(); };
+    window.verVideoPremio = function(cb) { if(cb) cb(); };
 </script>
 <style>
-    /* Ocultar cualquier botón con texto o clase relacionada a videos o anuncios */
-    button[onclick*="video"], button[onclick*="Video"], button[onclick*="anuncio"], 
+    /* Ocultar botones o banners de publicidad o videos */
     .ver-video-btn, .ad-banner, .rewarded-ad, [id*="video"], [class*="anuncio"] {
         display: none !important;
     }
 </style>
+
+<!-- 2. Firebase Firestore con tus credenciales para Sincronización en Tiempo Real -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/13.3.0/firebase-app.js";
+  import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/13.3.0/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyAiXgqBk_tHsz5Ukar-YuvhZPQcg57Ss8g",
+    authDomain: "gestorpro-sync-8b047.firebaseapp.com",
+    projectId: "gestorpro-sync-8b047",
+    storageBucket: "gestorpro-sync-8b047.firebasestorage.app",
+    messagingSenderId: "644496640474",
+    appId: "1:644496640474:web:d158f3647eb748627a58e3"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+  const docRef = doc(db, "negocios", "principal");
+
+  // Función global para enviar tus datos a la nube al guardar cambios
+  window.sincronizarNube = async function(datos) {
+    try {
+      await setDoc(docRef, { data: JSON.stringify(datos), actualizado: Date.now() });
+    } catch(e) {
+      console.error("Error al sincronizar con la nube:", e);
+    }
+  };
+
+  // Recibir cambios en tiempo real desde cualquier otro dispositivo
+  onSnapshot(docRef, (snap) => {
+    if (snap.exists() && snap.data().data) {
+      const nubeRemota = snap.data().data;
+      const actualLocal = localStorage.getItem('gestorpro_datos');
+      if (nubeRemota !== actualLocal) {
+        localStorage.setItem('gestorpro_datos', nubeRemota);
+        // Refrescar la interfaz automáticamente si tu app usa estas funciones
+        if (typeof renderizarApp === 'function') renderizarApp();
+        else if (typeof cargarDatos === 'function') cargarDatos();
+        else location.reload(); // Recarga limpia si no encuentra la función exacta
+      }
+    }
+  });
+</script>
+
     
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">

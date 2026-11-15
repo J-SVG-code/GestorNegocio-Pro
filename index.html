@@ -1,25 +1,36 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <script>
-    // 1. Forzar almacenamiento local para saltar cualquier validación de anuncios o pagos
+<script>
+    // Forzar Modo Pro en todas las variantes de almacenamiento
     localStorage.setItem('gestorpro_modo_pro', 'true');
     localStorage.setItem('isPro', 'true');
     localStorage.setItem('modoPro', 'true');
     localStorage.setItem('ads_removed', 'true');
     localStorage.setItem('pro_version', 'true');
     localStorage.setItem('videoVisto', 'true');
+    localStorage.setItem('pro', 'true');
 
-    // 2. Sobrescribir funciones internas de anuncios o videos para que pasen automáticamente
+    // Variables globales por si el sistema las lee directo
     window.esPro = true;
     window.modoProActivo = true;
+    window.usuarioPro = true;
+
+    // Sobrescribir funciones comunes de verificación para que devuelvan true siempre
     window.verificarPro = function() { return true; };
     window.esUsuarioPro = function() { return true; };
-    window.mostrarAnuncio = function() { };
+    window.comprobarPro = function() { return true; };
+
+    // LA TRAMPA: Si la app intenta abrir un video o anuncio, lo interceptamos y damos el premio al instante
+    window.mostrarAnuncio = function(callback) { if(callback) callback(); };
     window.verVideoPremio = function(callback) { if(callback) callback(); };
+    window.reproducirVideoAnuncio = function(callback) { if(callback) callback(); };
+    
+    // Si usa alguna alerta de video bloqueado, la evitamos
+    window.alert = function(msg) {
+        console.log("Alerta interceptada:", msg);
+    };
 </script>
 <style>
-    /* 3. Ocultar de forma invisible cualquier botón o banner de videos o anuncios */
+    /* Ocultar cualquier botón con texto o clase relacionada a videos o anuncios */
+    button[onclick*="video"], button[onclick*="Video"], button[onclick*="anuncio"], 
     .ver-video-btn, .ad-banner, .rewarded-ad, [id*="video"], [class*="anuncio"] {
         display: none !important;
     }

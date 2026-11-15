@@ -1,20 +1,20 @@
 {
   "name": "GestorPro",
   "short_name": "GestorPro",
-  "start_url": "/GestorNegocio-Pro/index.html",
+  "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#2563eb",
   "description": "Gestión total de inventario, ventas, fiados, capital, deudas y múltiples negocios.",
   "icons": [
     {
-      "src": "https://j-svg-code.github.io/GestorNegocio-Pro/icono-192.png",
+      "src": "icono-192.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any maskable"
     },
     {
-      "src": "https://j-svg-code.github.io/GestorNegocio-Pro/icono-512.png",
+      "src": "icono-512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"

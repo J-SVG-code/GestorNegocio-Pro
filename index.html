@@ -8,6 +8,8 @@
     <link rel="manifest" href="./manifest.json">
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Librería para Escanear Códigos QR -->
+    <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
     <!-- Google AdMob Script -->
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-app-pub-3645077961178424~5519013340" crossorigin="anonymous"></script>
 </head>
@@ -28,6 +30,18 @@
                 <p>⭐ <b>Modo Pro:</b> Desbloquea multinegocios, socios y sin anuncios por 12 horas.</p>
             </div>
             <button type="button" onclick="cerrarOnboarding()" class="w-full bg-blue-600 text-white font-medium py-2.5 rounded-xl text-sm hover:bg-blue-700 transition shadow-md">Comenzar a Usar</button>
+        </div>
+    </div>
+
+    <!-- Modal de Escáner QR -->
+    <div id="modal-escaner" class="fixed inset-0 bg-slate-900/90 z-50 flex flex-col items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-2xl max-w-sm w-full p-4 space-y-3 shadow-2xl">
+            <div class="flex justify-between items-center">
+                <h3 class="text-sm font-bold text-slate-800">📷 Escanear Código QR de Socio</h3>
+                <button type="button" onclick="cerrarEscanerQR()" class="text-red-500 font-bold text-sm px-2">✕ Cerrar</button>
+            </div>
+            <div id="reader" class="w-full rounded-lg overflow-hidden bg-slate-100"></div>
+            <p class="text-[10px] text-slate-500 text-center">Apunta la cámara al código QR que aparece en el otro teléfono.</p>
         </div>
     </div>
 
@@ -248,8 +262,8 @@
                 <p class="font-bold text-sm text-blue-950">✨ Beneficios del Modo Pro (por 12 Horas):</p>
                 <div class="space-y-1">
                     <p>🚫 <b>Experiencia sin Anuncios:</b> Oculta automáticamente los banners publicitarios de AdMob.</p>
-                    <p>🏢 <b>Multinegocios Ilimitados:</b> Crea y gestiona varias tiendas de forma independiente.</p>
-                    <p>🔗 <b>Sincronización con Socios:</b> Comparte datos al instante con tu equipo de trabajo.</p>
+                    <p>🏢 <b>Multinegocios Ilistados:</b> Crea y gestiona varias tiendas de forma independiente.</p>
+                    <p>🔗 <b>Sincronización con Socios:</b> Comparte datos en tiempo real mediante QR o código.</p>
                     <p>📄 <b>Reportes Avanzados:</b> Descarga informes ejecutivos completos para WPS Office.</p>
                 </div>
             </div>
@@ -269,25 +283,28 @@
                     <h2 class="text-md font-bold">⭐ GestorPro Modo PRO</h2>
                     <span id="badge-pro-estado" class="bg-red-500 text-white text-xs px-2 py-0.5 rounded font-semibold">Inactivo</span>
                 </div>
-                <p id="texto-pro-estado" class="text-xs text-amber-100">El Modo Pro está inactivo. Ve el anuncio bonificado para activarlo por 12 horas y desbloquear todas las funciones.</p>
+                <p id="texto-pro-estado" class="text-xs text-amber-100">El Modo Pro está inactivo. Ve el anuncio bonificado para activarlo por 12 horas y desbloquear multinegocios, socios y sin publicidad.</p>
                 <div class="space-y-2 pt-2">
                     <button type="button" onclick="verAnuncioBonificadoPro()" class="w-full bg-amber-700 text-white font-semibold py-2 rounded-lg text-xs hover:bg-amber-800 transition shadow">🎬 Ver Anuncio Bonificado (Activar 12h)</button>
-                    <button type="button" onclick="generarTokenSincronizacion()" class="w-full bg-white text-orange-700 font-semibold py-2 rounded-lg text-xs hover:bg-amber-50 transition shadow">🔗 Sincronizar con Socios / Empleados (Pro)</button>
-                    <div class="flex gap-2">
-                        <input type="text" id="token-socio" class="flex-1 p-2 text-xs rounded-lg text-slate-800" placeholder="Código de socio">
+                    
+                    <!-- Botón para ver QR Personal -->
+                    <button type="button" onclick="mostrarCodigoQR()" class="w-full bg-white text-orange-700 font-semibold py-2 rounded-lg text-xs hover:bg-amber-50 transition shadow">📱 Ver Código QR Personal de Sincronización</button>
+                    
+                    <!-- Contenedor del QR Generado -->
+                    <div id="qr-display-container" class="hidden bg-white p-3 rounded-lg text-center space-y-2 text-slate-800">
+                        <p class="text-[11px] font-bold">Tu Código QR Personal de Negocio:</p>
+                        <div id="qr-image-box" class="flex justify-center"></div>
+                        <p id="qr-text-code" class="text-[10px] font-mono text-slate-500 select-all bg-slate-100 p-1 rounded"></p>
+                        <p class="text-[10px] text-slate-500">Muestra este código QR a tu socio para que lo escanee desde su app.</p>
+                    </div>
+
+                    <div class="flex gap-2 pt-1">
+                        <input type="text" id="token-socio" class="flex-1 p-2 text-xs rounded-lg text-slate-800" placeholder="Código de socio o escanear QR">
                         <button type="button" onclick="conectarSocio()" class="bg-slate-900 text-white px-3 py-2 rounded-lg text-xs font-medium hover:bg-slate-800 transition">Conectar</button>
                     </div>
-                </div>
-            </div>
 
-            <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-100 space-y-3">
-                <h2 class="text-md font-semibold text-slate-700">Respaldo General</h2>
-                <div class="grid grid-cols-2 gap-2">
-                    <button type="button" onclick="exportarRespaldo()" class="bg-slate-800 text-white py-2 rounded-lg text-xs font-medium hover:bg-slate-900 transition">📤 Exportar Todo</button>
-                    <label class="bg-slate-200 text-slate-700 py-2 rounded-lg text-xs font-medium hover:bg-slate-300 transition text-center cursor-pointer">
-                        📥 Restaurar
-                        <input type="file" id="input-respaldo" onchange="importarRespaldo(event)" class="hidden" accept=".json">
-                    </label>
+                    <!-- Botón para Escanear QR -->
+                    <button type="button" onclick="abrirEscanerQR()" class="w-full bg-slate-900 text-white font-semibold py-2 rounded-lg text-xs hover:bg-slate-800 transition shadow">📷 Escanear QR con la Cámara</button>
                 </div>
             </div>
         </section>
@@ -316,7 +333,7 @@
         </div>
     </nav>
 
-    <!-- Script de Lógica Principal + Firebase Firestore Sync -->
+    <!-- Script de Firebase Firestore con Sincronización en Tiempo Real -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/13.3.0/firebase-app.js";
         import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/13.3.0/firebase-firestore.js";
@@ -332,27 +349,53 @@
 
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
-        const docRef = doc(db, "negocios", "principal");
 
-        window.sincronizarNube = async function(datos) {
+        let currentSyncCode = localStorage.getItem('gestorpro_sync_code') || '';
+        if(!currentSyncCode) {
+            currentSyncCode = 'negocio_' + Math.random().toString(36).substring(2, 10);
+            localStorage.setItem('gestorpro_sync_code', currentSyncCode);
+        }
+
+        let unsubscribe = null;
+        let isRemoteUpdate = false;
+
+        window.configurarSincronizacionNube = function(code) {
+            currentSyncCode = code;
+            localStorage.setItem('gestorpro_sync_code', code);
+            iniciarListener(code);
+        };
+
+        function iniciarListener(code) {
+            if (unsubscribe) unsubscribe();
+            const docRef = doc(db, "negocios", code);
+
+            unsubscribe = onSnapshot(docRef, (snap) => {
+                if (snap.exists() && snap.data().data) {
+                    const nubeRemota = snap.data().data;
+                    const actualLocal = localStorage.getItem('multinegocios');
+                    if (nubeRemota !== actualLocal) {
+                        isRemoteUpdate = true;
+                        localStorage.setItem('multinegocios', nubeRemota);
+                        if (typeof window.recargarDatosApp === 'function') {
+                            window.recargarDatosApp();
+                        }
+                        isRemoteUpdate = false;
+                    }
+                }
+            });
+        }
+
+        window.sincronizarNube = async function(datosJson) {
+            if (isRemoteUpdate) return;
             try {
-                await setDoc(docRef, { data: JSON.stringify(datos), actualizado: Date.now() });
+                const docRef = doc(db, "negocios", currentSyncCode);
+                await setDoc(docRef, { data: datosJson, actualizado: Date.now() });
             } catch(e) {
                 console.error("Error al sincronizar con la nube:", e);
             }
         };
 
-        onSnapshot(docRef, (snap) => {
-            if (snap.exists() && snap.data().data) {
-                const nubeRemota = snap.data().data;
-                const actualLocal = localStorage.getItem('gestorpro_datos');
-                if (nubeRemota !== actualLocal) {
-                    localStorage.setItem('gestorpro_datos', nubeRemota);
-                    if (typeof renderizarApp === 'function') renderizarApp();
-                    else if (typeof cargarDatos === 'function') cargarDatos();
-                }
-            }
-        });
+        iniciarListener(currentSyncCode);
     </script>
 
     <script>
@@ -371,6 +414,12 @@
             document.getElementById('modal-onboarding').classList.remove('hidden');
         }
 
+        window.recargarDatosApp = function() {
+            negocios = JSON.parse(localStorage.getItem('multinegocios')) || negocios;
+            negocioActualId = parseInt(localStorage.getItem('negocioActualId')) || negocios[0].id;
+            renderizarTodo();
+        };
+
         function abrirOnboarding() { document.getElementById('modal-onboarding').classList.remove('hidden'); }
         function cerrarOnboarding() { localStorage.setItem('onboardingVisto', 'true'); document.getElementById('modal-onboarding').classList.add('hidden'); }
 
@@ -386,10 +435,11 @@
         }
 
         function persistir() {
-            localStorage.setItem('multinegocios', JSON.stringify(negocios));
+            const dataJson = JSON.stringify(negocios);
+            localStorage.setItem('multinegocios', dataJson);
             localStorage.setItem('negocioActualId', negocioActualId);
             if (typeof window.sincronizarNube === 'function') {
-                window.sincronizarNube(localStorage.getItem('multinegocios'));
+                window.sincronizarNube(dataJson);
             }
             renderizarTodo();
         }
@@ -428,11 +478,92 @@
         }
 
         function verAnuncioBonificadoPro() {
-            alert('🎬 Reproduciendo anuncio bonificado de AdMob (ID: 2400081326)... ¡Gracias!');
+            alert('🎬 Reproduciendo anuncio bonificado de AdMob... ¡Gracias!');
             const tiempoExpiracion = Date.now() + (12 * 60 * 60 * 1000); // 12 Horas exactas
             localStorage.setItem('proExpira', tiempoExpiracion);
             verificarEstadoPro();
             alert('¡Modo Pro activado con éxito por 12 horas!');
+        }
+
+        // --- FUNCIONES DE CÓDIGO QR Y ESCÁNER ---
+        function mostrarCodigoQR() {
+            if(!esProActivo()) {
+                alert('🔒 El código QR de sincronización es una función exclusiva del Modo Pro.');
+                cambiarTab('ajustes');
+                return;
+            }
+            const codigoActual = localStorage.getItem('gestorpro_sync_code') || 'negocio_principal';
+            const qrContainer = document.getElementById('qr-display-container');
+            const qrImageBox = document.getElementById('qr-image-box');
+            const qrTextCode = document.getElementById('qr-text-code');
+
+            // Generar imagen QR usando API pública ligera
+            const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=${encodeURIComponent(codigoActual)}`;
+            qrImageBox.innerHTML = `<img src="${qrUrl}" alt="Código QR de Sincronización" class="rounded-lg shadow border p-1 bg-white">`;
+            qrTextCode.innerText = codigoActual;
+            qrContainer.classList.toggle('hidden');
+        }
+
+        let html5QrCode = null;
+
+        function abrirEscanerQR() {
+            if(!esProActivo()) {
+                alert('🔒 Escanear códigos QR es una función exclusiva del Modo Pro.');
+                cambiarTab('ajustes');
+                return;
+            }
+            document.getElementById('modal-escaner').classList.remove('hidden');
+            
+            setTimeout(() => {
+                if (!html5QrCode) {
+                    html5QrCode = new Html5Qrcode("reader");
+                }
+                html5QrCode.start(
+                    { facingMode: "environment" },
+                    { fps: 10, qrbox: { width: 200, height: 200 } },
+                    (decodedText) => {
+                        // Éxito al escanear
+                        document.getElementById('token-socio').value = decodedText;
+                        cerrarEscanerQR();
+                        conectarSocio();
+                    },
+                    (errorMessage) => {
+                        // Errores de escaneo en tiempo real (se ignoran)
+                    }
+                ).catch(err => {
+                    console.error("Error al iniciar la cámara:", err);
+                    alert("No se pudo acceder a la cámara. Asegúrate de dar permisos en tu navegador.");
+                    cerrarEscanerQR();
+                });
+            }, 300);
+        }
+
+        function cerrarEscanerQR() {
+            if (html5QrCode) {
+                html5QrCode.stop().then(() => {
+                    document.getElementById('modal-escaner').classList.add('hidden');
+                }).catch(() => {
+                    document.getElementById('modal-escaner').classList.add('hidden');
+                });
+            } else {
+                document.getElementById('modal-escaner').classList.add('hidden');
+            }
+        }
+
+        function conectarSocio() {
+            if(!esProActivo()) {
+                alert('🔒 Conectar con socios es una función exclusiva del Modo Pro.');
+                cambiarTab('ajustes');
+                return;
+            }
+            const codigo = document.getElementById('token-socio').value.trim();
+            if(!codigo) return alert('Ingresa o escanea un código de socio válido.');
+            
+            if (typeof window.configurarSincronizacionNube === 'function') {
+                window.configurarSincronizacionNube(codigo);
+            }
+            document.getElementById('token-socio').value = '';
+            alert('¡Conectado con éxito! Los datos ahora se sincronizan en tiempo real con este código.');
         }
 
         function actualizarSelectNegocios() {
@@ -893,63 +1024,6 @@
             } catch (err) {
                 alert('Error al generar el reporte: ' + err.message);
             }
-        }
-
-        function generarTokenSincronizacion() {
-            if(!esProActivo()) {
-                alert('🔒 Sincronizar con socios es una función exclusiva del Modo Pro. Ve el anuncio bonificado en Ajustes para activarla.');
-                cambiarTab('ajustes');
-                return;
-            }
-            const neg = obtenerNegocio();
-            const tokenData = btoa(JSON.stringify(neg));
-            prompt("Código Pro de Sincronización (Compártelo con tu socio):", tokenData);
-        }
-
-        function conectarSocio() {
-            if(!esProActivo()) {
-                alert('🔒 Conectar con socios es una función exclusiva del Modo Pro. Ve el anuncio bonificado en Ajustes para activarla.');
-                cambiarTab('ajustes');
-                return;
-            }
-            const token = document.getElementById('token-socio').value.trim();
-            if(!token) return alert('Pega el código.');
-            try {
-                const socioNeg = JSON.parse(atob(token));
-                if(socioNeg && socioNeg.nombre) {
-                    negocios.push(socioNeg);
-                    negocioActualId = socioNeg.id;
-                    persistir();
-                    document.getElementById('token-socio').value = '';
-                    alert('¡Socio conectado con éxito!');
-                }
-            } catch(e) { alert('Código inválido.'); }
-        }
-
-        function exportarRespaldo() {
-            const blob = new Blob([JSON.stringify(negocios, null, 2)], { type: 'application/json' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `respaldo_gestorpro.json`;
-            a.click();
-        }
-
-        function importarRespaldo(event) {
-            const file = event.target.files[0];
-            if (!file) return;
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                try {
-                    negocios = JSON.parse(e.target.result);
-                    negocioActualId = negocios[0].id;
-                    persistir();
-                    alert('¡Restaurado con éxito!');
-                } catch(err) {
-                    alert('Archivo no válido.');
-                }
-            };
-            reader.readAsText(file);
         }
 
         function renderizarTodo() {

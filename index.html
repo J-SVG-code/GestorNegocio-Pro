@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GestorPro - Control de Negocio</title>
+    <!-- Enlace PWA Web Manifest -->
+    <link rel="manifest" href="./manifest.json">
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Google AdMob Script -->
@@ -94,7 +96,7 @@
                 <h2 class="text-md font-semibold text-slate-700">💰 Capital Inicial del Negocio</h2>
                 <div class="flex gap-2">
                     <input type="number" step="0.01" id="input-capital-negocio" class="flex-1 p-2 text-xs border rounded-lg" placeholder="Ej. 500.00">
-                    <button onclick="guardarCapitalInicial()" class="bg-blue-600 text-white px-3 py-2 rounded-lg text-xs font-medium hover:bg-blue-700 transition">Establecer</button>
+                    <button type="button" onclick="guardarCapitalInicial()" class="bg-blue-600 text-white px-3 py-2 rounded-lg text-xs font-medium hover:bg-blue-700 transition">Establecer</button>
                 </div>
             </div>
 
@@ -258,7 +260,7 @@
                 <p class="text-xs text-slate-500">Crear múltiples negocios requiere tener el Modo Pro activo.</p>
                 <div class="flex gap-2">
                     <input type="text" id="nuevo-negocio-nombre" class="flex-1 p-2 text-xs border rounded-lg" placeholder="Nombre del nuevo negocio">
-                    <button onclick="crearNegocio()" class="bg-blue-600 text-white px-3 py-2 rounded-lg text-xs font-medium hover:bg-blue-700 transition">Crear</button>
+                    <button type="button" onclick="crearNegocio()" class="bg-blue-600 text-white px-3 py-2 rounded-lg text-xs font-medium hover:bg-blue-700 transition">Crear</button>
                 </div>
                 <div id="lista-negocios-admin" class="space-y-2 pt-2 border-t border-slate-100"></div>
             </div>
@@ -271,11 +273,11 @@
                 </div>
                 <p id="texto-pro-estado" class="text-xs text-amber-100">El Modo Pro está inactivo. Ve el anuncio bonificado para activarlo por 12 horas y desbloquear todas las funciones.</p>
                 <div class="space-y-2 pt-2">
-                    <button onclick="verAnuncioBonificadoPro()" class="w-full bg-amber-700 text-white font-semibold py-2 rounded-lg text-xs hover:bg-amber-800 transition shadow">🎬 Ver Anuncio Bonificado (Activar 12h)</button>
-                    <button onclick="generarTokenSincronizacion()" class="w-full bg-white text-orange-700 font-semibold py-2 rounded-lg text-xs hover:bg-amber-50 transition shadow">🔗 Sincronizar con Socios / Empleados (Pro)</button>
+                    <button type="button" onclick="verAnuncioBonificadoPro()" class="w-full bg-amber-700 text-white font-semibold py-2 rounded-lg text-xs hover:bg-amber-800 transition shadow">🎬 Ver Anuncio Bonificado (Activar 12h)</button>
+                    <button type="button" onclick="generarTokenSincronizacion()" class="w-full bg-white text-orange-700 font-semibold py-2 rounded-lg text-xs hover:bg-amber-50 transition shadow">🔗 Sincronizar con Socios / Empleados (Pro)</button>
                     <div class="flex gap-2">
                         <input type="text" id="token-socio" class="flex-1 p-2 text-xs rounded-lg text-slate-800" placeholder="Código de socio">
-                        <button onclick="conectarSocio()" class="bg-slate-900 text-white px-3 py-2 rounded-lg text-xs font-medium hover:bg-slate-800 transition">Conectar</button>
+                        <button type="button" onclick="conectarSocio()" class="bg-slate-900 text-white px-3 py-2 rounded-lg text-xs font-medium hover:bg-slate-800 transition">Conectar</button>
                     </div>
                 </div>
             </div>
@@ -283,7 +285,7 @@
             <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-100 space-y-3">
                 <h2 class="text-md font-semibold text-slate-700">Respaldo General</h2>
                 <div class="grid grid-cols-2 gap-2">
-                    <button onclick="exportarRespaldo()" class="bg-slate-800 text-white py-2 rounded-lg text-xs font-medium hover:bg-slate-900 transition">📤 Exportar Todo</button>
+                    <button type="button" onclick="exportarRespaldo()" class="bg-slate-800 text-white py-2 rounded-lg text-xs font-medium hover:bg-slate-900 transition">📤 Exportar Todo</button>
                     <label class="bg-slate-200 text-slate-700 py-2 rounded-lg text-xs font-medium hover:bg-slate-300 transition text-center cursor-pointer">
                         📥 Restaurar
                         <input type="file" id="input-respaldo" onchange="importarRespaldo(event)" class="hidden" accept=".json">
@@ -308,11 +310,11 @@
     <!-- Barra de Navegación Inferior -->
     <nav class="bg-white border-t border-slate-200 fixed bottom-0 left-0 right-0 shadow-lg z-40">
         <div class="max-w-md mx-auto flex justify-around p-1.5">
-            <button onclick="cambiarTab('resumen')" id="btn-tab-resumen" class="flex-1 text-center py-2 text-[10px] font-semibold text-blue-600 border-t-2 border-blue-600">Resumen</button>
-            <button onclick="cambiarTab('inventario')" id="btn-tab-inventario" class="flex-1 text-center py-2 text-[10px] font-medium text-slate-400 border-t-2 border-transparent">Inventario</button>
-            <button onclick="cambiarTab('ventas')" id="btn-tab-ventas" class="flex-1 text-center py-2 text-[10px] font-medium text-slate-400 border-t-2 border-transparent">Ventas/Fiados</button>
-            <button onclick="cambiarTab('finanzas')" id="btn-tab-finanzas" class="flex-1 text-center py-2 text-[10px] font-medium text-slate-400 border-t-2 border-transparent">Caja</button>
-            <button onclick="cambiarTab('ajustes')" id="btn-tab-ajustes" class="flex-1 text-center py-2 text-[10px] font-medium text-slate-400 border-t-2 border-transparent">Pro / Ajustes</button>
+            <button type="button" onclick="cambiarTab('resumen')" id="btn-tab-resumen" class="flex-1 text-center py-2 text-[10px] font-semibold text-blue-600 border-t-2 border-blue-600">Resumen</button>
+            <button type="button" onclick="cambiarTab('inventario')" id="btn-tab-inventario" class="flex-1 text-center py-2 text-[10px] font-medium text-slate-400 border-t-2 border-transparent">Inventario</button>
+            <button type="button" onclick="cambiarTab('ventas')" id="btn-tab-ventas" class="flex-1 text-center py-2 text-[10px] font-medium text-slate-400 border-t-2 border-transparent">Ventas/Fiados</button>
+            <button type="button" onclick="cambiarTab('finanzas')" id="btn-tab-finanzas" class="flex-1 text-center py-2 text-[10px] font-medium text-slate-400 border-t-2 border-transparent">Caja</button>
+            <button type="button" onclick="cambiarTab('ajustes')" id="btn-tab-ajustes" class="flex-1 text-center py-2 text-[10px] font-medium text-slate-400 border-t-2 border-transparent">Pro / Ajustes</button>
         </div>
     </nav>
 
@@ -336,6 +338,9 @@
             if (!neg) { negocioActualId = negocios[0].id; neg = negocios[0]; }
             if (neg.capitalInicial === undefined) neg.capitalInicial = 0;
             if (!neg.deudas) neg.deudas = [];
+            if (!neg.inventario) neg.inventario = [];
+            if (!neg.ventas) neg.ventas = [];
+            if (!neg.finanzas) neg.finanzas = [];
             return neg;
         }
 
@@ -358,14 +363,22 @@
             if(esProActivo()) {
                 const expira = parseInt(localStorage.getItem('proExpira'));
                 const horasRestantes = Math.ceil((expira - Date.now()) / (1000 * 60 * 60));
-                badge.innerText = "Activo";
-                badge.className = "bg-emerald-500 text-white text-xs px-2 py-0.5 rounded font-semibold";
-                texto.innerText = `Modo Pro activo por unas ${horasRestantes} horas más. ¡Disfruta la app sin anuncios y con funciones ilimitadas!`;
+                if(badge) {
+                    badge.innerText = "Activo";
+                    badge.className = "bg-emerald-500 text-white text-xs px-2 py-0.5 rounded font-semibold";
+                }
+                if(texto) {
+                    texto.innerText = `Modo Pro activo por unas ${horasRestantes} horas más. ¡Disfruta la app sin anuncios y con funciones ilimitadas!`;
+                }
                 if(bannerAd) bannerAd.classList.add('hidden');
             } else {
-                badge.innerText = "Inactivo";
-                badge.className = "bg-red-500 text-white text-xs px-2 py-0.5 rounded font-semibold";
-                texto.innerText = "El Modo Pro está inactivo. Ve el anuncio bonificado para activarlo por 12 horas y desbloquear multinegocios, socios y sin publicidad.";
+                if(badge) {
+                    badge.innerText = "Inactivo";
+                    badge.className = "bg-red-500 text-white text-xs px-2 py-0.5 rounded font-semibold";
+                }
+                if(texto) {
+                    texto.innerText = "El Modo Pro está inactivo. Ve el anuncio bonificado para activarlo por 12 horas y desbloquear multinegocios, socios y sin publicidad.";
+                }
                 if(bannerAd) bannerAd.classList.remove('hidden');
             }
         }
@@ -380,20 +393,25 @@
 
         function actualizarSelectNegocios() {
             const selectHeader = document.getElementById('select-negocio-activo');
-            selectHeader.innerHTML = negocios.map(n => `<option value="${n.id}" ${n.id === negocioActualId ? 'selected' : ''}>🏢 ${n.nombre}</option>`).join('');
+            if(selectHeader) {
+                selectHeader.innerHTML = negocios.map(n => `<option value="${n.id}" ${n.id === negocioActualId ? 'selected' : ''}>🏢 ${n.nombre}</option>`).join('');
+            }
 
             const contenedorAdmin = document.getElementById('lista-negocios-admin');
             if(contenedorAdmin) {
                 contenedorAdmin.innerHTML = negocios.map(n => `
                     <div class="flex justify-between items-center bg-slate-50 p-2 rounded-lg border border-slate-200">
                         <span class="text-xs font-semibold text-slate-700">${n.nombre} ${n.id === negocioActualId ? '(Activo)' : ''}</span>
-                        ${negocios.length > 1 ? `<button onclick="eliminarNegocio(${n.id})" class="text-red-500 text-xs bg-red-50 px-2 py-1 rounded">Eliminar</button>` : ''}
+                        ${negocios.length > 1 ? `<button type="button" onclick="eliminarNegocio(${n.id})" class="text-red-500 text-xs bg-red-50 px-2 py-1 rounded">Eliminar</button>` : ''}
                     </div>
                 `).join('');
             }
         }
 
-        function cambiarNegocioActivo(id) { negocioActualId = parseInt(id); persistir(); }
+        function cambiarNegocioActivo(id) { 
+            negocioActualId = parseInt(id); 
+            persistir(); 
+        }
 
         function crearNegocio() {
             if(!esProActivo()) {
@@ -419,16 +437,18 @@
             persistir();
         }
 
-        // Navegación por pestañas con actualización automática de cada sección
         function cambiarTab(tab) {
             ['resumen', 'inventario', 'ventas', 'finanzas', 'ajustes'].forEach(t => {
-                document.getElementById(`tab-${t}`).classList.add('hidden');
-                document.getElementById(`btn-tab-${t}`).className = "flex-1 text-center py-2 text-[10px] font-medium text-slate-400 border-t-2 border-transparent";
+                const elTab = document.getElementById(`tab-${t}`);
+                const elBtn = document.getElementById(`btn-tab-${t}`);
+                if(elTab) elTab.classList.add('hidden');
+                if(elBtn) elBtn.className = "flex-1 text-center py-2 text-[10px] font-medium text-slate-400 border-t-2 border-transparent";
             });
-            document.getElementById(`tab-${tab}`).classList.remove('hidden');
-            document.getElementById(`btn-tab-${tab}`).className = "flex-1 text-center py-2 text-[10px] font-semibold text-blue-600 border-t-2 border-blue-600";
+            const activoTab = document.getElementById(`tab-${tab}`);
+            const activoBtn = document.getElementById(`btn-tab-${tab}`);
+            if(activoTab) activoTab.classList.remove('hidden');
+            if(activoBtn) activoBtn.className = "flex-1 text-center py-2 text-[10px] font-semibold text-blue-600 border-t-2 border-blue-600";
             
-            // Sincronizar datos de la sección activa
             if(tab === 'resumen') actualizarResumenGeneral();
             if(tab === 'inventario') renderInventario();
             if(tab === 'ventas') { actualizarSelectVentas(); renderVentas(); renderDeudas(); }
@@ -436,9 +456,9 @@
             if(tab === 'ajustes') verificarEstadoPro();
         }
 
-        // Gastos Extras Dinámicos en Inventario
         function agregarCampoGastoExtra(nombre = '', monto = '') {
             const contenedor = document.getElementById('contenedor-gastos-extras');
+            if(!contenedor) return;
             const div = document.createElement('div');
             div.className = "flex gap-2 items-center";
             div.innerHTML = `
@@ -463,10 +483,15 @@
             const ventaTotal = venta * stock;
             const ganancia = ventaTotal - invTotal;
 
-            document.getElementById('prev-inv').innerText = `$${invTotal.toFixed(2)}`;
-            document.getElementById('prev-vent').innerText = `$${ventaTotal.toFixed(2)}`;
-            document.getElementById('prev-gan').innerText = `$${ganancia.toFixed(2)}`;
-            document.getElementById('preview-prod-box').classList.remove('hidden');
+            const elInv = document.getElementById('prev-inv');
+            const elVent = document.getElementById('prev-vent');
+            const elGan = document.getElementById('prev-gan');
+            const box = document.getElementById('preview-prod-box');
+
+            if(elInv) elInv.innerText = `$${invTotal.toFixed(2)}`;
+            if(elVent) elVent.innerText = `$${ventaTotal.toFixed(2)}`;
+            if(elGan) elGan.innerText = `$${ganancia.toFixed(2)}`;
+            if(box) box.classList.remove('hidden');
         }
 
         function guardarCapitalInicial() {
@@ -477,7 +502,6 @@
             alert('¡Capital inicial guardado con éxito!');
         }
 
-        // Registrar Producto
         document.getElementById('form-producto').addEventListener('submit', (e) => {
             e.preventDefault();
             const neg = obtenerNegocio();
@@ -511,8 +535,10 @@
 
             persistir();
             e.target.reset();
-            document.getElementById('contenedor-gastos-extras').innerHTML = '';
-            document.getElementById('preview-prod-box').classList.add('hidden');
+            const contExtras = document.getElementById('contenedor-gastos-extras');
+            if(contExtras) contExtras.innerHTML = '';
+            const box = document.getElementById('preview-prod-box');
+            if(box) box.classList.add('hidden');
             renderInventario();
             alert('¡Producto agregado con éxito!');
         });
@@ -520,6 +546,7 @@
         function renderInventario() {
             const neg = obtenerNegocio();
             const contenedor = document.getElementById('lista-inventario');
+            if (!contenedor) return;
             if (!neg.inventario || neg.inventario.length === 0) {
                 contenedor.innerHTML = `<p class="text-xs text-slate-400 text-center py-4">No hay productos en inventario.</p>`;
                 return;
@@ -530,7 +557,7 @@
                         <h3 class="text-sm font-semibold text-slate-700">${prod.nombre} (Stock: ${prod.stock})</h3>
                         <p class="text-xs text-slate-500">Compra: $${prod.compra.toFixed(2)} | Venta: $${prod.venta.toFixed(2)} | Inv. Tot: $${prod.inversionTotal.toFixed(2)}</p>
                     </div>
-                    <button onclick="eliminarProducto(${prod.id})" class="text-red-500 text-xs bg-red-50 p-2 rounded-md hover:bg-red-100">Eliminar</button>
+                    <button type="button" onclick="eliminarProducto(${prod.id})" class="text-red-500 text-xs bg-red-50 p-2 rounded-md hover:bg-red-100">Eliminar</button>
                 </div>
             `).join('');
         }
@@ -551,11 +578,12 @@
 
         function toggleCamposFiado(val) {
             const campos = document.getElementById('campos-fiado');
-            if(val === 'fiado') campos.classList.remove('hidden');
-            else campos.classList.add('hidden');
+            if(campos) {
+                if(val === 'fiado') campos.classList.remove('hidden');
+                else campos.classList.add('hidden');
+            }
         }
 
-        // Registrar Venta / Fiado
         document.getElementById('form-venta').addEventListener('submit', (e) => {
             e.preventDefault();
             const neg = obtenerNegocio();
@@ -597,7 +625,8 @@
 
             persistir();
             e.target.reset();
-            document.getElementById('campos-fiado').classList.add('hidden');
+            const camposFiado = document.getElementById('campos-fiado');
+            if(camposFiado) camposFiado.classList.add('hidden');
             renderVentas();
             renderDeudas();
             alert('¡Operación registrada con éxito!');
@@ -641,7 +670,7 @@
                         <h3 class="text-xs font-bold text-amber-900">${d.cliente} - ${d.producto} (x${d.cantidad})</h3>
                         <p class="text-[10px] text-amber-700">Total: $${d.total.toFixed(2)} | Abonado: $${d.abonado.toFixed(2)} | <span class="font-bold text-red-600">Pendiente: $${d.pendiente.toFixed(2)}</span></p>
                     </div>
-                    <button onclick="pagarDeuda(${d.id})" class="bg-emerald-600 text-white px-2.5 py-1.5 rounded text-[10px] font-semibold hover:bg-emerald-700">Marcar Pagada</button>
+                    <button type="button" onclick="pagarDeuda(${d.id})" class="bg-emerald-600 text-white px-2.5 py-1.5 rounded text-[10px] font-semibold hover:bg-emerald-700">Marcar Pagada</button>
                 </div>
             `).join('');
         }
@@ -665,7 +694,6 @@
             `).join('');
         }
 
-        // Finanzas y Caja
         document.getElementById('form-transaccion-capital').addEventListener('submit', (e) => {
             e.preventDefault();
             const neg = obtenerNegocio();
@@ -714,11 +742,11 @@
             const neg = obtenerNegocio();
             
             const capitalInicial = neg.capitalInicial || 0;
-            const invertidoProd = (neg.inventario || []).reduce((acc, p) => acc + p.inversionTotal, 0);
-            const ventasTotales = (neg.ventas || []).reduce((acc, v) => acc + v.total, 0);
-            const gananciaNeta = (neg.ventas || []).reduce((acc, v) => acc + v.ganancia, 0);
-            const faltaPorVender = (neg.inventario || []).reduce((acc, p) => acc + (p.venta * p.stock), 0);
-            const deudasPendientes = (neg.deudas || []).reduce((acc, d) => acc + d.pendiente, 0);
+            const invertidoProd = (neg.inventario || []).reduce((acc, p) => acc + (p.inversionTotal || 0), 0);
+            const ventasTotales = (neg.ventas || []).reduce((acc, v) => acc + (v.total || 0), 0);
+            const gananciaNeta = (neg.ventas || []).reduce((acc, v) => acc + (v.ganancia || 0), 0);
+            const faltaPorVender = (neg.inventario || []).reduce((acc, p) => acc + ((p.venta || 0) * (p.stock || 0)), 0);
+            const deudasPendientes = (neg.deudas || []).reduce((acc, d) => acc + (d.pendiente || 0), 0);
 
             const elCap = document.getElementById('res-capital-inicial');
             if(elCap) elCap.innerText = `$${capitalInicial.toFixed(2)}`;
@@ -743,7 +771,6 @@
             if(elCaj) elCaj.innerText = `$${caja.toFixed(2)}`;
         }
 
-        // Generar Reporte PDF optimizado para impresión y WPS Office (Bloqueado sin Pro)
         function generarReportePDF() {
             if(!esProActivo()) {
                 alert('🔒 Descargar reportes ejecutivos es una función exclusiva del Modo Pro. Ve el anuncio bonificado en Ajustes para activarla.');
@@ -751,21 +778,22 @@
                 return;
             }
 
-            const neg = obtenerNegocio();
-            const capitalInicial = neg.capitalInicial || 0;
-            const invertidoProd = (neg.inventario || []).reduce((acc, p) => acc + p.inversionTotal, 0);
-            const ventasTotales = (neg.ventas || []).reduce((acc, v) => acc + v.total, 0);
-            const gananciaNeta = (neg.ventas || []).reduce((acc, v) => acc + v.ganancia, 0);
-            const faltaPorVender = (neg.inventario || []).reduce((acc, p) => acc + (p.venta * p.stock), 0);
-            const deudasPendientes = (neg.deudas || []).reduce((acc, d) => acc + d.pendiente, 0);
+            try {
+                const neg = obtenerNegocio();
+                const capitalInicial = neg.capitalInicial || 0;
+                const invertidoProd = (neg.inventario || []).reduce((acc, p) => acc + (p.inversionTotal || 0), 0);
+                const ventasTotales = (neg.ventas || []).reduce((acc, v) => acc + (v.total || 0), 0);
+                const gananciaNeta = (neg.ventas || []).reduce((acc, v) => acc + (v.ganancia || 0), 0);
+                const faltaPorVender = (neg.inventario || []).reduce((acc, p) => acc + ((p.venta || 0) * (p.stock || 0)), 0);
+                const deudasPendientes = (neg.deudas || []).reduce((acc, d) => acc + (d.pendiente || 0), 0);
 
-            const contenidoHtml = `
-                <html>
+                const contenidoHtml = `<!DOCTYPE html>
+                <html lang="es">
                 <head>
                     <meta charset="utf-8">
                     <title>Reporte Ejecutivo - ${neg.nombre}</title>
                     <style>
-                        body { font-family: Arial, sans-serif; padding: 20px; color: #333; line-height: 1.4; }
+                        body { font-family: Arial, sans-serif; padding: 20px; color: #333; line-height: 1.4; background: #fff; }
                         h1 { color: #1e3a8a; border-bottom: 2px solid #1e3a8a; padding-bottom: 5px; font-size: 20px; }
                         h3 { color: #334155; margin-top: 20px; font-size: 14px; border-left: 4px solid #2563eb; padding-left: 6px; }
                         table { width: 100%; border-collapse: collapse; margin-top: 8px; margin-bottom: 12px; }
@@ -773,9 +801,6 @@
                         th { background-color: #f1f5f9; color: #1e293b; }
                         .summary-box { background: #f8fafc; border: 1px solid #e2e8f0; padding: 12px; border-radius: 6px; margin-top: 10px; }
                         .summary-box p { margin: 4px 0; font-size: 12px; }
-                        @media print {
-                            .no-print { display: none; }
-                        }
                     </style>
                 </head>
                 <body>
@@ -794,33 +819,35 @@
                     <h3>Inventario Actual</h3>
                     <table>
                         <tr><th>Producto</th><th>Compra</th><th>Venta</th><th>Stock</th><th>Inversión Tot.</th></tr>
-                        ${neg.inventario && neg.inventario.length > 0 ? neg.inventario.map(p => `<tr><td>${p.nombre}</td><td>$${p.compra.toFixed(2)}</td><td>$${p.venta.toFixed(2)}</td><td>${p.stock}</td><td>$${p.inversionTotal.toFixed(2)}</td></tr>`).join('') : '<tr><td colspan="5" style="text-align:center;">Sin productos registrados</td></tr>'}
+                        ${neg.inventario && neg.inventario.length > 0 ? neg.inventario.map(p => `<tr><td>${p.nombre}</td><td>$${(p.compra||0).toFixed(2)}</td><td>$${(p.venta||0).toFixed(2)}</td><td>${p.stock}</td><td>$${(p.inversionTotal||0).toFixed(2)}</td></tr>`).join('') : '<tr><td colspan="5" style="text-align:center;">Sin productos registrados</td></tr>'}
                     </table>
 
                     <h3>Ventas Recientes</h3>
                     <table>
                         <tr><th>Producto</th><th>Cant</th><th>Total</th><th>Ganancia</th><th>Tipo</th><th>Hora</th></tr>
-                        ${neg.ventas && neg.ventas.length > 0 ? neg.ventas.map(v => `<tr><td>${v.nombre}</td><td>${v.cantidad}</td><td>$${v.total.toFixed(2)}</td><td>$${v.ganancia.toFixed(2)}</td><td>${v.tipo}</td><td>${v.fecha}</td></tr>`).join('') : '<tr><td colspan="6" style="text-align:center;">Sin ventas registradas</td></tr>'}
+                        ${neg.ventas && neg.ventas.length > 0 ? neg.ventas.map(v => `<tr><td>${v.nombre}</td><td>${v.cantidad}</td><td>$${(v.total||0).toFixed(2)}</td><td>$${(v.ganancia||0).toFixed(2)}</td><td>${v.tipo}</td><td>${v.fecha}</td></tr>`).join('') : '<tr><td colspan="6" style="text-align:center;">Sin ventas registradas</td></tr>'}
                     </table>
 
                     <h3>Deudas y Fiados Pendientes</h3>
                     <table>
                         <tr><th>Cliente</th><th>Producto</th><th>Cant</th><th>Total</th><th>Abonado</th><th>Pendiente</th></tr>
-                        ${neg.deudas && neg.deudas.length > 0 ? neg.deudas.map(d => `<tr><td>${d.cliente}</td><td>${d.producto}</td><td>${d.cantidad}</td><td>$${d.total.toFixed(2)}</td><td>$${d.abonado.toFixed(2)}</td><td>$${d.pendiente.toFixed(2)}</td></tr>`).join('') : '<tr><td colspan="6" style="text-align:center;">Sin deudas pendientes</td></tr>'}
+                        ${neg.deudas && neg.deudas.length > 0 ? neg.deudas.map(d => `<tr><td>${d.cliente}</td><td>${d.producto}</td><td>${d.cantidad}</td><td>$${(d.total||0).toFixed(2)}</td><td>$${(d.abonado||0).toFixed(2)}</td><td>$${(d.pendiente||0).toFixed(2)}</td></tr>`).join('') : '<tr><td colspan="6" style="text-align:center;">Sin deudas pendientes</td></tr>'}
                     </table>
-
-                    <br class="no-print">
-                    <button onclick="window.print()" class="no-print" style="background: #2563eb; color: white; border: none; padding: 12px 24px; font-size: 14px; border-radius: 8px; cursor: pointer; width: 100%; font-weight: bold;">🖨️ Imprimir / Guardar como PDF (WPS Office)</button>
                 </body>
-                </html>
-            `;
+                </html>`;
 
-            const ventanaReporte = window.open('', '_blank');
-            if (ventanaReporte) {
-                ventanaReporte.document.write(contenidoHtml);
-                ventanaReporte.document.close();
-            } else {
-                alert('Por favor, permite las ventanas emergentes en tu navegador para generar el reporte PDF.');
+                const blob = new Blob([contenidoHtml], { type: 'text/html;charset=utf-8' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `Reporte_${neg.nombre.replace(/\s+/g, '_')}_${new Date().toISOString().slice(0,10)}.html`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+                alert('¡Reporte generado y descargado con éxito! Ábrelo con WPS Office para visualizarlo o guardarlo como PDF.');
+            } catch (err) {
+                alert('Error al generar el reporte: ' + err.message);
             }
         }
 

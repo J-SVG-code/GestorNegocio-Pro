@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Control de Negocio Pro - MultiNegocio</title>
+    <title>GestorPro - Control de Negocio</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Google AdMob Script -->
@@ -16,14 +16,14 @@
         <div class="bg-white rounded-2xl max-w-sm w-full p-6 space-y-4 shadow-2xl">
             <div class="text-center space-y-2">
                 <span class="text-3xl">🚀</span>
-                <h2 class="text-lg font-bold text-slate-800">Bienvenido a Control Pro</h2>
+                <h2 class="text-lg font-bold text-slate-800">Bienvenido a GestorPro</h2>
                 <p class="text-xs text-slate-500">Gestión total de inventario, ventas, fiados, capital, deudas y múltiples negocios desde tu móvil.</p>
             </div>
             <div class="space-y-2 text-xs text-slate-600 bg-slate-50 p-3 rounded-xl border border-slate-200">
                 <p>📊 <b>Resumen Financiero:</b> Inversión, ventas, ganancias y deudas.</p>
                 <p>📦 <b>Inventario & Costos:</b> Precios de compra, venta y gastos extra.</p>
                 <p>🤝 <b>Ventas & Fiados:</b> Controla créditos y abonos de clientes.</p>
-                <p>⭐ <b>Modo Pro:</b> Desbloquea funciones con AdMob por 12 horas.</p>
+                <p>⭐ <b>Modo Pro:</b> Desbloquea beneficios sin anuncios por 12 horas.</p>
             </div>
             <button onclick="cerrarOnboarding()" class="w-full bg-blue-600 text-white font-medium py-2.5 rounded-xl text-sm hover:bg-blue-700 transition shadow-md">Comenzar a Usar</button>
         </div>
@@ -33,7 +33,7 @@
     <header class="bg-blue-600 text-white p-4 shadow-md sticky top-0 z-40">
         <div class="max-w-md mx-auto flex justify-between items-center">
             <div>
-                <h1 class="text-sm font-bold">📦 Control Pro</h1>
+                <h1 class="text-sm font-bold">📦 GestorPro</h1>
                 <select id="select-negocio-activo" onchange="cambiarNegocioActivo(this.value)" class="text-xs bg-blue-700 text-white font-medium px-2 py-0.5 rounded mt-0.5 outline-none border border-blue-500">
                     <!-- Dinámico -->
                 </select>
@@ -240,8 +240,19 @@
             </div>
         </section>
 
-        <!-- Pestaña 5: Ajustes y Modo Pro (AdMob 12 Horas) -->
+        <!-- Pestaña 5: Ajustes y Modo Pro -->
         <section id="tab-ajustes" class="space-y-4 hidden">
+            <!-- Beneficios del Modo Pro Explicados -->
+            <div class="bg-blue-50 border border-blue-200 p-4 rounded-xl space-y-2 text-xs text-blue-900">
+                <p class="font-bold text-sm text-blue-950">✨ Beneficios del Modo Pro (por 12 Horas):</p>
+                <div class="space-y-1">
+                    <p>🚫 <b>Experiencia sin Anuncios:</b> Oculta automáticamente los banners publicitarios de AdMob.</p>
+                    <p>🏢 <b>Multinegocios Ilimitados:</b> Crea y gestiona varias tiendas de forma independiente.</p>
+                    <p>🔗 <b>Sincronización con Socios:</b> Comparte datos al instante con tu equipo de trabajo.</p>
+                    <p>📄 <b>Reportes Avanzados:</b> Descarga informes ejecutivos completos para WPS Office.</p>
+                </div>
+            </div>
+
             <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-100 space-y-3">
                 <h2 class="text-md font-semibold text-slate-700">🏢 Mis Negocios (Multicuenta)</h2>
                 <div class="flex gap-2">
@@ -251,14 +262,15 @@
                 <div id="lista-negocios-admin" class="space-y-2 pt-2 border-t border-slate-100"></div>
             </div>
 
+            <!-- Módulo Pro con AdMob y Temporizador de 12 Horas -->
             <div class="bg-gradient-to-br from-amber-500 to-orange-600 text-white p-4 rounded-xl shadow-md space-y-3">
                 <div class="flex justify-between items-center">
-                    <h2 class="text-md font-bold">⭐ Módulo PRO (AdMob)</h2>
+                    <h2 class="text-md font-bold">⭐ GestorPro Modo PRO</h2>
                     <span id="badge-pro-estado" class="bg-white/20 text-xs px-2 py-0.5 rounded font-semibold">Verificando...</span>
                 </div>
-                <p id="texto-pro-estado" class="text-xs text-amber-100">Ve el anuncio bonificado para desbloquear el Modo Pro durante 12 horas completas.</p>
+                <p id="texto-pro-estado" class="text-xs text-amber-100">Ve el anuncio bonificado para activar todas las funciones Pro y ocultar los anuncios por 12 horas.</p>
                 <div class="space-y-2 pt-2">
-                    <button onclick="verAnuncioBonificadoPro()" class="w-full bg-amber-700 text-white font-semibold py-2 rounded-lg text-xs hover:bg-amber-800 transition shadow">🎬 Ver Anuncio Bonificado (12 Horas Pro)</button>
+                    <button onclick="verAnuncioBonificadoPro()" class="w-full bg-amber-700 text-white font-semibold py-2 rounded-lg text-xs hover:bg-amber-800 transition shadow">🎬 Ver Anuncio Bonificado (Activar 12h)</button>
                     <button onclick="generarTokenSincronizacion()" class="w-full bg-white text-orange-700 font-semibold py-2 rounded-lg text-xs hover:bg-amber-50 transition shadow">🔗 Sincronizar con Socios / Empleados</button>
                     <div class="flex gap-2">
                         <input type="text" id="token-socio" class="flex-1 p-2 text-xs rounded-lg text-slate-800" placeholder="Código de socio">
@@ -281,8 +293,8 @@
 
     </main>
 
-    <!-- Contenedor Fijo de Anuncio Banner AdMob -->
-    <div class="fixed bottom-12 left-0 right-0 bg-white border-t border-slate-200 shadow-lg h-12 flex flex-col justify-center items-center z-30 max-w-md mx-auto overflow-hidden">
+    <!-- Contenedor Fijo de Anuncio Banner AdMob (Se oculta automáticamente si el Modo Pro está activo) -->
+    <div id="admob-banner-container" class="fixed bottom-12 left-0 right-0 bg-white border-t border-slate-200 shadow-lg h-12 flex flex-col justify-center items-center z-30 max-w-md mx-auto overflow-hidden">
         <ins class="adsbygoogle"
              style="display:inline-block;width:320px;height:50px"
              data-ad-client="ca-app-pub-3645077961178424~5519013340"
@@ -738,21 +750,26 @@
             alert('¡Reporte generado con éxito! Ábrelo con WPS Office para visualizarlo o guardarlo como PDF.');
         }
 
-        // Modo Pro con AdMob y Temporizador de 12 Horas
+        // Modo Pro con AdMob, Temporizador de 12 Horas y Ocultamiento de Anuncios
         function verificarEstadoPro() {
             const expira = localStorage.getItem('proExpira');
             const badge = document.getElementById('badge-pro-estado');
             const texto = document.getElementById('texto-pro-estado');
+            const bannerAd = document.getElementById('admob-banner-container');
             
             if(expira && Date.now() < parseInt(expira)) {
                 const horasRestantes = Math.ceil((parseInt(expira) - Date.now()) / (1000 * 60 * 60));
                 badge.innerText = "Activo";
                 badge.className = "bg-emerald-500 text-white text-xs px-2 py-0.5 rounded font-semibold";
-                texto.innerText = `Modo Pro activo por unas ${horasRestantes} horas más gracias a AdMob.`;
+                texto.innerText = `Modo Pro activo por unas ${horasRestantes} horas más. ¡Disfruta la app sin anuncios!`;
+                // Ocultar anuncios automáticamente al estar en Modo Pro
+                if(bannerAd) bannerAd.classList.add('hidden');
             } else {
                 badge.innerText = "Inactivo";
                 badge.className = "bg-red-500 text-white text-xs px-2 py-0.5 rounded font-semibold";
-                texto.innerText = "El Modo Pro ha expirado. Ve el anuncio bonificado para activarlo por 12 horas más.";
+                texto.innerText = "El Modo Pro ha expirado. Ve el anuncio bonificado para activarlo por 12 horas más y ocultar la publicidad.";
+                // Mostrar anuncios al expirar
+                if(bannerAd) bannerAd.classList.remove('hidden');
             }
         }
 
@@ -761,7 +778,7 @@
             const tiempoExpiracion = Date.now() + (12 * 60 * 60 * 1000); // 12 Horas exactas
             localStorage.setItem('proExpira', tiempoExpiracion);
             verificarEstadoPro();
-            alert('¡Modo Pro activado con éxito por 12 horas!');
+            alert('¡Modo Pro activado con éxito por 12 horas! Anuncios ocultos y funciones desbloqueadas.');
         }
 
         function generarTokenSincronizacion() {

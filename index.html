@@ -23,7 +23,7 @@
                 <p>📊 <b>Resumen Financiero:</b> Inversión, ventas, ganancias y deudas.</p>
                 <p>📦 <b>Inventario & Costos:</b> Precios de compra, venta y gastos extra.</p>
                 <p>🤝 <b>Ventas & Fiados:</b> Controla créditos y abonos de clientes.</p>
-                <p>⭐ <b>Modo Pro:</b> Desbloquea beneficios sin anuncios por 12 horas.</p>
+                <p>⭐ <b>Modo Pro:</b> Desbloquea multinegocios, socios y sin anuncios por 12 horas.</p>
             </div>
             <button onclick="cerrarOnboarding()" class="w-full bg-blue-600 text-white font-medium py-2.5 rounded-xl text-sm hover:bg-blue-700 transition shadow-md">Comenzar a Usar</button>
         </div>
@@ -80,8 +80,8 @@
             </div>
 
             <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-100 space-y-2">
-                <h3 class="text-sm font-semibold text-slate-700">Reportes Ejecutivos</h3>
-                <p class="text-xs text-slate-500">Genera y descarga un informe completo con inventario, ventas y finanzas para abrir en WPS Office.</p>
+                <h3 class="text-sm font-semibold text-slate-700">Reportes Ejecutivos (Función Pro)</h3>
+                <p class="text-xs text-slate-500">Genera y descarga un informe completo para WPS Office. <span class="text-amber-600 font-medium">Requiere Modo Pro activo.</span></p>
                 <button onclick="generarReportePDF()" class="w-full bg-red-600 text-white font-medium py-2 rounded-lg text-xs hover:bg-red-700 transition flex items-center justify-center gap-2">
                     📄 Generar Reporte PDF / WPS
                 </button>
@@ -254,7 +254,8 @@
             </div>
 
             <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-100 space-y-3">
-                <h2 class="text-md font-semibold text-slate-700">🏢 Mis Negocios (Multicuenta)</h2>
+                <h2 class="text-md font-semibold text-slate-700">🏢 Mis Negocios (Multicuenta Pro)</h2>
+                <p class="text-xs text-slate-500">Crear múltiples negocios requiere tener el Modo Pro activo.</p>
                 <div class="flex gap-2">
                     <input type="text" id="nuevo-negocio-nombre" class="flex-1 p-2 text-xs border rounded-lg" placeholder="Nombre del nuevo negocio">
                     <button onclick="crearNegocio()" class="bg-blue-600 text-white px-3 py-2 rounded-lg text-xs font-medium hover:bg-blue-700 transition">Crear</button>
@@ -266,12 +267,12 @@
             <div class="bg-gradient-to-br from-amber-500 to-orange-600 text-white p-4 rounded-xl shadow-md space-y-3">
                 <div class="flex justify-between items-center">
                     <h2 class="text-md font-bold">⭐ GestorPro Modo PRO</h2>
-                    <span id="badge-pro-estado" class="bg-white/20 text-xs px-2 py-0.5 rounded font-semibold">Verificando...</span>
+                    <span id="badge-pro-estado" class="bg-red-500 text-white text-xs px-2 py-0.5 rounded font-semibold">Inactivo</span>
                 </div>
-                <p id="texto-pro-estado" class="text-xs text-amber-100">Ve el anuncio bonificado para activar todas las funciones Pro y ocultar los anuncios por 12 horas.</p>
+                <p id="texto-pro-estado" class="text-xs text-amber-100">El Modo Pro está inactivo. Ve el anuncio bonificado para activarlo por 12 horas y desbloquear todas las funciones.</p>
                 <div class="space-y-2 pt-2">
                     <button onclick="verAnuncioBonificadoPro()" class="w-full bg-amber-700 text-white font-semibold py-2 rounded-lg text-xs hover:bg-amber-800 transition shadow">🎬 Ver Anuncio Bonificado (Activar 12h)</button>
-                    <button onclick="generarTokenSincronizacion()" class="w-full bg-white text-orange-700 font-semibold py-2 rounded-lg text-xs hover:bg-amber-50 transition shadow">🔗 Sincronizar con Socios / Empleados</button>
+                    <button onclick="generarTokenSincronizacion()" class="w-full bg-white text-orange-700 font-semibold py-2 rounded-lg text-xs hover:bg-amber-50 transition shadow">🔗 Sincronizar con Socios / Empleados (Pro)</button>
                     <div class="flex gap-2">
                         <input type="text" id="token-socio" class="flex-1 p-2 text-xs rounded-lg text-slate-800" placeholder="Código de socio">
                         <button onclick="conectarSocio()" class="bg-slate-900 text-white px-3 py-2 rounded-lg text-xs font-medium hover:bg-slate-800 transition">Conectar</button>
@@ -293,7 +294,7 @@
 
     </main>
 
-    <!-- Contenedor Fijo de Anuncio Banner AdMob (Se oculta automáticamente si el Modo Pro está activo) -->
+    <!-- Contenedor Fijo de Anuncio Banner AdMob (Visible por defecto, se oculta en Modo Pro) -->
     <div id="admob-banner-container" class="fixed bottom-12 left-0 right-0 bg-white border-t border-slate-200 shadow-lg h-12 flex flex-col justify-center items-center z-30 max-w-md mx-auto overflow-hidden">
         <ins class="adsbygoogle"
              style="display:inline-block;width:320px;height:50px"
@@ -344,6 +345,42 @@
             renderizarTodo();
         }
 
+        // Validador Riguroso de Estado Pro
+        function esProActivo() {
+            const expira = localStorage.getItem('proExpira');
+            return expira && Date.now() < parseInt(expira);
+        }
+
+        function verificarEstadoPro() {
+            const badge = document.getElementById('badge-pro-estado');
+            const texto = document.getElementById('texto-pro-estado');
+            const bannerAd = document.getElementById('admob-banner-container');
+            
+            if(esProActivo()) {
+                const expira = parseInt(localStorage.getItem('proExpira'));
+                const horasRestantes = Math.ceil((expira - Date.now()) / (1000 * 60 * 60));
+                badge.innerText = "Activo";
+                badge.className = "bg-emerald-500 text-white text-xs px-2 py-0.5 rounded font-semibold";
+                texto.innerText = `Modo Pro activo por unas ${horasRestantes} horas más. ¡Disfruta la app sin anuncios y con funciones ilimitadas!`;
+                // Ocultar anuncios al estar en Modo Pro
+                if(bannerAd) bannerAd.classList.add('hidden');
+            } else {
+                badge.innerText = "Inactivo";
+                badge.className = "bg-red-500 text-white text-xs px-2 py-0.5 rounded font-semibold";
+                texto.innerText = "El Modo Pro está inactivo. Ve el anuncio bonificado para activarlo por 12 horas y desbloquear multinegocios, socios y sin publicidad.";
+                // Mostrar anuncios cuando el Pro está inactivo o expiró
+                if(bannerAd) bannerAd.classList.remove('hidden');
+            }
+        }
+
+        function verAnuncioBonificadoPro() {
+            alert('🎬 Reproduciendo anuncio bonificado de AdMob (ID: 2400081326)... ¡Gracias!');
+            const tiempoExpiracion = Date.now() + (12 * 60 * 60 * 1000); // 12 Horas exactas
+            localStorage.setItem('proExpira', tiempoExpiracion);
+            verificarEstadoPro();
+            alert('¡Modo Pro activado con éxito por 12 horas! Todas las funciones Pro están desbloqueadas.');
+        }
+
         function actualizarSelectNegocios() {
             const selectHeader = document.getElementById('select-negocio-activo');
             selectHeader.innerHTML = negocios.map(n => `<option value="${n.id}" ${n.id === negocioActualId ? 'selected' : ''}>🏢 ${n.nombre}</option>`).join('');
@@ -360,7 +397,13 @@
         }
 
         function cambiarNegocioActivo(id) { negocioActualId = parseInt(id); persistir(); }
+
         function crearNegocio() {
+            if(!esProActivo()) {
+                alert('⚠️ Crear múltiples negocios es una función exclusiva del Modo Pro. Ve el anuncio bonificado en Ajustes para activarlo.');
+                cambiarTab('ajustes');
+                return;
+            }
             const input = document.getElementById('nuevo-negocio-nombre');
             const nombre = input.value.trim();
             if(!nombre) return alert('Escribe un nombre para el negocio.');
@@ -371,6 +414,7 @@
             persistir();
             alert('¡Negocio creado con éxito!');
         }
+
         function eliminarNegocio(id) {
             if(negocios.length <= 1) return alert('Debes tener al menos un negocio.');
             negocios = negocios.filter(n => n.id !== id);
@@ -386,6 +430,7 @@
             document.getElementById(`tab-${tab}`).classList.remove('hidden');
             document.getElementById(`btn-tab-${tab}`).className = "flex-1 text-center py-2 text-[10px] font-semibold text-blue-600 border-t-2 border-blue-600";
             if(tab === 'resumen') actualizarResumenGeneral();
+            verificarEstadoPro();
         }
 
         // Gastos Extras Dinámicos en Inventario
@@ -679,8 +724,14 @@
             renderVentas();
         }
 
-        // Generar Reporte PDF Completo para WPS Office
+        // Generar Reporte PDF Completo para WPS Office (Bloqueado sin Pro)
         function generarReportePDF() {
+            if(!esProActivo()) {
+                alert('🔒 Descargar reportes ejecutivos es una función exclusiva del Modo Pro. Ve el anuncio bonificado en Ajustes para activarla.');
+                cambiarTab('ajustes');
+                return;
+            }
+
             const neg = obtenerNegocio();
             const capitalInicial = neg.capitalInicial || 0;
             const invertidoProd = neg.inventario.reduce((acc, p) => acc + p.inversionTotal, 0);
@@ -750,44 +801,23 @@
             alert('¡Reporte generado con éxito! Ábrelo con WPS Office para visualizarlo o guardarlo como PDF.');
         }
 
-        // Modo Pro con AdMob, Temporizador de 12 Horas y Ocultamiento de Anuncios
-        function verificarEstadoPro() {
-            const expira = localStorage.getItem('proExpira');
-            const badge = document.getElementById('badge-pro-estado');
-            const texto = document.getElementById('texto-pro-estado');
-            const bannerAd = document.getElementById('admob-banner-container');
-            
-            if(expira && Date.now() < parseInt(expira)) {
-                const horasRestantes = Math.ceil((parseInt(expira) - Date.now()) / (1000 * 60 * 60));
-                badge.innerText = "Activo";
-                badge.className = "bg-emerald-500 text-white text-xs px-2 py-0.5 rounded font-semibold";
-                texto.innerText = `Modo Pro activo por unas ${horasRestantes} horas más. ¡Disfruta la app sin anuncios!`;
-                // Ocultar anuncios automáticamente al estar en Modo Pro
-                if(bannerAd) bannerAd.classList.add('hidden');
-            } else {
-                badge.innerText = "Inactivo";
-                badge.className = "bg-red-500 text-white text-xs px-2 py-0.5 rounded font-semibold";
-                texto.innerText = "El Modo Pro ha expirado. Ve el anuncio bonificado para activarlo por 12 horas más y ocultar la publicidad.";
-                // Mostrar anuncios al expirar
-                if(bannerAd) bannerAd.classList.remove('hidden');
-            }
-        }
-
-        function verAnuncioBonificadoPro() {
-            alert('🎬 Reproduciendo anuncio bonificado de AdMob (ID: 2400081326)... ¡Gracias!');
-            const tiempoExpiracion = Date.now() + (12 * 60 * 60 * 1000); // 12 Horas exactas
-            localStorage.setItem('proExpira', tiempoExpiracion);
-            verificarEstadoPro();
-            alert('¡Modo Pro activado con éxito por 12 horas! Anuncios ocultos y funciones desbloqueadas.');
-        }
-
         function generarTokenSincronizacion() {
+            if(!esProActivo()) {
+                alert('🔒 Sincronizar con socios es una función exclusiva del Modo Pro. Ve el anuncio bonificado en Ajustes para activarla.');
+                cambiarTab('ajustes');
+                return;
+            }
             const neg = obtenerNegocio();
             const tokenData = btoa(JSON.stringify(neg));
             prompt("Código Pro de Sincronización (Compártelo con tu socio):", tokenData);
         }
 
         function conectarSocio() {
+            if(!esProActivo()) {
+                alert('🔒 Conectar con socios es una función exclusiva del Modo Pro. Ve el anuncio bonificado en Ajustes para activarla.');
+                cambiarTab('ajustes');
+                return;
+            }
             const token = document.getElementById('token-socio').value.trim();
             if(!token) return alert('Pega el código.');
             try {

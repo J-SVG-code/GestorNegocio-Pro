@@ -81,7 +81,7 @@
 
             <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-100 space-y-2">
                 <h3 class="text-sm font-semibold text-slate-700">Reportes Ejecutivos</h3>
-                <p class="text-xs text-slate-500">Genera y descarga un informe ejecutivo formateado para abrir en WPS Office.</p>
+                <p class="text-xs text-slate-500">Genera y descarga un informe completo con inventario, ventas y finanzas para abrir en WPS Office.</p>
                 <button onclick="generarReportePDF()" class="w-full bg-red-600 text-white font-medium py-2 rounded-lg text-xs hover:bg-red-700 transition flex items-center justify-center gap-2">
                     📄 Generar Reporte PDF / WPS
                 </button>
@@ -90,7 +90,6 @@
 
         <!-- Pestaña 2: Inventario -->
         <section id="tab-inventario" class="space-y-4 hidden">
-            <!-- Ingresar Capital del Negocio -->
             <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-100 space-y-2">
                 <h2 class="text-md font-semibold text-slate-700">💰 Capital Inicial del Negocio</h2>
                 <div class="flex gap-2">
@@ -121,18 +120,14 @@
                         </div>
                     </div>
 
-                    <!-- Gastos Adicionales Dinámicos -->
                     <div class="space-y-2 pt-2 border-t border-slate-100">
                         <div class="flex justify-between items-center">
                             <label class="text-xs font-medium text-slate-600">Gastos Adicionales (Bolsas, Transporte...)</label>
                             <button type="button" onclick="agregarCampoGastoExtra()" class="text-xs bg-slate-100 text-blue-600 px-2 py-1 rounded font-bold hover:bg-slate-200">➕ Agregar Gasto</button>
                         </div>
-                        <div id="contenedor-gastos-extras" class="space-y-2">
-                            <!-- Inyectado por JS -->
-                        </div>
+                        <div id="contenedor-gastos-extras" class="space-y-2"></div>
                     </div>
 
-                    <!-- Cálculo Previo del Producto -->
                     <div id="preview-prod-box" class="bg-slate-50 p-3 rounded-lg border border-slate-200 text-xs text-slate-600 hidden">
                         <p class="font-medium text-slate-700 mb-1">Cálculo del Producto:</p>
                         <div class="flex justify-between"><span>Inversión Total (Compra + Extras):</span> <span id="prev-inv" class="font-semibold text-blue-600">$0.00</span></div>
@@ -175,7 +170,6 @@
                         </div>
                     </div>
 
-                    <!-- Campos si es Fiado -->
                     <div id="campos-fiado" class="space-y-2 bg-amber-50 p-3 rounded-lg border border-amber-200 hidden">
                         <div>
                             <label class="block text-xs font-medium text-slate-700 mb-1">Nombre del Cliente (Deudor)</label>
@@ -191,7 +185,6 @@
                 </form>
             </div>
 
-            <!-- Listado de Deudas Pendientes -->
             <div>
                 <h2 class="text-md font-semibold text-slate-700 mb-2">Deudas y Fiados Pendientes</h2>
                 <div id="lista-deudas" class="space-y-2"></div>
@@ -258,7 +251,6 @@
                 <div id="lista-negocios-admin" class="space-y-2 pt-2 border-t border-slate-100"></div>
             </div>
 
-            <!-- Módulo Pro con AdMob y Temporizador de 12 Horas -->
             <div class="bg-gradient-to-br from-amber-500 to-orange-600 text-white p-4 rounded-xl shadow-md space-y-3">
                 <div class="flex justify-between items-center">
                     <h2 class="text-md font-bold">⭐ Módulo PRO (AdMob)</h2>
@@ -300,7 +292,7 @@
         </script>
     </div>
 
-    <!-- Barra de Navegación Inferior (Resumen Primero) -->
+    <!-- Barra de Navegación Inferior -->
     <nav class="bg-white border-t border-slate-200 fixed bottom-0 left-0 right-0 shadow-lg z-40">
         <div class="max-w-md mx-auto flex justify-around p-1.5">
             <button onclick="cambiarTab('resumen')" id="btn-tab-resumen" class="flex-1 text-center py-2 text-[10px] font-semibold text-blue-600 border-t-2 border-blue-600">Resumen</button>
@@ -449,7 +441,6 @@
 
             neg.inventario.push({ id: Date.now(), nombre, compra, venta, stock, gastosExtras, inversionTotal });
             
-            // Registrar inversión en finanzas de caja automáticamente
             neg.finanzas.unshift({
                 id: Date.now(),
                 tipo: 'gasto',
@@ -664,7 +655,6 @@
             document.getElementById('res-falta-vender').innerText = `$${faltaPorVender.toFixed(2)}`;
             document.getElementById('res-deudas').innerText = `$${deudasPendientes.toFixed(2)}`;
 
-            // Caja
             let entradas = neg.finanzas.filter(f => f.tipo === 'ingreso').reduce((acc, f) => acc + f.monto, 0);
             let salidas = neg.finanzas.filter(f => f.tipo === 'empleado' || f.tipo === 'gasto').reduce((acc, f) => acc + f.monto, 0);
             let caja = capitalInicial + entradas - salidas;
@@ -675,6 +665,77 @@
             renderFinanzas();
             renderDeudas();
             renderVentas();
+        }
+
+        // Generar Reporte PDF Completo para WPS Office
+        function generarReportePDF() {
+            const neg = obtenerNegocio();
+            const capitalInicial = neg.capitalInicial || 0;
+            const invertidoProd = neg.inventario.reduce((acc, p) => acc + p.inversionTotal, 0);
+            const ventasTotales = neg.ventas.reduce((acc, v) => acc + v.total, 0);
+            const gananciaNeta = neg.ventas.reduce((acc, v) => acc + v.ganancia, 0);
+            const faltaPorVender = neg.inventario.reduce((acc, p) => acc + (p.venta * p.stock), 0);
+            const deudasPendientes = (neg.deudas || []).reduce((acc, d) => acc + d.pendiente, 0);
+
+            const contenidoHtml = `
+                <html>
+                <head>
+                    <meta charset="utf-8">
+                    <title>Reporte Ejecutivo - ${neg.nombre}</title>
+                    <style>
+                        body { font-family: Arial, sans-serif; padding: 20px; color: #333; line-height: 1.4; }
+                        h1 { color: #1e3a8a; border-bottom: 2px solid #1e3a8a; padding-bottom: 5px; font-size: 20px; }
+                        h3 { color: #334155; margin-top: 20px; font-size: 14px; border-left: 4px solid #2563eb; padding-left: 6px; }
+                        table { width: 100%; border-collapse: collapse; margin-top: 8px; margin-bottom: 12px; }
+                        th, td { border: 1px solid #cbd5e1; padding: 6px; font-size: 11px; text-align: left; }
+                        th { background-color: #f1f5f9; color: #1e293b; }
+                        .summary-box { background: #f8fafc; border: 1px solid #e2e8f0; padding: 12px; border-radius: 6px; margin-top: 10px; }
+                        .summary-box p { margin: 4px 0; font-size: 12px; }
+                    </style>
+                </head>
+                <body>
+                    <h1>Reporte Ejecutivo: ${neg.nombre}</h1>
+                    <p style="font-size: 11px; color: #64748b;">Fecha de emisión: ${new Date().toLocaleString()}</p>
+                    
+                    <div class="summary-box">
+                        <p><b>Capital Inicial:</b> $${capitalInicial.toFixed(2)}</p>
+                        <p><b>Invertido en Productos:</b> $${invertidoProd.toFixed(2)}</p>
+                        <p><b>Ventas Totales:</b> $${ventasTotales.toFixed(2)}</p>
+                        <p><b>Ganancia Neta:</b> $${gananciaNeta.toFixed(2)}</p>
+                        <p><b>Falta por Vender:</b> $${faltaPorVender.toFixed(2)}</p>
+                        <p><b>Deudas Pendientes (Fiados):</b> $${deudasPendientes.toFixed(2)}</p>
+                    </div>
+
+                    <h3>Inventario Actual</h3>
+                    <table>
+                        <tr><th>Producto</th><th>Compra</th><th>Venta</th><th>Stock</th><th>Inversión Tot.</th></tr>
+                        ${neg.inventario.length > 0 ? neg.inventario.map(p => `<tr><td>${p.nombre}</td><td>$${p.compra.toFixed(2)}</td><td>$${p.venta.toFixed(2)}</td><td>${p.stock}</td><td>$${p.inversionTotal.toFixed(2)}</td></tr>`).join('') : '<tr><td colspan="5" style="text-align:center;">Sin productos registrados</td></tr>'}
+                    </table>
+
+                    <h3>Ventas Recientes</h3>
+                    <table>
+                        <tr><th>Producto</th><th>Cant</th><th>Total</th><th>Ganancia</th><th>Tipo</th><th>Hora</th></tr>
+                        ${neg.ventas.length > 0 ? neg.ventas.map(v => `<tr><td>${v.nombre}</td><td>${v.cantidad}</td><td>$${v.total.toFixed(2)}</td><td>$${v.ganancia.toFixed(2)}</td><td>${v.tipo}</td><td>${v.fecha}</td></tr>`).join('') : '<tr><td colspan="6" style="text-align:center;">Sin ventas registradas</td></tr>'}
+                    </table>
+
+                    <h3>Deudas y Fiados Pendientes</h3>
+                    <table>
+                        <tr><th>Cliente</th><th>Producto</th><th>Cant</th><th>Total</th><th>Abonado</th><th>Pendiente</th></tr>
+                        ${neg.deudas && neg.deudas.length > 0 ? neg.deudas.map(d => `<tr><td>${d.cliente}</td><td>${d.producto}</td><td>${d.cantidad}</td><td>$${d.total.toFixed(2)}</td><td>$${d.abonado.toFixed(2)}</td><td>$${d.pendiente.toFixed(2)}</td></tr>`).join('') : '<tr><td colspan="6" style="text-align:center;">Sin deudas pendientes</td></tr>'}
+                    </table>
+                </body>
+                </html>
+            `;
+
+            const blob = new Blob([contenidoHtml], { type: 'text/html' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `Reporte_${neg.nombre.replace(/\s+/g, '_')}_${new Date().toISOString().slice(0,10)}.html`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            alert('¡Reporte generado con éxito! Ábrelo con WPS Office para visualizarlo o guardarlo como PDF.');
         }
 
         // Modo Pro con AdMob y Temporizador de 12 Horas
@@ -722,18 +783,6 @@
                     alert('¡Socio conectado con éxito!');
                 }
             } catch(e) { alert('Código inválido.'); }
-        }
-
-        function generarReportePDF() {
-            const neg = obtenerNegocio();
-            const contenidoHtml = `<html><body><h1>Reporte: ${neg.nombre}</h1><p>Fecha: ${new Date().toLocaleString()}</p></body></html>`;
-            const blob = new Blob([contenidoHtml], { type: 'application/html' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `Reporte_${neg.nombre}.html`;
-            a.click();
-            alert('Reporte generado para WPS Office.');
         }
 
         function exportarRespaldo() {

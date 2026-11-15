@@ -1,6 +1,30 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+    <script>
+    // 1. Forzar almacenamiento local para saltar cualquier validación de anuncios o pagos
+    localStorage.setItem('gestorpro_modo_pro', 'true');
+    localStorage.setItem('isPro', 'true');
+    localStorage.setItem('modoPro', 'true');
+    localStorage.setItem('ads_removed', 'true');
+    localStorage.setItem('pro_version', 'true');
+    localStorage.setItem('videoVisto', 'true');
+
+    // 2. Sobrescribir funciones internas de anuncios o videos para que pasen automáticamente
+    window.esPro = true;
+    window.modoProActivo = true;
+    window.verificarPro = function() { return true; };
+    window.esUsuarioPro = function() { return true; };
+    window.mostrarAnuncio = function() { };
+    window.verVideoPremio = function(callback) { if(callback) callback(); };
+</script>
+<style>
+    /* 3. Ocultar de forma invisible cualquier botón o banner de videos o anuncios */
+    .ver-video-btn, .ad-banner, .rewarded-ad, [id*="video"], [class*="anuncio"] {
+        display: none !important;
+    }
+</style>
+    
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GestorPro - Control de Negocio</title>

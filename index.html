@@ -21,12 +21,12 @@
             <div class="text-center space-y-2">
                 <span class="text-3xl">🚀</span>
                 <h2 class="text-lg font-bold text-slate-800">Bienvenido a GestorPro</h2>
-                <p class="text-xs text-slate-500">Gestión total de inventario, ventas, fiados, capital, deudas y múltiples negocios desde tu móvil.</p>
+                <p class="text-xs text-slate-500">Gestión total con control de stock, abonos parciales, tasa multidivisa y WhatsApp.</p>
             </div>
             <div class="space-y-2 text-xs text-slate-600 bg-slate-50 p-3 rounded-xl border border-slate-200">
-                <p>📊 <b>Resumen Financiero:</b> Inversión, ventas, ganancias y deudas.</p>
-                <p>📦 <b>Inventario & Costos:</b> Precios de compra, venta y gastos extra.</p>
-                <p>🤝 <b>Ventas & Fiados:</b> Controla créditos y abonos de clientes.</p>
+                <p>📊 <b>Resumen & Tasa:</b> Capital, ganancias y conversión multidivisa.</p>
+                <p>📦 <b>Inventario & Alertas:</b> Alertas visuales de stock crítico.</p>
+                <p>🤝 <b>Ventas & Abonos:</b> Créditos con pagos parciales y WhatsApp.</p>
                 <p>⭐ <b>Modo Pro:</b> Desbloquea multinegocios, socios y sin anuncios por 12 horas.</p>
             </div>
             <button type="button" onclick="cerrarOnboarding()" class="w-full bg-blue-600 text-white font-medium py-2.5 rounded-xl text-sm hover:bg-blue-700 transition shadow-md">Comenzar a Usar</button>
@@ -93,6 +93,8 @@
                         <p id="res-deudas" class="text-sm font-bold text-red-300">$0.00</p>
                     </div>
                 </div>
+                <!-- Información Multidivisa -->
+                <div id="res-tasa-info" class="text-[11px] text-blue-200 pt-2 border-t border-white/20 hidden"></div>
             </div>
 
             <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-100 space-y-2">
@@ -196,6 +198,10 @@
                             <input type="text" id="fiado-cliente" class="w-full p-2 text-xs border rounded-lg bg-white" placeholder="Ej. Carlos Pérez">
                         </div>
                         <div>
+                            <label class="block text-xs font-medium text-slate-700 mb-1">Teléfono del Cliente (Para WhatsApp)</label>
+                            <input type="text" id="fiado-telefono" class="w-full p-2 text-xs border rounded-lg bg-white" placeholder="Ej. 584121234567">
+                        </div>
+                        <div>
                             <label class="block text-xs font-medium text-slate-700 mb-1">Abono Inicial ($)</label>
                             <input type="number" step="0.01" id="fiado-abono" value="0" class="w-full p-2 text-xs border rounded-lg bg-white" placeholder="0.00">
                         </div>
@@ -206,7 +212,7 @@
             </div>
 
             <div>
-                <h2 class="text-md font-semibold text-slate-700 mb-2">Deudas y Fiados Pendientes</h2>
+                <h2 class="text-md font-semibold text-slate-700 mb-2">Deudas y Fiados Pendientes (Con Abonos Parciales)</h2>
                 <div id="lista-deudas" class="space-y-2"></div>
             </div>
 
@@ -262,6 +268,16 @@
 
         <!-- Pestaña 5: Ajustes y Modo Pro -->
         <section id="tab-ajustes" class="space-y-4 hidden">
+            <!-- Configuración Multidivisa / Tasa -->
+            <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-100 space-y-2">
+                <h2 class="text-md font-semibold text-slate-700">💱 Tasa de Cambio (Multidivisa)</h2>
+                <p class="text-xs text-slate-500">Configura el factor de cambio para visualizar equivalencias en tu moneda local.</p>
+                <div class="flex gap-2">
+                    <input type="number" step="0.01" id="input-tasa-cambio" class="flex-1 p-2 text-xs border rounded-lg" placeholder="Ej. 36.50 (1 USD = X Moneda)">
+                    <button type="button" onclick="guardarTasaCambio()" class="bg-blue-600 text-white px-3 py-2 rounded-lg text-xs font-medium hover:bg-blue-700 transition">Guardar</button>
+                </div>
+            </div>
+
             <div class="bg-blue-50 border border-blue-200 p-4 rounded-xl space-y-2 text-xs text-blue-900">
                 <p class="font-bold text-sm text-blue-950">✨ Beneficios del Modo Pro (por 12 Horas):</p>
                 <div class="space-y-1">
@@ -412,17 +428,18 @@
         }
 
         let negocios = JSON.parse(localStorage.getItem('multinegocios')) || [
-            { id: 1, nombre: 'Mi Negocio Principal', capitalInicial: 0, inventario: [], ventas: [], deudas: [], finanzas: [], syncCode: localStorage.getItem('gestorpro_sync_code') || ('dispositivo_' + Math.random().toString(36).substring(2, 10)) }
+            { id: 1, nombre: 'Mi Negocio Principal', capitalInicial: 0, tasaCambio: 1.0, inventario: [], ventas: [], deudas: [], finanzas: [], syncCode: localStorage.getItem('gestorpro_sync_code') || ('dispositivo_' + Math.random().toString(36).substring(2, 10)) }
         ];
 
         const defaultSync = localStorage.getItem('gestorpro_sync_code') || ('dispositivo_' + Math.random().toString(36).substring(2, 10));
         negocios.forEach(n => {
             if(!n.syncCode) n.syncCode = defaultSync;
+            if(n.tasaCambio === undefined) n.tasaCambio = 1.0;
         });
 
         let negocioActualId = parseInt(localStorage.getItem('negocioActualId')) || negocios[0].id;
         let onboardingVisto = localStorage.getItem('onboardingVisto') === 'true';
-        let editandoProductoId = null; // Variable para controlar si estamos editando un producto
+        let editandoProductoId = null;
 
         if (!onboardingVisto) {
             document.getElementById('modal-onboarding').classList.remove('hidden');
@@ -441,6 +458,7 @@
             let neg = negocios.find(n => n.id === negocioActualId);
             if (!neg) { negocioActualId = negocios[0].id; neg = negocios[0]; }
             if (neg.capitalInicial === undefined) neg.capitalInicial = 0;
+            if (neg.tasaCambio === undefined) neg.tasaCambio = 1.0;
             if (!neg.deudas) neg.deudas = [];
             if (!neg.inventario) neg.inventario = [];
             if (!neg.ventas) neg.ventas = [];
@@ -498,6 +516,15 @@
             localStorage.setItem('proExpira', tiempoExpiracion);
             verificarEstadoPro();
             alert('¡Modo Pro activado con éxito por 12 horas!');
+        }
+
+        function guardarTasaCambio() {
+            const neg = obtenerNegocio();
+            const tasa = parseFloat(document.getElementById('input-tasa-cambio').value);
+            if(isNaN(tasa) || tasa <= 0) return alert('Ingresa una tasa de cambio válida.');
+            neg.tasaCambio = tasa;
+            persistir();
+            alert(`¡Tasa de cambio guardada: 1 USD = ${tasa}!`);
         }
 
         function mostrarCodigoQR() {
@@ -643,7 +670,8 @@
             negocios.push({ 
                 id: nuevoId, 
                 nombre, 
-                capitalInicial: 0, 
+                capitalInicial: 0,
+                tasaCambio: 1.0, 
                 inventario: [], 
                 ventas: [], 
                 deudas: [], 
@@ -685,7 +713,12 @@
             if(tab === 'inventario') renderInventario();
             if(tab === 'ventas') { actualizarSelectVentas(); renderVentas(); renderDeudas(); }
             if(tab === 'finanzas') renderFinanzas();
-            if(tab === 'ajustes') verificarEstadoPro();
+            if(tab === 'ajustes') {
+                verificarEstadoPro();
+                const neg = obtenerNegocio();
+                const inputTasa = document.getElementById('input-tasa-cambio');
+                if(inputTasa) inputTasa.value = neg.tasaCambio || 1.0;
+            }
         }
 
         function agregarCampoGastoExtra(nombre = '', monto = '') {
@@ -734,7 +767,6 @@
             alert('¡Capital inicial guardado con éxito!');
         }
 
-        // --- FUNCIONES DE EDICIÓN DE PRODUCTOS ---
         function prepararEdicionProducto(id) {
             const neg = obtenerNegocio();
             const prod = neg.inventario.find(p => p.id === id);
@@ -808,7 +840,6 @@
             const inversionTotal = (compra * stock) + totalExtras;
 
             if (editandoProductoId !== null) {
-                // Actualizar producto existente
                 const prod = neg.inventario.find(p => p.id === editandoProductoId);
                 if (prod) {
                     prod.nombre = nombre;
@@ -823,7 +854,6 @@
                 renderInventario();
                 alert('¡Producto actualizado con éxito!');
             } else {
-                // Crear nuevo producto
                 neg.inventario.push({ id: Date.now(), nombre, compra, venta, stock, gastosExtras, inversionTotal });
                 
                 neg.finanzas.unshift({
@@ -845,13 +875,13 @@
             }
         });
 
-        // --- RENDERIZAR E INVENTARIO CON FILTRO DE BÚSQUEDA ---
         function renderInventario() {
             const inputBuscar = document.getElementById('buscar-inventario');
             const filtro = inputBuscar ? inputBuscar.value : '';
             filtrarInventario(filtro);
         }
 
+        // --- MEJORA #2: ALERTA VISUAL DE STOCK CRÍTICO (<= 2 unidades) ---
         function filtrarInventario(filtro) {
             const neg = obtenerNegocio();
             const contenedor = document.getElementById('lista-inventario');
@@ -866,18 +896,25 @@
                 return;
             }
 
-            contenedor.innerHTML = filtrados.map(prod => `
-                <div class="bg-white p-3 rounded-lg shadow-sm border border-slate-100 flex justify-between items-center">
-                    <div>
-                        <h3 class="text-sm font-semibold text-slate-700">${prod.nombre} (Stock: ${prod.stock})</h3>
-                        <p class="text-xs text-slate-500">Compra: $${prod.compra.toFixed(2)} | Venta: $${prod.venta.toFixed(2)} | Inv. Tot: $${prod.inversionTotal.toFixed(2)}</p>
+            contenedor.innerHTML = filtrados.map(prod => {
+                let badgeStock = '';
+                if(prod.stock <= 2) {
+                    badgeStock = `<span class="bg-red-100 text-red-600 font-bold px-1.5 py-0.5 rounded text-[10px] ml-1">⚠️ Stock Crítico</span>`;
+                }
+
+                return `
+                    <div class="bg-white p-3 rounded-lg shadow-sm border border-slate-100 flex justify-between items-center">
+                        <div>
+                            <h3 class="text-sm font-semibold text-slate-700">${prod.nombre} (Stock: ${prod.stock})${badgeStock}</h3>
+                            <p class="text-xs text-slate-500">Compra: $${prod.compra.toFixed(2)} | Venta: $${prod.venta.toFixed(2)} | Inv. Tot: $${prod.inversionTotal.toFixed(2)}</p>
+                        </div>
+                        <div class="flex gap-1">
+                            <button type="button" onclick="prepararEdicionProducto(${prod.id})" class="text-blue-600 text-xs bg-blue-50 px-2.5 py-1.5 rounded-md hover:bg-blue-100">Editar</button>
+                            <button type="button" onclick="eliminarProducto(${prod.id})" class="text-red-500 text-xs bg-red-50 px-2.5 py-1.5 rounded-md hover:bg-red-100">Eliminar</button>
+                        </div>
                     </div>
-                    <div class="flex gap-1">
-                        <button type="button" onclick="prepararEdicionProducto(${prod.id})" class="text-blue-600 text-xs bg-blue-50 px-2.5 py-1.5 rounded-md hover:bg-blue-100">Editar</button>
-                        <button type="button" onclick="eliminarProducto(${prod.id})" class="text-red-500 text-xs bg-red-50 px-2.5 py-1.5 rounded-md hover:bg-red-100">Eliminar</button>
-                    </div>
-                </div>
-            `).join('');
+                `;
+            }).join('');
         }
 
         function eliminarProducto(id) {
@@ -919,59 +956,97 @@
             const gananciaReal = totalVenta - costoProporcional;
 
             if (tipo === 'contado') {
-                neg.ventas.unshift({
+                const ventaObj = {
                     id: Date.now(), nombre: producto.nombre, cantidad, total: totalVenta, ganancia: gananciaReal, tipo: 'Contado', fecha: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-                });
+                };
+                neg.ventas.unshift(ventaObj);
                 neg.finanzas.unshift({
                     id: Date.now(), tipo: 'ingreso', monto: totalVenta, desc: `Venta contado: ${producto.nombre} (x${cantidad})`, fecha: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
                 });
+
+                persistir();
+                e.target.reset();
+                renderVentas();
+                alert('¡Operación registrada con éxito!');
             } else {
                 const cliente = document.getElementById('fiado-cliente').value.trim() || 'Cliente General';
+                const telefono = document.getElementById('fiado-telefono').value.trim() || '';
                 const abono = parseFloat(document.getElementById('fiado-abono').value) || 0;
                 const saldoPendiente = totalVenta - abono;
 
-                neg.deudas.unshift({
-                    id: Date.now(), cliente, producto: producto.nombre, cantidad, total: totalVenta, abonado: abono, pendiente: saldoPendiente, fecha: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-                });
+                const deudaObj = {
+                    id: Date.now(), cliente, telefono, producto: producto.nombre, cantidad, total: totalVenta, abonado: abono, pendiente: saldoPendiente, fecha: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+                };
+                neg.deudas.unshift(deudaObj);
 
                 if(abono > 0) {
                     neg.finanzas.unshift({
                         id: Date.now(), tipo: 'ingreso', monto: abono, desc: `Abono fiado (${cliente}) - ${producto.nombre}`, fecha: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
                     });
                 }
-            }
 
-            persistir();
-            e.target.reset();
-            const camposFiado = document.getElementById('campos-fiado');
-            if(camposFiado) camposFiado.classList.add('hidden');
-            renderVentas();
-            renderDeudas();
-            alert('¡Operación registrada con éxito!');
+                persistir();
+                e.target.reset();
+                const camposFiado = document.getElementById('campos-fiado');
+                if(camposFiado) camposFiado.classList.add('hidden');
+                renderVentas();
+                renderDeudas();
+
+                // MEJORA #1: WhatsApp al crear fiado
+                if(telefono && confirm('¿Deseas enviar el comprobante de este fiado por WhatsApp al cliente?')) {
+                    enviarWhatsAppFiado(deudaObj);
+                } else {
+                    alert('¡Operación registrada con éxito!');
+                }
+            }
         });
 
-        function pagarDeuda(id) {
+        function enviarWhatsAppFiado(deuda) {
+            let tel = deuda.telefono.replace(/\D/g, '');
+            let mensaje = `*📦 COMPROBANTE DE CRÉDITO / FIADO*\n\n` +
+                          `Hola *${deuda.cliente}*, tienes un registro pendiente:\n\n` +
+                          `• *Producto:* ${deuda.producto} (x${deuda.cantidad})\n` +
+                          `• *Total Compra:* $${deuda.total.toFixed(2)}\n` +
+                          `• *Abonado:* $${deuda.abonado.toFixed(2)}\n` +
+                          `• 🔴 *Saldo Pendiente:* $${deuda.pendiente.toFixed(2)}\n\n` +
+                          `¡Gracias por tu preferencia! - GestorPro`;
+            
+            let url = `https://api.whatsapp.com/send?phone=${tel}&text=${encodeURIComponent(mensaje)}`;
+            window.open(url, '_blank');
+        }
+
+        // --- MEJORA #3: ABONOS PARCIALES ACUMULATIVOS EN DEUDAS ---
+        function abonarDeuda(id) {
             const neg = obtenerNegocio();
             const deuda = neg.deudas.find(d => d.id === id);
             if(!deuda) return;
 
-            let pagoRestante = deuda.pendiente;
-            deuda.abonado += pagoRestante;
-            deuda.pendiente = 0;
+            let montoStr = prompt(`Deuda pendiente de ${deuda.cliente}: $${deuda.pendiente.toFixed(2)}\nIngresa el monto del abono ($):`, deuda.pendiente);
+            if(montoStr === null) return;
+            let montoAbono = parseFloat(montoStr);
+            if(isNaN(montoAbono) || montoAbono <= 0) return alert('Monto inválido.');
+            if(montoAbono > deuda.pendiente) montoAbono = deuda.pendiente;
+
+            deuda.abonado += montoAbono;
+            deuda.pendiente -= montoAbono;
 
             neg.finanzas.unshift({
-                id: Date.now(), tipo: 'ingreso', monto: pagoRestante, desc: `Pago total deuda (${deuda.cliente})`, fecha: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+                id: Date.now(), tipo: 'ingreso', monto: montoAbono, desc: `Abono fiado (${deuda.cliente}) - ${deuda.producto}`, fecha: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
             });
 
-            neg.ventas.unshift({
-                id: Date.now(), nombre: deuda.producto, cantidad: deuda.cantidad, total: deuda.total, ganancia: deuda.total * 0.3, tipo: 'Fiado Pagado', fecha: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-            });
+            if(deuda.pendiente <= 0) {
+                neg.ventas.unshift({
+                    id: Date.now(), nombre: deuda.producto, cantidad: deuda.cantidad, total: deuda.total, ganancia: deuda.total * 0.3, tipo: 'Fiado Pagado', fecha: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+                });
+                neg.deudas = neg.deudas.filter(d => d.id !== id);
+                alert('¡Deuda totalmente saldada y marcada como pagada con éxito!');
+            } else {
+                alert(`¡Abono de $${montoAbono.toFixed(2)} registrado con éxito! Quedan pendientes $${deuda.pendiente.toFixed(2)}.`);
+            }
 
-            neg.deudas = neg.deudas.filter(d => d.id !== id);
             persistir();
             renderDeudas();
             renderVentas();
-            alert('¡Deuda marcada como pagada con éxito!');
         }
 
         function renderDeudas() {
@@ -983,12 +1058,17 @@
                 return;
             }
             contenedor.innerHTML = neg.deudas.map(d => `
-                <div class="bg-amber-50 p-3 rounded-lg border border-amber-200 flex justify-between items-center">
-                    <div>
-                        <h3 class="text-xs font-bold text-amber-900">${d.cliente} - ${d.producto} (x${d.cantidad})</h3>
-                        <p class="text-[10px] text-amber-700">Total: $${d.total.toFixed(2)} | Abonado: $${d.abonado.toFixed(2)} | <span class="font-bold text-red-600">Pendiente: $${d.pendiente.toFixed(2)}</span></p>
+                <div class="bg-amber-50 p-3 rounded-lg border border-amber-200 space-y-2">
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <h3 class="text-xs font-bold text-amber-900">${d.cliente} - ${d.producto} (x${d.cantidad})</h3>
+                            <p class="text-[10px] text-amber-700">Total: $${d.total.toFixed(2)} | Abonado: $${d.abonado.toFixed(2)} | <span class="font-bold text-red-600">Pendiente: $${d.pendiente.toFixed(2)}</span></p>
+                        </div>
+                        <div class="flex gap-1">
+                            ${d.telefono ? `<button type="button" onclick="enviarWhatsAppFiado(${JSON.stringify(d).replace(/"/g, '&quot;')})" class="bg-emerald-500 text-white px-2 py-1.5 rounded text-[10px] font-semibold hover:bg-emerald-600">📱 WhatsApp</button>` : ''}
+                            <button type="button" onclick="abonarDeuda(${d.id})" class="bg-emerald-600 text-white px-2.5 py-1.5 rounded text-[10px] font-semibold hover:bg-emerald-700">💵 Abonar / Pagar</button>
+                        </div>
                     </div>
-                    <button type="button" onclick="pagarDeuda(${d.id})" class="bg-emerald-600 text-white px-2.5 py-1.5 rounded text-[10px] font-semibold hover:bg-emerald-700">Marcar Pagada</button>
                 </div>
             `).join('');
         }
@@ -1056,10 +1136,12 @@
             }).join('');
         }
 
+        // --- MEJORA #4: SOPORTE MULTIDIVISA / TASA DE CAMBIO EN RESUMEN ---
         function actualizarResumenGeneral() {
             const neg = obtenerNegocio();
             
             const capitalInicial = neg.capitalInicial || 0;
+            const tasa = neg.tasaCambio || 1.0;
             const invertidoProd = (neg.inventario || []).reduce((acc, p) => acc + (p.inversionTotal || 0), 0);
             const ventasTotales = (neg.ventas || []).reduce((acc, v) => acc + (v.total || 0), 0);
             const gananciaNeta = (neg.ventas || []).reduce((acc, v) => acc + (v.ganancia || 0), 0);
@@ -1087,6 +1169,17 @@
             if(elEnt) elEnt.innerText = `$${entradas.toFixed(2)}`;
             const elCaj = document.getElementById('stat-caja');
             if(elCaj) elCaj.innerText = `$${caja.toFixed(2)}`;
+
+            // Mostrar equivalente en Moneda Local si hay tasa configurada
+            const elTasaInfo = document.getElementById('res-tasa-info');
+            if(elTasaInfo) {
+                if(tasa > 1.0) {
+                    elTasaInfo.innerHTML = `💱 <b>Tasa Activa (1 USD = ${tasa}):</b><br>• Ventas Totales: ${(ventasTotales * tasa).toFixed(2)} Local<br>• Dinero en Caja: ${(caja * tasa).toFixed(2)} Local`;
+                    elTasaInfo.classList.remove('hidden');
+                } else {
+                    elTasaInfo.classList.add('hidden');
+                }
+            }
         }
 
         function generarReportePDF() {

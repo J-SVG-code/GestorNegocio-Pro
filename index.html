@@ -6,27 +6,34 @@
     <title>GestorPro - Control de Negocio</title>
     <!-- Enlace PWA Web Manifest -->
     <link rel="manifest" href="./manifest.json">
-    <!-- Tailwind CSS CDN -->
+    <!-- Tailwind CSS CDN con soporte Dark Mode -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class'
+        }
+    </script>
     <!-- Librería para Escanear Códigos QR -->
     <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+    <!-- Chart.js CDN para Gráficos Estadísticos -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <!-- Google AdMob Script -->
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-app-pub-3645077961178424~5519013340" crossorigin="anonymous"></script>
 </head>
-<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col">
+<body class="bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-100 min-h-screen flex flex-col transition-colors duration-200">
 
     <!-- Pantalla de Bienvenida / Onboarding -->
     <div id="modal-onboarding" class="fixed inset-0 bg-slate-900/80 z-50 flex items-center justify-center p-4 hidden">
-        <div class="bg-white rounded-2xl max-w-sm w-full p-6 space-y-4 shadow-2xl">
+        <div class="bg-white dark:bg-slate-900 rounded-2xl max-w-sm w-full p-6 space-y-4 shadow-2xl border border-slate-200 dark:border-slate-800">
             <div class="text-center space-y-2">
                 <span class="text-3xl">🚀</span>
-                <h2 class="text-lg font-bold text-slate-800">Bienvenido a GestorPro</h2>
-                <p class="text-xs text-slate-500">Gestión total con control de stock, abonos parciales, tasa multidivisa y WhatsApp.</p>
+                <h2 class="text-lg font-bold text-slate-800 dark:text-white">Bienvenido a GestorPro</h2>
+                <p class="text-xs text-slate-500 dark:text-slate-400">Gestión total con gráficos, tickets, copias de seguridad, multidivisa y WhatsApp.</p>
             </div>
-            <div class="space-y-2 text-xs text-slate-600 bg-slate-50 p-3 rounded-xl border border-slate-200">
-                <p>📊 <b>Resumen & Tasa:</b> Capital, ganancias y conversión multidivisa.</p>
-                <p>📦 <b>Inventario & Alertas:</b> Alertas visuales de stock crítico.</p>
-                <p>🤝 <b>Ventas & Abonos:</b> Créditos con pagos parciales y WhatsApp.</p>
+            <div class="space-y-2 text-xs text-slate-600 dark:text-slate-300 bg-slate-50 dark:bg-slate-800/60 p-3 rounded-xl border border-slate-200 dark:border-slate-700">
+                <p>📊 <b>Resumen & Gráficos:</b> Capital, ganancias, gráficas y conversión multidivisa.</p>
+                <p>📦 <b>Inventario & Alertas:</b> Alertas visuales de stock crítico y gastos adicionales.</p>
+                <p>🤝 <b>Ventas, Tickets & Abonos:</b> Créditos con abonos, tickets imprimibles y WhatsApp.</p>
                 <p>⭐ <b>Modo Pro:</b> Desbloquea multinegocios, socios y sin anuncios por 12 horas.</p>
             </div>
             <button type="button" onclick="cerrarOnboarding()" class="w-full bg-blue-600 text-white font-medium py-2.5 rounded-xl text-sm hover:bg-blue-700 transition shadow-md">Comenzar a Usar</button>
@@ -35,26 +42,47 @@
 
     <!-- Modal de Escáner QR -->
     <div id="modal-escaner" class="fixed inset-0 bg-slate-900/90 z-50 flex flex-col items-center justify-center p-4 hidden">
-        <div class="bg-white rounded-2xl max-w-sm w-full p-4 space-y-3 shadow-2xl">
+        <div class="bg-white dark:bg-slate-900 rounded-2xl max-w-sm w-full p-4 space-y-3 shadow-2xl border border-slate-200 dark:border-slate-800">
             <div class="flex justify-between items-center">
-                <h3 class="text-sm font-bold text-slate-800">📷 Escanear Código QR de Socio</h3>
+                <h3 class="text-sm font-bold text-slate-800 dark:text-white">📷 Escanear Código QR de Socio</h3>
                 <button type="button" onclick="cerrarEscanerQR()" class="text-red-500 font-bold text-sm px-2">✕ Cerrar</button>
             </div>
-            <div id="reader" class="w-full rounded-lg overflow-hidden bg-slate-100"></div>
-            <p class="text-[10px] text-slate-500 text-center">Apunta la cámara al código QR que aparece en el otro teléfono.</p>
+            <div id="reader" class="w-full rounded-lg overflow-hidden bg-slate-100 dark:bg-slate-800"></div>
+            <p class="text-[10px] text-slate-500 dark:text-slate-400 text-center">Apunta la cámara al código QR que aparece en el otro teléfono.</p>
+        </div>
+    </div>
+
+    <!-- Modal de Vista Previa e Impresión de Ticket (Mejora #1) -->
+    <div id="modal-ticket" class="fixed inset-0 bg-slate-900/80 z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white dark:bg-slate-900 rounded-2xl max-w-xs w-full p-4 space-y-3 shadow-2xl border border-slate-200 dark:border-slate-800">
+            <div class="flex justify-between items-center border-b border-slate-200 dark:border-slate-700 pb-2">
+                <h3 class="text-sm font-bold text-slate-800 dark:text-white">🧾 Ticket de Comprobante</h3>
+                <button type="button" onclick="cerrarModalTicket()" class="text-red-500 font-bold text-sm px-2">✕</button>
+            </div>
+            <div id="ticket-contenido-visual" class="bg-amber-50/70 text-slate-900 p-3 rounded-lg font-mono text-[11px] leading-tight border border-dashed border-slate-400 space-y-1">
+                <!-- Se llena dinámicamente -->
+            </div>
+            <div class="grid grid-cols-2 gap-2 pt-1">
+                <button type="button" onclick="imprimirTicketTermico()" class="bg-slate-800 dark:bg-slate-700 text-white font-semibold py-2 rounded-lg text-xs hover:bg-slate-900 transition">🖨️ Imprimir / BT</button>
+                <button type="button" onclick="descargarTicketImagen()" class="bg-blue-600 text-white font-semibold py-2 rounded-lg text-xs hover:bg-blue-700 transition">📥 Guardar PNG</button>
+            </div>
         </div>
     </div>
 
     <!-- Encabezado -->
-    <header class="bg-blue-600 text-white p-4 shadow-md sticky top-0 z-40">
+    <header class="bg-blue-600 dark:bg-blue-900 text-white p-4 shadow-md sticky top-0 z-40 transition-colors">
         <div class="max-w-md mx-auto flex justify-between items-center">
             <div>
                 <h1 class="text-sm font-bold">📦 GestorPro</h1>
-                <select id="select-negocio-activo" onchange="cambiarNegocioActivo(this.value)" class="text-xs bg-blue-700 text-white font-medium px-2 py-0.5 rounded mt-0.5 outline-none border border-blue-500">
+                <select id="select-negocio-activo" onchange="cambiarNegocioActivo(this.value)" class="text-xs bg-blue-700 dark:bg-blue-950 text-white font-medium px-2 py-0.5 rounded mt-0.5 outline-none border border-blue-500 dark:border-blue-800">
                     <!-- Dinámico -->
                 </select>
             </div>
-            <button type="button" onclick="abrirOnboarding()" class="text-xs bg-blue-500 hover:bg-blue-700 px-2.5 py-1 rounded-lg transition">❓ Guía</button>
+            <div class="flex items-center gap-1.5">
+                <!-- Mejora #3: Botón Modo Oscuro -->
+                <button type="button" onclick="toggleDarkMode()" id="btn-dark-mode" title="Cambiar Tema" class="text-xs bg-blue-500 dark:bg-blue-800 hover:bg-blue-700 px-2.5 py-1 rounded-lg transition">🌙</button>
+                <button type="button" onclick="abrirOnboarding()" class="text-xs bg-blue-500 dark:bg-blue-800 hover:bg-blue-700 px-2.5 py-1 rounded-lg transition">❓ Guía</button>
+            </div>
         </div>
     </header>
 
@@ -63,7 +91,7 @@
         
         <!-- Pestaña 1: Resumen -->
         <section id="tab-resumen" class="space-y-4">
-            <div class="bg-gradient-to-br from-blue-600 to-indigo-700 text-white p-4 rounded-xl shadow-md space-y-3">
+            <div class="bg-gradient-to-br from-blue-600 to-indigo-700 dark:from-blue-800 dark:to-indigo-950 text-white p-4 rounded-xl shadow-md space-y-3">
                 <h2 class="text-sm font-bold">📊 Resumen General del Negocio</h2>
                 <div class="grid grid-cols-2 gap-2 text-xs">
                     <div class="bg-white/10 p-2.5 rounded-lg">
@@ -97,9 +125,23 @@
                 <div id="res-tasa-info" class="text-[11px] text-blue-200 pt-2 border-t border-white/20 hidden"></div>
             </div>
 
-            <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-100 space-y-2">
-                <h3 class="text-sm font-semibold text-slate-700">Reportes Ejecutivos (Función Pro)</h3>
-                <p class="text-xs text-slate-500">Genera y descarga un informe completo listo para WPS Office. <span class="text-amber-600 font-medium">Requiere Modo Pro activo.</span></p>
+            <!-- Mejora #5: Gráficos Estadísticos Visuales -->
+            <div class="bg-white dark:bg-slate-900 p-4 rounded-xl shadow-sm border border-slate-100 dark:border-slate-800 space-y-3">
+                <div class="flex justify-between items-center">
+                    <h3 class="text-sm font-semibold text-slate-700 dark:text-slate-200">📈 Rendimiento Financiero</h3>
+                    <select id="select-tipo-grafico" onchange="actualizarGraficos()" class="text-[11px] bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 px-2 py-1 rounded border border-slate-200 dark:border-slate-700 outline-none">
+                        <option value="ventas">Ventas vs Ganancias</option>
+                        <option value="gastos">Distribución de Gastos</option>
+                    </select>
+                </div>
+                <div class="relative h-48 w-full">
+                    <canvas id="grafico-resumen"></canvas>
+                </div>
+            </div>
+
+            <div class="bg-white dark:bg-slate-900 p-4 rounded-xl shadow-sm border border-slate-100 dark:border-slate-800 space-y-2">
+                <h3 class="text-sm font-semibold text-slate-700 dark:text-slate-200">Reportes Ejecutivos (Función Pro)</h3>
+                <p class="text-xs text-slate-500 dark:text-slate-400">Genera y descarga un informe completo listo para WPS Office. <span class="text-amber-600 dark:text-amber-400 font-medium">Requiere Modo Pro activo.</span></p>
                 <button type="button" onclick="generarReportePDF()" class="w-full bg-red-600 text-white font-medium py-2 rounded-lg text-xs hover:bg-red-700 transition flex items-center justify-center gap-2">
                     📄 Generar Reporte PDF / WPS
                 </button>
@@ -108,49 +150,49 @@
 
         <!-- Pestaña 2: Inventario -->
         <section id="tab-inventario" class="space-y-4 hidden">
-            <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-100 space-y-2">
-                <h2 class="text-md font-semibold text-slate-700">💰 Capital Inicial del Negocio</h2>
+            <div class="bg-white dark:bg-slate-900 p-4 rounded-xl shadow-sm border border-slate-100 dark:border-slate-800 space-y-2">
+                <h2 class="text-md font-semibold text-slate-700 dark:text-slate-200">💰 Capital Inicial del Negocio</h2>
                 <div class="flex gap-2">
-                    <input type="number" step="0.01" id="input-capital-negocio" class="flex-1 p-2 text-xs border rounded-lg" placeholder="Ej. 500.00">
+                    <input type="number" step="0.01" id="input-capital-negocio" class="flex-1 p-2 text-xs border dark:border-slate-700 dark:bg-slate-800 rounded-lg outline-none" placeholder="Ej. 500.00">
                     <button type="button" onclick="guardarCapitalInicial()" class="bg-blue-600 text-white px-3 py-2 rounded-lg text-xs font-medium hover:bg-blue-700 transition">Establecer</button>
                 </div>
             </div>
 
-            <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-100">
-                <h2 class="text-md font-semibold text-slate-700 mb-3">Agregar / Editar Producto</h2>
+            <div class="bg-white dark:bg-slate-900 p-4 rounded-xl shadow-sm border border-slate-100 dark:border-slate-800">
+                <h2 class="text-md font-semibold text-slate-700 dark:text-slate-200 mb-3">Agregar / Editar Producto</h2>
                 <form id="form-producto" class="space-y-3">
                     <div>
-                        <label class="block text-xs font-medium text-slate-600 mb-1">Nombre del producto</label>
-                        <input type="text" id="prod-nombre" required class="w-full p-2.5 text-sm border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" placeholder="Ej. Harina Pan">
+                        <label class="block text-xs font-medium text-slate-600 dark:text-slate-400 mb-1">Nombre del producto</label>
+                        <input type="text" id="prod-nombre" required class="w-full p-2.5 text-sm border dark:border-slate-700 dark:bg-slate-800 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" placeholder="Ej. Harina Pan">
                     </div>
                     <div class="grid grid-cols-3 gap-2">
                         <div>
-                            <label class="block text-xs font-medium text-slate-600 mb-1">Compra ($)</label>
-                            <input type="number" step="0.01" id="prod-compra" required oninput="calcularPreviewProducto()" class="w-full p-2.5 text-xs border rounded-lg outline-none" placeholder="0.00">
+                            <label class="block text-xs font-medium text-slate-600 dark:text-slate-400 mb-1">Compra ($)</label>
+                            <input type="number" step="0.01" id="prod-compra" required oninput="calcularPreviewProducto()" class="w-full p-2.5 text-xs border dark:border-slate-700 dark:bg-slate-800 rounded-lg outline-none" placeholder="0.00">
                         </div>
                         <div>
-                            <label class="block text-xs font-medium text-slate-600 mb-1">Venta ($)</label>
-                            <input type="number" step="0.01" id="prod-venta" required oninput="calcularPreviewProducto()" class="w-full p-2.5 text-xs border rounded-lg outline-none" placeholder="0.00">
+                            <label class="block text-xs font-medium text-slate-600 dark:text-slate-400 mb-1">Venta ($)</label>
+                            <input type="number" step="0.01" id="prod-venta" required oninput="calcularPreviewProducto()" class="w-full p-2.5 text-xs border dark:border-slate-700 dark:bg-slate-800 rounded-lg outline-none" placeholder="0.00">
                         </div>
                         <div>
-                            <label class="block text-xs font-medium text-slate-600 mb-1">Cantidad</label>
-                            <input type="number" id="prod-stock" required oninput="calcularPreviewProducto()" class="w-full p-2.5 text-xs border rounded-lg outline-none" placeholder="0">
+                            <label class="block text-xs font-medium text-slate-600 dark:text-slate-400 mb-1">Cantidad</label>
+                            <input type="number" id="prod-stock" required oninput="calcularPreviewProducto()" class="w-full p-2.5 text-xs border dark:border-slate-700 dark:bg-slate-800 rounded-lg outline-none" placeholder="0">
                         </div>
                     </div>
 
-                    <div class="space-y-2 pt-2 border-t border-slate-100">
+                    <div class="space-y-2 pt-2 border-t border-slate-100 dark:border-slate-800">
                         <div class="flex justify-between items-center">
-                            <label class="text-xs font-medium text-slate-600">Gastos Adicionales (Bolsas, Transporte...)</label>
-                            <button type="button" onclick="agregarCampoGastoExtra()" class="text-xs bg-slate-100 text-blue-600 px-2 py-1 rounded font-bold hover:bg-slate-200">➕ Agregar Gasto</button>
+                            <label class="text-xs font-medium text-slate-600 dark:text-slate-400">Gastos Adicionales (Bolsas, Transporte...)</label>
+                            <button type="button" onclick="agregarCampoGastoExtra()" class="text-xs bg-slate-100 dark:bg-slate-800 text-blue-600 dark:text-blue-400 px-2 py-1 rounded font-bold hover:bg-slate-200 dark:hover:bg-slate-700">➕ Agregar Gasto</button>
                         </div>
                         <div id="contenedor-gastos-extras" class="space-y-2"></div>
                     </div>
 
-                    <div id="preview-prod-box" class="bg-slate-50 p-3 rounded-lg border border-slate-200 text-xs text-slate-600 hidden">
-                        <p class="font-medium text-slate-700 mb-1">Cálculo del Producto:</p>
-                        <div class="flex justify-between"><span>Inversión Total (Compra + Extras):</span> <span id="prev-inv" class="font-semibold text-blue-600">$0.00</span></div>
-                        <div class="flex justify-between"><span>Venta Total Estimada:</span> <span id="prev-vent" class="font-semibold text-emerald-600">$0.00</span></div>
-                        <div class="flex justify-between border-t border-slate-200 mt-1 pt-1 font-bold text-indigo-600"><span>Ganancia Estimada:</span> <span id="prev-gan">$0.00</span></div>
+                    <div id="preview-prod-box" class="bg-slate-50 dark:bg-slate-800/70 p-3 rounded-lg border border-slate-200 dark:border-slate-700 text-xs text-slate-600 dark:text-slate-300 hidden">
+                        <p class="font-medium text-slate-700 dark:text-slate-200 mb-1">Cálculo del Producto:</p>
+                        <div class="flex justify-between"><span>Inversión Total (Compra + Extras):</span> <span id="prev-inv" class="font-semibold text-blue-600 dark:text-blue-400">$0.00</span></div>
+                        <div class="flex justify-between"><span>Venta Total Estimada:</span> <span id="prev-vent" class="font-semibold text-emerald-600 dark:text-emerald-400">$0.00</span></div>
+                        <div class="flex justify-between border-t border-slate-200 dark:border-slate-700 mt-1 pt-1 font-bold text-indigo-600 dark:text-indigo-400"><span>Ganancia Estimada:</span> <span id="prev-gan">$0.00</span></div>
                     </div>
 
                     <button type="submit" id="btn-guardar-producto" class="w-full bg-blue-600 text-white font-medium py-2.5 rounded-lg text-sm hover:bg-blue-700 transition">Guardar Producto</button>
@@ -159,51 +201,51 @@
 
             <div>
                 <div class="flex justify-between items-center mb-2">
-                    <h2 class="text-md font-semibold text-slate-700">Inventario Actual</h2>
+                    <h2 class="text-md font-semibold text-slate-700 dark:text-slate-200">Inventario Actual</h2>
                 </div>
                 <!-- Buscador Instantáneo -->
-                <input type="text" id="buscar-inventario" oninput="filtrarInventario(this.value)" class="w-full p-2 mb-2 text-xs border rounded-lg bg-white outline-none" placeholder="🔍 Buscar producto por nombre...">
+                <input type="text" id="buscar-inventario" oninput="filtrarInventario(this.value)" class="w-full p-2 mb-2 text-xs border dark:border-slate-700 rounded-lg bg-white dark:bg-slate-900 outline-none" placeholder="🔍 Buscar producto por nombre...">
                 <div id="lista-inventario" class="space-y-2"></div>
             </div>
         </section>
 
         <!-- Pestaña 3: Ventas y Fiados -->
         <section id="tab-ventas" class="space-y-4 hidden">
-            <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-100">
-                <h2 class="text-md font-semibold text-slate-700 mb-3">Registrar Venta o Fiado</h2>
+            <div class="bg-white dark:bg-slate-900 p-4 rounded-xl shadow-sm border border-slate-100 dark:border-slate-800">
+                <h2 class="text-md font-semibold text-slate-700 dark:text-slate-200 mb-3">Registrar Venta o Fiado</h2>
                 <form id="form-venta" class="space-y-3">
                     <div>
-                        <label class="block text-xs font-medium text-slate-600 mb-1">Seleccionar Producto</label>
-                        <select id="venta-producto" required class="w-full p-2.5 text-sm border rounded-lg bg-white">
+                        <label class="block text-xs font-medium text-slate-600 dark:text-slate-400 mb-1">Seleccionar Producto</label>
+                        <select id="venta-producto" required class="w-full p-2.5 text-sm border dark:border-slate-700 rounded-lg bg-white dark:bg-slate-800 outline-none">
                             <option value="">-- Elige un producto --</option>
                         </select>
                     </div>
                     <div class="grid grid-cols-2 gap-2">
                         <div>
-                            <label class="block text-xs font-medium text-slate-600 mb-1">Cantidad</label>
-                            <input type="number" id="venta-cantidad" min="1" value="1" required class="w-full p-2.5 text-sm border rounded-lg">
+                            <label class="block text-xs font-medium text-slate-600 dark:text-slate-400 mb-1">Cantidad</label>
+                            <input type="number" id="venta-cantidad" min="1" value="1" required class="w-full p-2.5 text-sm border dark:border-slate-700 dark:bg-slate-800 rounded-lg outline-none">
                         </div>
                         <div>
-                            <label class="block text-xs font-medium text-slate-600 mb-1">Tipo de Venta</label>
-                            <select id="venta-tipo" onchange="toggleCamposFiado(this.value)" class="w-full p-2.5 text-sm border rounded-lg bg-white">
+                            <label class="block text-xs font-medium text-slate-600 dark:text-slate-400 mb-1">Tipo de Venta</label>
+                            <select id="venta-tipo" onchange="toggleCamposFiado(this.value)" class="w-full p-2.5 text-sm border dark:border-slate-700 rounded-lg bg-white dark:bg-slate-800 outline-none">
                                 <option value="contado">Contado</option>
                                 <option value="fiado">Fiado (Crédito)</option>
                             </select>
                         </div>
                     </div>
 
-                    <div id="campos-fiado" class="space-y-2 bg-amber-50 p-3 rounded-lg border border-amber-200 hidden">
+                    <div id="campos-fiado" class="space-y-2 bg-amber-50 dark:bg-amber-950/40 p-3 rounded-lg border border-amber-200 dark:border-amber-800/60 hidden">
                         <div>
-                            <label class="block text-xs font-medium text-slate-700 mb-1">Nombre del Cliente (Deudor)</label>
-                            <input type="text" id="fiado-cliente" class="w-full p-2 text-xs border rounded-lg bg-white" placeholder="Ej. Carlos Pérez">
+                            <label class="block text-xs font-medium text-slate-700 dark:text-amber-200 mb-1">Nombre del Cliente (Deudor)</label>
+                            <input type="text" id="fiado-cliente" class="w-full p-2 text-xs border dark:border-slate-700 rounded-lg bg-white dark:bg-slate-800 outline-none" placeholder="Ej. Carlos Pérez">
                         </div>
                         <div>
-                            <label class="block text-xs font-medium text-slate-700 mb-1">Teléfono del Cliente (Para WhatsApp)</label>
-                            <input type="text" id="fiado-telefono" class="w-full p-2 text-xs border rounded-lg bg-white" placeholder="Ej. 584121234567">
+                            <label class="block text-xs font-medium text-slate-700 dark:text-amber-200 mb-1">Teléfono del Cliente (Para WhatsApp)</label>
+                            <input type="text" id="fiado-telefono" class="w-full p-2 text-xs border dark:border-slate-700 rounded-lg bg-white dark:bg-slate-800 outline-none" placeholder="Ej. 584121234567">
                         </div>
                         <div>
-                            <label class="block text-xs font-medium text-slate-700 mb-1">Abono Inicial ($)</label>
-                            <input type="number" step="0.01" id="fiado-abono" value="0" class="w-full p-2 text-xs border rounded-lg bg-white" placeholder="0.00">
+                            <label class="block text-xs font-medium text-slate-700 dark:text-amber-200 mb-1">Abono Inicial ($)</label>
+                            <input type="number" step="0.01" id="fiado-abono" value="0" class="w-full p-2 text-xs border dark:border-slate-700 rounded-lg bg-white dark:bg-slate-800 outline-none" placeholder="0.00">
                         </div>
                     </div>
 
@@ -212,12 +254,12 @@
             </div>
 
             <div>
-                <h2 class="text-md font-semibold text-slate-700 mb-2">Deudas y Fiados Pendientes (Con Abonos Parciales)</h2>
+                <h2 class="text-md font-semibold text-slate-700 dark:text-slate-200 mb-2">Deudas y Fiados Pendientes (Con Abonos y Ticket)</h2>
                 <div id="lista-deudas" class="space-y-2"></div>
             </div>
 
             <div>
-                <h2 class="text-md font-semibold text-slate-700 mb-2">Ventas Recientes</h2>
+                <h2 class="text-md font-semibold text-slate-700 dark:text-slate-200 mb-2">Ventas Recientes (Con Ticket)</h2>
                 <div id="lista-ventas" class="space-y-2"></div>
             </div>
         </section>
@@ -225,43 +267,64 @@
         <!-- Pestaña 4: Finanzas y Caja -->
         <section id="tab-finanzas" class="space-y-4 hidden">
             <div class="grid grid-cols-2 gap-3">
-                <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-100 text-center">
-                    <p class="text-xs text-slate-500 mb-1">Entradas Totales</p>
-                    <p id="stat-entradas" class="text-lg font-bold text-blue-600">$0.00</p>
+                <div class="bg-white dark:bg-slate-900 p-4 rounded-xl shadow-sm border border-slate-100 dark:border-slate-800 text-center">
+                    <p class="text-xs text-slate-500 dark:text-slate-400 mb-1">Entradas Totales</p>
+                    <p id="stat-entradas" class="text-lg font-bold text-blue-600 dark:text-blue-400">$0.00</p>
                 </div>
-                <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-100 text-center">
-                    <p class="text-xs text-slate-500 mb-1">Dinero en Caja</p>
-                    <p id="stat-caja" class="text-lg font-bold text-emerald-600">$0.00</p>
+                <div class="bg-white dark:bg-slate-900 p-4 rounded-xl shadow-sm border border-slate-100 dark:border-slate-800 text-center">
+                    <p class="text-xs text-slate-500 dark:text-slate-400 mb-1">Dinero en Caja</p>
+                    <p id="stat-caja" class="text-lg font-bold text-emerald-600 dark:text-emerald-400">$0.00</p>
                 </div>
             </div>
 
-            <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-100 space-y-3">
-                <h2 class="text-md font-semibold text-slate-700">Control de Caja y Empleados</h2>
+            <div class="bg-white dark:bg-slate-900 p-4 rounded-xl shadow-sm border border-slate-100 dark:border-slate-800 space-y-3">
+                <h2 class="text-md font-semibold text-slate-700 dark:text-slate-200">Control de Caja y Categorización</h2>
                 <form id="form-transaccion-capital" class="space-y-3">
                     <div class="grid grid-cols-2 gap-2">
                         <div>
-                            <label class="block text-xs font-medium text-slate-600 mb-1">Movimiento</label>
-                            <select id="cap-tipo" class="w-full p-2 text-xs border rounded-lg bg-white">
+                            <label class="block text-xs font-medium text-slate-600 dark:text-slate-400 mb-1">Movimiento</label>
+                            <select id="cap-tipo" onchange="toggleCategoriaGasto(this.value)" class="w-full p-2 text-xs border dark:border-slate-700 rounded-lg bg-white dark:bg-slate-800 outline-none">
                                 <option value="ingreso">➕ Inyectar Dinero Extra</option>
                                 <option value="empleado">👤 Pagar a Empleado</option>
                                 <option value="gasto">🛒 Gasto Operativo / Compra</option>
                             </select>
                         </div>
                         <div>
-                            <label class="block text-xs font-medium text-slate-600 mb-1">Monto ($)</label>
-                            <input type="number" step="0.01" id="cap-monto" required class="w-full p-2 text-xs border rounded-lg" placeholder="0.00">
+                            <label class="block text-xs font-medium text-slate-600 dark:text-slate-400 mb-1">Monto ($)</label>
+                            <input type="number" step="0.01" id="cap-monto" required class="w-full p-2 text-xs border dark:border-slate-700 dark:bg-slate-800 rounded-lg outline-none" placeholder="0.00">
                         </div>
                     </div>
-                    <div>
-                        <label class="block text-xs font-medium text-slate-600 mb-1">Descripción / Beneficiario</label>
-                        <input type="text" id="cap-desc" required class="w-full p-2 text-xs border rounded-lg" placeholder="Ej. Pago a empleado Juan / Compra de suministros">
+                    <!-- Mejora #4: Categorización de Gastos -->
+                    <div id="contenedor-categoria-gasto" class="hidden">
+                        <label class="block text-xs font-medium text-slate-600 dark:text-slate-400 mb-1">Categoría del Gasto</label>
+                        <select id="cap-categoria" class="w-full p-2 text-xs border dark:border-slate-700 rounded-lg bg-white dark:bg-slate-800 outline-none">
+                            <option value="Insumos / Mercancía">📦 Insumos / Mercancía</option>
+                            <option value="Alquiler Local">🏢 Alquiler de Local</option>
+                            <option value="Servicios (Luz/Agua/Internet)">💡 Servicios (Luz / Agua / Internet)</option>
+                            <option value="Transporte / Delivery">🚚 Transporte / Delivery</option>
+                            <option value="Retiro Personal">💼 Retiro Personal</option>
+                            <option value="Otros Gastos">📋 Otros Gastos</option>
+                        </select>
                     </div>
-                    <button type="submit" class="w-full bg-slate-800 text-white font-medium py-2 rounded-lg text-xs hover:bg-slate-900 transition">Registrar Movimiento</button>
+                    <div>
+                        <label class="block text-xs font-medium text-slate-600 dark:text-slate-400 mb-1">Descripción / Beneficiario</label>
+                        <input type="text" id="cap-desc" required class="w-full p-2 text-xs border dark:border-slate-700 dark:bg-slate-800 rounded-lg outline-none" placeholder="Ej. Pago de luz / Compra de bolsas">
+                    </div>
+                    <button type="submit" class="w-full bg-slate-800 dark:bg-blue-600 text-white font-medium py-2 rounded-lg text-xs hover:bg-slate-900 dark:hover:bg-blue-700 transition">Registrar Movimiento</button>
                 </form>
             </div>
 
             <div>
-                <h2 class="text-md font-semibold text-slate-700 mb-2">Historial de Caja</h2>
+                <div class="flex justify-between items-center mb-2">
+                    <h2 class="text-md font-semibold text-slate-700 dark:text-slate-200">Historial de Caja</h2>
+                    <!-- Filtro rápido de historial -->
+                    <select id="filtro-historial-caja" onchange="renderFinanzas()" class="text-[11px] bg-white dark:bg-slate-800 border dark:border-slate-700 rounded px-2 py-1 outline-none">
+                        <option value="todos">Todos</option>
+                        <option value="ingreso">Solo Entradas</option>
+                        <option value="gasto">Solo Gastos</option>
+                        <option value="empleado">Solo Empleados</option>
+                    </select>
+                </div>
                 <div id="lista-finanzas" class="space-y-2"></div>
             </div>
         </section>
@@ -269,33 +332,46 @@
         <!-- Pestaña 5: Ajustes y Modo Pro -->
         <section id="tab-ajustes" class="space-y-4 hidden">
             <!-- Configuración Multidivisa / Tasa -->
-            <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-100 space-y-2">
-                <h2 class="text-md font-semibold text-slate-700">💱 Tasa de Cambio (Multidivisa)</h2>
-                <p class="text-xs text-slate-500">Configura el factor de cambio para visualizar equivalencias en tu moneda local.</p>
+            <div class="bg-white dark:bg-slate-900 p-4 rounded-xl shadow-sm border border-slate-100 dark:border-slate-800 space-y-2">
+                <h2 class="text-md font-semibold text-slate-700 dark:text-slate-200">💱 Tasa de Cambio (Multidivisa)</h2>
+                <p class="text-xs text-slate-500 dark:text-slate-400">Configura el factor de cambio para visualizar equivalencias en tu moneda local.</p>
                 <div class="flex gap-2">
-                    <input type="number" step="0.01" id="input-tasa-cambio" class="flex-1 p-2 text-xs border rounded-lg" placeholder="Ej. 36.50 (1 USD = X Moneda)">
+                    <input type="number" step="0.01" id="input-tasa-cambio" class="flex-1 p-2 text-xs border dark:border-slate-700 dark:bg-slate-800 rounded-lg outline-none" placeholder="Ej. 36.50 (1 USD = X Moneda)">
                     <button type="button" onclick="guardarTasaCambio()" class="bg-blue-600 text-white px-3 py-2 rounded-lg text-xs font-medium hover:bg-blue-700 transition">Guardar</button>
                 </div>
             </div>
 
-            <div class="bg-blue-50 border border-blue-200 p-4 rounded-xl space-y-2 text-xs text-blue-900">
-                <p class="font-bold text-sm text-blue-950">✨ Beneficios del Modo Pro (por 12 Horas):</p>
+            <!-- Mejora #2: Copias de Seguridad Locales (Exportar / Importar JSON) -->
+            <div class="bg-white dark:bg-slate-900 p-4 rounded-xl shadow-sm border border-slate-100 dark:border-slate-800 space-y-3">
+                <h2 class="text-md font-semibold text-slate-700 dark:text-slate-200">💾 Copias de Seguridad (Respaldo Local)</h2>
+                <p class="text-xs text-slate-500 dark:text-slate-400">Descarga una copia exacta de todos tus negocios, inventario y deudas en un archivo seguro, o restaura un respaldo previo.</p>
+                <div class="grid grid-cols-2 gap-2">
+                    <button type="button" onclick="exportarRespaldoJSON()" class="bg-emerald-600 text-white font-medium py-2 rounded-lg text-xs hover:bg-emerald-700 transition">📤 Exportar Datos</button>
+                    <label class="bg-slate-800 dark:bg-slate-700 text-white font-medium py-2 rounded-lg text-xs hover:bg-slate-900 transition text-center cursor-pointer">
+                        📥 Importar Datos
+                        <input type="file" id="input-importar-json" accept=".json" onchange="importarRespaldoJSON(event)" class="hidden">
+                    </label>
+                </div>
+            </div>
+
+            <div class="bg-blue-50 dark:bg-blue-950/50 border border-blue-200 dark:border-blue-800 p-4 rounded-xl space-y-2 text-xs text-blue-900 dark:text-blue-200">
+                <p class="font-bold text-sm text-blue-950 dark:text-blue-100">✨ Beneficios del Modo Pro (por 12 Horas):</p>
                 <div class="space-y-1">
                     <p>🚫 <b>Experiencia sin Anuncios:</b> Oculta automáticamente los banners publicitarios de AdMob.</p>
-                    <p>🏢 <b>Multinegocios Ilistados:</b> Crea y gestiona varias tiendas de forma independiente.</p>
+                    <p>🏢 <b>Multinegocios Ilimitados:</b> Crea y gestiona varias tiendas de forma independiente.</p>
                     <p>🔗 <b>Sincronización con Socios:</b> Comparte datos en tiempo real mediante QR o código.</p>
                     <p>📄 <b>Reportes Avanzados:</b> Descarga informes ejecutivos completos para WPS Office.</p>
                 </div>
             </div>
 
-            <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-100 space-y-3">
-                <h2 class="text-md font-semibold text-slate-700">🏢 Mis Negocios (Multicuenta Pro)</h2>
-                <p class="text-xs text-slate-500">Crear múltiples negocios requiere tener el Modo Pro activo. Al crear uno nuevo, este nacerá desvinculado (independiente).</p>
+            <div class="bg-white dark:bg-slate-900 p-4 rounded-xl shadow-sm border border-slate-100 dark:border-slate-800 space-y-3">
+                <h2 class="text-md font-semibold text-slate-700 dark:text-slate-200">🏢 Mis Negocios (Multicuenta Pro)</h2>
+                <p class="text-xs text-slate-500 dark:text-slate-400">Crear múltiples negocios requiere tener el Modo Pro activo. Al crear uno nuevo, este nacerá desvinculado (independiente).</p>
                 <div class="flex gap-2">
-                    <input type="text" id="nuevo-negocio-nombre" class="flex-1 p-2 text-xs border rounded-lg" placeholder="Nombre del nuevo negocio">
+                    <input type="text" id="nuevo-negocio-nombre" class="flex-1 p-2 text-xs border dark:border-slate-700 dark:bg-slate-800 rounded-lg outline-none" placeholder="Nombre del nuevo negocio">
                     <button type="button" onclick="crearNegocio()" class="bg-blue-600 text-white px-3 py-2 rounded-lg text-xs font-medium hover:bg-blue-700 transition">Crear</button>
                 </div>
-                <div id="lista-negocios-admin" class="space-y-2 pt-2 border-t border-slate-100"></div>
+                <div id="lista-negocios-admin" class="space-y-2 pt-2 border-t border-slate-100 dark:border-slate-800"></div>
             </div>
 
             <div class="bg-gradient-to-br from-amber-500 to-orange-600 text-white p-4 rounded-xl shadow-md space-y-3">
@@ -319,7 +395,7 @@
                     </div>
 
                     <div class="flex gap-2 pt-1">
-                        <input type="text" id="token-socio" class="flex-1 p-2 text-xs rounded-lg text-slate-800" placeholder="Código de socio o escanear QR">
+                        <input type="text" id="token-socio" class="flex-1 p-2 text-xs rounded-lg text-slate-800 outline-none" placeholder="Código de socio o escanear QR">
                         <button type="button" onclick="conectarSocio()" class="bg-slate-900 text-white px-3 py-2 rounded-lg text-xs font-medium hover:bg-slate-800 transition">Conectar</button>
                     </div>
 
@@ -335,7 +411,7 @@
     </main>
 
     <!-- Contenedor Fijo de Anuncio Banner AdMob -->
-    <div id="admob-banner-container" class="fixed bottom-12 left-0 right-0 bg-white border-t border-slate-200 shadow-lg h-12 flex flex-col justify-center items-center z-30 max-w-md mx-auto overflow-hidden">
+    <div id="admob-banner-container" class="fixed bottom-12 left-0 right-0 bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 shadow-lg h-12 flex flex-col justify-center items-center z-30 max-w-md mx-auto overflow-hidden">
         <ins class="adsbygoogle"
              style="display:inline-block;width:320px;height:50px"
              data-ad-client="ca-app-pub-3645077961178424~5519013340"
@@ -346,9 +422,9 @@
     </div>
 
     <!-- Barra de Navegación Inferior -->
-    <nav class="bg-white border-t border-slate-200 fixed bottom-0 left-0 right-0 shadow-lg z-40">
+    <nav class="bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 fixed bottom-0 left-0 right-0 shadow-lg z-40 transition-colors">
         <div class="max-w-md mx-auto flex justify-around p-1.5">
-            <button type="button" onclick="cambiarTab('resumen')" id="btn-tab-resumen" class="flex-1 text-center py-2 text-[10px] font-semibold text-blue-600 border-t-2 border-blue-600">Resumen</button>
+            <button type="button" onclick="cambiarTab('resumen')" id="btn-tab-resumen" class="flex-1 text-center py-2 text-[10px] font-semibold text-blue-600 dark:text-blue-400 border-t-2 border-blue-600 dark:border-blue-400">Resumen</button>
             <button type="button" onclick="cambiarTab('inventario')" id="btn-tab-inventario" class="flex-1 text-center py-2 text-[10px] font-medium text-slate-400 border-t-2 border-transparent">Inventario</button>
             <button type="button" onclick="cambiarTab('ventas')" id="btn-tab-ventas" class="flex-1 text-center py-2 text-[10px] font-medium text-slate-400 border-t-2 border-transparent">Ventas/Fiados</button>
             <button type="button" onclick="cambiarTab('finanzas')" id="btn-tab-finanzas" class="flex-1 text-center py-2 text-[10px] font-medium text-slate-400 border-t-2 border-transparent">Caja</button>
@@ -427,6 +503,28 @@
             navigator.serviceWorker.register('./sw.js').catch(err => console.log('SW error:', err));
         }
 
+        // --- MEJORA #3: GESTIÓN DE MODO OSCURO ---
+        function aplicarTemaInicial() {
+            const temaGuardado = localStorage.getItem('gestorpro_tema');
+            const btnDark = document.getElementById('btn-dark-mode');
+            if (temaGuardado === 'dark') {
+                document.documentElement.classList.add('dark');
+                if (btnDark) btnDark.innerText = '☀️';
+            } else {
+                document.documentElement.classList.remove('dark');
+                if (btnDark) btnDark.innerText = '🌙';
+            }
+        }
+
+        function toggleDarkMode() {
+            const esOscuro = document.documentElement.classList.toggle('dark');
+            localStorage.setItem('gestorpro_tema', esOscuro ? 'dark' : 'light');
+            const btnDark = document.getElementById('btn-dark-mode');
+            if (btnDark) btnDark.innerText = esOscuro ? '☀️' : '🌙';
+            actualizarGraficos();
+        }
+        aplicarTemaInicial();
+
         let negocios = JSON.parse(localStorage.getItem('multinegocios')) || [
             { id: 1, nombre: 'Mi Negocio Principal', capitalInicial: 0, tasaCambio: 1.0, inventario: [], ventas: [], deudas: [], finanzas: [], syncCode: localStorage.getItem('gestorpro_sync_code') || ('dispositivo_' + Math.random().toString(36).substring(2, 10)) }
         ];
@@ -440,6 +538,8 @@
         let negocioActualId = parseInt(localStorage.getItem('negocioActualId')) || negocios[0].id;
         let onboardingVisto = localStorage.getItem('onboardingVisto') === 'true';
         let editandoProductoId = null;
+        let ticketActualData = null;
+        let chartInstance = null;
 
         if (!onboardingVisto) {
             document.getElementById('modal-onboarding').classList.remove('hidden');
@@ -475,6 +575,184 @@
                 window.sincronizarNube(dataJson);
             }
             renderizarTodo();
+        }
+
+        // --- MEJORA #2: EXPORTAR E IMPORTAR COPIA DE SEGURIDAD JSON ---
+        function exportarRespaldoJSON() {
+            const datos = {
+                version: 'GestorPro_v3',
+                fechaExportacion: new Date().toISOString(),
+                negocios: negocios
+            };
+            const blob = new Blob([JSON.stringify(datos, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `Respaldo_GestorPro_${new Date().toISOString().slice(0,10)}.json`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            alert('✅ Copia de seguridad descargada con éxito. Guárdala en un lugar seguro.');
+        }
+
+        function importarRespaldoJSON(event) {
+            const archivo = event.target.files[0];
+            if (!archivo) return;
+            const lector = new FileReader();
+            lector.onload = function(e) {
+                try {
+                    const contenido = JSON.parse(e.target.result);
+                    if (contenido && Array.isArray(contenido.negocios) && contenido.negocios.length > 0) {
+                        if (confirm('⚠️ Esto reemplazará tus datos actuales con los del archivo de respaldo. ¿Deseas continuar?')) {
+                            negocios = contenido.negocios;
+                            negocioActualId = negocios[0].id;
+                            persistir();
+                            alert('✅ ¡Datos restaurados con éxito!');
+                        }
+                    } else {
+                        alert('❌ El archivo seleccionado no tiene un formato válido de GestorPro.');
+                    }
+                } catch (err) {
+                    alert('❌ Error al leer el archivo: ' + err.message);
+                }
+                event.target.value = '';
+            };
+            lector.readAsText(archivo);
+        }
+
+        // --- MEJORA #1: SISTEMA DE TICKETS E IMPRESIÓN TÉRMICA / BLUETOOTH ---
+        function abrirModalTicket(datos) {
+            const neg = obtenerNegocio();
+            ticketActualData = {
+                negocio: neg.nombre,
+                fecha: new Date().toLocaleString(),
+                ...datos
+            };
+
+            const contenedor = document.getElementById('ticket-contenido-visual');
+            let htmlTicket = `
+                <div class="text-center font-bold border-b border-dashed border-slate-400 pb-1">
+                    <p class="text-xs uppercase">${ticketActualData.negocio}</p>
+                    <p class="text-[9px] font-normal">COMPROBANTE DE OPERACIÓN</p>
+                    <p class="text-[9px] font-normal">${ticketActualData.fecha}</p>
+                </div>
+                <div class="py-1 space-y-0.5">
+                    <p><b>Tipo:</b> ${ticketActualData.tipo}</p>
+                    ${ticketActualData.cliente ? `<p><b>Cliente:</b> ${ticketActualData.cliente}</p>` : ''}
+                    <p><b>Producto:</b> ${ticketActualData.producto}</p>
+                    <p><b>Cantidad:</b> ${ticketActualData.cantidad}</p>
+                </div>
+                <div class="border-t border-dashed border-slate-400 pt-1 space-y-0.5">
+                    <p class="flex justify-between"><span>TOTAL:</span> <b>$${ticketActualData.total.toFixed(2)}</b></p>
+                    ${ticketActualData.abonado !== undefined ? `<p class="flex justify-between"><span>ABONADO:</span> <span>$${ticketActualData.abonado.toFixed(2)}</span></p>` : ''}
+                    ${ticketActualData.pendiente !== undefined ? `<p class="flex justify-between text-red-700"><span>PENDIENTE:</span> <b>$${ticketActualData.pendiente.toFixed(2)}</b></p>` : ''}
+                </div>
+                <div class="text-center text-[9px] border-t border-dashed border-slate-400 pt-1 mt-1">
+                    <p>¡Gracias por su compra!</p>
+                    <p>Generado con GestorPro</p>
+                </div>
+            `;
+            contenedor.innerHTML = htmlTicket;
+            document.getElementById('modal-ticket').classList.remove('hidden');
+        }
+
+        function cerrarModalTicket() {
+            document.getElementById('modal-ticket').classList.add('hidden');
+        }
+
+        function imprimirTicketTermico() {
+            if (!ticketActualData) return;
+            const ventana = window.open('', '_blank', 'width=300,height=450');
+            ventana.document.write(`
+                <html>
+                <head>
+                    <title>Ticket - ${ticketActualData.negocio}</title>
+                    <style>
+                        body { font-family: monospace; width: 58mm; margin: 0 auto; padding: 5px; font-size: 12px; color: #000; }
+                        .center { text-align: center; }
+                        .line { border-top: 1px dashed #000; margin: 5px 0; }
+                        .row { display: flex; justify-content: space-between; }
+                    </style>
+                </head>
+                <body>
+                    <div class="center">
+                        <b>${ticketActualData.negocio.toUpperCase()}</b><br>
+                        COMPROBANTE<br>
+                        <small>${ticketActualData.fecha}</small>
+                    </div>
+                    <div class="line"></div>
+                    Tipo: ${ticketActualData.tipo}<br>
+                    ${ticketActualData.cliente ? `Cliente: ${ticketActualData.cliente}<br>` : ''}
+                    Prod: ${ticketActualData.producto}<br>
+                    Cant: ${ticketActualData.cantidad}<br>
+                    <div class="line"></div>
+                    <div class="row"><span>TOTAL:</span><b>$${ticketActualData.total.toFixed(2)}</b></div>
+                    ${ticketActualData.abonado !== undefined ? `<div class="row"><span>ABONADO:</span><span>$${ticketActualData.abonado.toFixed(2)}</span></div>` : ''}
+                    ${ticketActualData.pendiente !== undefined ? `<div class="row"><span>PENDIENTE:</span><b>$${ticketActualData.pendiente.toFixed(2)}</b></div>` : ''}
+                    <div class="line"></div>
+                    <div class="center"><small>¡Gracias por su preferencia!<br>GestorPro</small></div>
+                    <script>window.onload = function() { window.print(); window.close(); }<\/script>
+                </body>
+                </html>
+            `);
+            ventana.document.close();
+        }
+
+        function descargarTicketImagen() {
+            if (!ticketActualData) return;
+            const canvas = document.createElement('canvas');
+            canvas.width = 360;
+            canvas.height = 420;
+            const ctx = canvas.getContext('2d');
+
+            ctx.fillStyle = '#fffbeb';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.strokeStyle = '#94a3b8';
+            ctx.setLineDash([5, 5]);
+            ctx.strokeRect(10, 10, 340, 400);
+
+            ctx.fillStyle = '#0f172a';
+            ctx.font = 'bold 18px monospace';
+            ctx.textAlign = 'center';
+            ctx.fillText(ticketActualData.negocio.toUpperCase(), 180, 45);
+            
+            ctx.font = '12px monospace';
+            ctx.fillText('COMPROBANTE DE OPERACIÓN', 180, 68);
+            ctx.fillText(ticketActualData.fecha, 180, 88);
+
+            ctx.textAlign = 'left';
+            ctx.font = '14px monospace';
+            let y = 130;
+            ctx.fillText(`Tipo: ${ticketActualData.tipo}`, 25, y); y += 26;
+            if (ticketActualData.cliente) {
+                ctx.fillText(`Cliente: ${ticketActualData.cliente}`, 25, y); y += 26;
+            }
+            ctx.fillText(`Producto: ${ticketActualData.producto}`, 25, y); y += 26;
+            ctx.fillText(`Cantidad: ${ticketActualData.cantidad}`, 25, y); y += 35;
+
+            ctx.font = 'bold 16px monospace';
+            ctx.fillText(`TOTAL: $${ticketActualData.total.toFixed(2)}`, 25, y); y += 26;
+            if (ticketActualData.abonado !== undefined) {
+                ctx.font = '14px monospace';
+                ctx.fillText(`ABONADO: $${ticketActualData.abonado.toFixed(2)}`, 25, y); y += 26;
+            }
+            if (ticketActualData.pendiente !== undefined) {
+                ctx.fillStyle = '#b91c1c';
+                ctx.font = 'bold 15px monospace';
+                ctx.fillText(`PENDIENTE: $${ticketActualData.pendiente.toFixed(2)}`, 25, y); y += 35;
+            }
+
+            ctx.fillStyle = '#475569';
+            ctx.textAlign = 'center';
+            ctx.font = '12px monospace';
+            ctx.fillText('¡Gracias por su preferencia!', 180, 375);
+            ctx.fillText('GestorPro', 180, 395);
+
+            const link = document.createElement('a');
+            link.download = `Ticket_${ticketActualData.producto.replace(/\s+/g, '_')}.png`;
+            link.href = canvas.toDataURL('image/png');
+            link.click();
         }
 
         function esProActivo() {
@@ -634,9 +912,9 @@
             const contenedorAdmin = document.getElementById('lista-negocios-admin');
             if(contenedorAdmin) {
                 contenedorAdmin.innerHTML = negocios.map(n => `
-                    <div class="flex justify-between items-center bg-slate-50 p-2 rounded-lg border border-slate-200">
-                        <span class="text-xs font-semibold text-slate-700">${n.nombre} ${n.id === negocioActualId ? '(Activo)' : ''}</span>
-                        ${negocios.length > 1 ? `<button type="button" onclick="eliminarNegocio(${n.id})" class="text-red-500 text-xs bg-red-50 px-2 py-1 rounded">Eliminar</button>` : ''}
+                    <div class="flex justify-between items-center bg-slate-50 dark:bg-slate-800 p-2 rounded-lg border border-slate-200 dark:border-slate-700">
+                        <span class="text-xs font-semibold text-slate-700 dark:text-slate-200">${n.nombre} ${n.id === negocioActualId ? '(Activo)' : ''}</span>
+                        ${negocios.length > 1 ? `<button type="button" onclick="eliminarNegocio(${n.id})" class="text-red-500 text-xs bg-red-50 dark:bg-red-950/50 px-2 py-1 rounded">Eliminar</button>` : ''}
                     </div>
                 `).join('');
             }
@@ -707,9 +985,9 @@
             const activoTab = document.getElementById(`tab-${tab}`);
             const activoBtn = document.getElementById(`btn-tab-${tab}`);
             if(activoTab) activoTab.classList.remove('hidden');
-            if(activoBtn) activoBtn.className = "flex-1 text-center py-2 text-[10px] font-semibold text-blue-600 border-t-2 border-blue-600";
+            if(activoBtn) activoBtn.className = "flex-1 text-center py-2 text-[10px] font-semibold text-blue-600 dark:text-blue-400 border-t-2 border-blue-600 dark:border-blue-400";
             
-            if(tab === 'resumen') actualizarResumenGeneral();
+            if(tab === 'resumen') { actualizarResumenGeneral(); actualizarGraficos(); }
             if(tab === 'inventario') renderInventario();
             if(tab === 'ventas') { actualizarSelectVentas(); renderVentas(); renderDeudas(); }
             if(tab === 'finanzas') renderFinanzas();
@@ -727,9 +1005,9 @@
             const div = document.createElement('div');
             div.className = "flex gap-2 items-center";
             div.innerHTML = `
-                <input type="text" class="gasto-nombre flex-1 p-2 text-xs border rounded-lg" placeholder="Nombre (ej. Bolsas)" value="${nombre}">
-                <input type="number" step="0.01" class="gasto-monto w-24 p-2 text-xs border rounded-lg" placeholder="Monto ($)" value="${monto}" oninput="calcularPreviewProducto()">
-                <button type="button" onclick="this.parentElement.remove(); calcularPreviewProducto();" class="text-red-500 text-xs bg-red-50 px-2 py-1 rounded">✕</button>
+                <input type="text" class="gasto-nombre flex-1 p-2 text-xs border dark:border-slate-700 dark:bg-slate-800 rounded-lg outline-none" placeholder="Nombre (ej. Bolsas)" value="${nombre}">
+                <input type="number" step="0.01" class="gasto-monto w-24 p-2 text-xs border dark:border-slate-700 dark:bg-slate-800 rounded-lg outline-none" placeholder="Monto ($)" value="${monto}" oninput="calcularPreviewProducto()">
+                <button type="button" onclick="this.parentElement.remove(); calcularPreviewProducto();" class="text-red-500 text-xs bg-red-50 dark:bg-red-950/50 px-2 py-1 rounded">✕</button>
             `;
             contenedor.appendChild(div);
         }
@@ -794,7 +1072,7 @@
                 btnCancelar = document.createElement('button');
                 btnCancelar.type = 'button';
                 btnCancelar.id = 'btn-cancelar-edicion';
-                btnCancelar.className = 'w-full bg-slate-300 text-slate-700 font-medium py-2 rounded-lg text-xs hover:bg-slate-400 transition mt-1';
+                btnCancelar.className = 'w-full bg-slate-300 dark:bg-slate-700 text-slate-700 dark:text-slate-200 font-medium py-2 rounded-lg text-xs hover:bg-slate-400 transition mt-1';
                 btnCancelar.innerText = 'Cancelar Edición';
                 btnCancelar.onclick = cancelarEdicionProducto;
                 btnSubmit.parentNode.insertBefore(btnCancelar, btnSubmit.nextSibling);
@@ -859,6 +1137,7 @@
                 neg.finanzas.unshift({
                     id: Date.now(),
                     tipo: 'gasto',
+                    categoria: 'Insumos / Mercancía',
                     monto: inversionTotal,
                     desc: `Inversión stock: ${nombre} (x${stock})`,
                     fecha: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
@@ -881,7 +1160,6 @@
             filtrarInventario(filtro);
         }
 
-        // --- MEJORA #2: ALERTA VISUAL DE STOCK CRÍTICO (<= 2 unidades) ---
         function filtrarInventario(filtro) {
             const neg = obtenerNegocio();
             const contenedor = document.getElementById('lista-inventario');
@@ -899,18 +1177,18 @@
             contenedor.innerHTML = filtrados.map(prod => {
                 let badgeStock = '';
                 if(prod.stock <= 2) {
-                    badgeStock = `<span class="bg-red-100 text-red-600 font-bold px-1.5 py-0.5 rounded text-[10px] ml-1">⚠️ Stock Crítico</span>`;
+                    badgeStock = `<span class="bg-red-100 dark:bg-red-950 text-red-600 dark:text-red-400 font-bold px-1.5 py-0.5 rounded text-[10px] ml-1">⚠️ Stock Crítico</span>`;
                 }
 
                 return `
-                    <div class="bg-white p-3 rounded-lg shadow-sm border border-slate-100 flex justify-between items-center">
+                    <div class="bg-white dark:bg-slate-900 p-3 rounded-lg shadow-sm border border-slate-100 dark:border-slate-800 flex justify-between items-center">
                         <div>
-                            <h3 class="text-sm font-semibold text-slate-700">${prod.nombre} (Stock: ${prod.stock})${badgeStock}</h3>
-                            <p class="text-xs text-slate-500">Compra: $${prod.compra.toFixed(2)} | Venta: $${prod.venta.toFixed(2)} | Inv. Tot: $${prod.inversionTotal.toFixed(2)}</p>
+                            <h3 class="text-sm font-semibold text-slate-700 dark:text-slate-200">${prod.nombre} (Stock: ${prod.stock})${badgeStock}</h3>
+                            <p class="text-xs text-slate-500 dark:text-slate-400">Compra: $${prod.compra.toFixed(2)} | Venta: $${prod.venta.toFixed(2)} | Inv. Tot: $${prod.inversionTotal.toFixed(2)}</p>
                         </div>
                         <div class="flex gap-1">
-                            <button type="button" onclick="prepararEdicionProducto(${prod.id})" class="text-blue-600 text-xs bg-blue-50 px-2.5 py-1.5 rounded-md hover:bg-blue-100">Editar</button>
-                            <button type="button" onclick="eliminarProducto(${prod.id})" class="text-red-500 text-xs bg-red-50 px-2.5 py-1.5 rounded-md hover:bg-red-100">Eliminar</button>
+                            <button type="button" onclick="prepararEdicionProducto(${prod.id})" class="text-blue-600 dark:text-blue-400 text-xs bg-blue-50 dark:bg-blue-950/60 px-2.5 py-1.5 rounded-md hover:bg-blue-100">Editar</button>
+                            <button type="button" onclick="eliminarProducto(${prod.id})" class="text-red-500 dark:text-red-400 text-xs bg-red-50 dark:bg-red-950/60 px-2.5 py-1.5 rounded-md hover:bg-red-100">Eliminar</button>
                         </div>
                     </div>
                 `;
@@ -967,7 +1245,10 @@
                 persistir();
                 e.target.reset();
                 renderVentas();
-                alert('¡Operación registrada con éxito!');
+                
+                if (confirm('¡Venta registrada! ¿Deseas ver o imprimir el Ticket de comprobante?')) {
+                    abrirModalTicket({ tipo: 'Venta de Contado', producto: producto.nombre, cantidad, total: totalVenta });
+                }
             } else {
                 const cliente = document.getElementById('fiado-cliente').value.trim() || 'Cliente General';
                 const telefono = document.getElementById('fiado-telefono').value.trim() || '';
@@ -992,11 +1273,10 @@
                 renderVentas();
                 renderDeudas();
 
-                // MEJORA #1: WhatsApp al crear fiado
                 if(telefono && confirm('¿Deseas enviar el comprobante de este fiado por WhatsApp al cliente?')) {
                     enviarWhatsAppFiado(deudaObj);
-                } else {
-                    alert('¡Operación registrada con éxito!');
+                } else if (confirm('¿Deseas generar el Ticket físico / imagen de este crédito?')) {
+                    abrirModalTicket({ tipo: 'Crédito / Fiado', cliente, producto: producto.nombre, cantidad, total: totalVenta, abonado: abono, pendiente: saldoPendiente });
                 }
             }
         });
@@ -1015,7 +1295,6 @@
             window.open(url, '_blank');
         }
 
-        // --- MEJORA #3: ABONOS PARCIALES ACUMULATIVOS EN DEUDAS ---
         function abonarDeuda(id) {
             const neg = obtenerNegocio();
             const deuda = neg.deudas.find(d => d.id === id);
@@ -1057,20 +1336,23 @@
                 contenedor.innerHTML = `<p class="text-xs text-slate-400 text-center py-2">No hay deudas pendientes.</p>`;
                 return;
             }
-            contenedor.innerHTML = neg.deudas.map(d => `
-                <div class="bg-amber-50 p-3 rounded-lg border border-amber-200 space-y-2">
-                    <div class="flex justify-between items-center">
+            contenedor.innerHTML = neg.deudas.map(d => {
+                const datosTicket = JSON.stringify({ tipo: 'Crédito / Fiado', cliente: d.cliente, producto: d.producto, cantidad: d.cantidad, total: d.total, abonado: d.abonado, pendiente: d.pendiente }).replace(/"/g, '&quot;');
+                return `
+                <div class="bg-amber-50 dark:bg-amber-950/40 p-3 rounded-lg border border-amber-200 dark:border-amber-800/60 space-y-2">
+                    <div class="flex justify-between items-start gap-2">
                         <div>
-                            <h3 class="text-xs font-bold text-amber-900">${d.cliente} - ${d.producto} (x${d.cantidad})</h3>
-                            <p class="text-[10px] text-amber-700">Total: $${d.total.toFixed(2)} | Abonado: $${d.abonado.toFixed(2)} | <span class="font-bold text-red-600">Pendiente: $${d.pendiente.toFixed(2)}</span></p>
+                            <h3 class="text-xs font-bold text-amber-900 dark:text-amber-200">${d.cliente} - ${d.producto} (x${d.cantidad})</h3>
+                            <p class="text-[10px] text-amber-700 dark:text-amber-300">Total: $${d.total.toFixed(2)} | Abonado: $${d.abonado.toFixed(2)} | <span class="font-bold text-red-600 dark:text-red-400">Pendiente: $${d.pendiente.toFixed(2)}</span></p>
                         </div>
-                        <div class="flex gap-1">
-                            ${d.telefono ? `<button type="button" onclick="enviarWhatsAppFiado(${JSON.stringify(d).replace(/"/g, '&quot;')})" class="bg-emerald-500 text-white px-2 py-1.5 rounded text-[10px] font-semibold hover:bg-emerald-600">📱 WhatsApp</button>` : ''}
-                            <button type="button" onclick="abonarDeuda(${d.id})" class="bg-emerald-600 text-white px-2.5 py-1.5 rounded text-[10px] font-semibold hover:bg-emerald-700">💵 Abonar / Pagar</button>
+                        <div class="flex flex-wrap justify-end gap-1">
+                            <button type="button" onclick="abrirModalTicket(${datosTicket})" class="bg-slate-700 text-white px-2 py-1.5 rounded text-[10px] font-semibold hover:bg-slate-800">🧾 Ticket</button>
+                            ${d.telefono ? `<button type="button" onclick="enviarWhatsAppFiado(${JSON.stringify(d).replace(/"/g, '&quot;')})" class="bg-emerald-500 text-white px-2 py-1.5 rounded text-[10px] font-semibold hover:bg-emerald-600">📱 WA</button>` : ''}
+                            <button type="button" onclick="abonarDeuda(${d.id})" class="bg-emerald-600 text-white px-2.5 py-1.5 rounded text-[10px] font-semibold hover:bg-emerald-700">💵 Abonar</button>
                         </div>
                     </div>
                 </div>
-            `).join('');
+            `}).join('');
         }
 
         function renderVentas() {
@@ -1081,15 +1363,28 @@
                 contenedor.innerHTML = `<p class="text-xs text-slate-400 text-center py-2">No hay ventas registradas.</p>`;
                 return;
             }
-            contenedor.innerHTML = neg.ventas.map(v => `
-                <div class="bg-white p-3 rounded-lg shadow-sm border border-slate-100 flex justify-between items-center">
+            contenedor.innerHTML = neg.ventas.map(v => {
+                const datosTicket = JSON.stringify({ tipo: v.tipo, producto: v.nombre, cantidad: v.cantidad, total: v.total }).replace(/"/g, '&quot;');
+                return `
+                <div class="bg-white dark:bg-slate-900 p-3 rounded-lg shadow-sm border border-slate-100 dark:border-slate-800 flex justify-between items-center">
                     <div>
-                        <h3 class="text-xs font-semibold text-slate-700">${v.nombre} (x${v.cantidad}) - <span class="text-blue-600">${v.tipo}</span></h3>
-                        <p class="text-[10px] text-slate-400">Hora: ${v.fecha} | Ganancia: <span class="text-emerald-600 font-bold">+$${v.ganancia.toFixed(2)}</span></p>
+                        <h3 class="text-xs font-semibold text-slate-700 dark:text-slate-200">${v.nombre} (x${v.cantidad}) - <span class="text-blue-600 dark:text-blue-400">${v.tipo}</span></h3>
+                        <p class="text-[10px] text-slate-400">Hora: ${v.fecha} | Ganancia: <span class="text-emerald-600 dark:text-emerald-400 font-bold">+$${v.ganancia.toFixed(2)}</span></p>
                     </div>
-                    <span class="text-xs font-bold text-emerald-600">+$${v.total.toFixed(2)}</span>
+                    <div class="flex items-center gap-2">
+                        <span class="text-xs font-bold text-emerald-600 dark:text-emerald-400">+$${v.total.toFixed(2)}</span>
+                        <button type="button" onclick="abrirModalTicket(${datosTicket})" class="text-[10px] bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 px-2 py-1 rounded hover:bg-slate-200">🧾</button>
+                    </div>
                 </div>
-            `).join('');
+            `}).join('');
+        }
+
+        // --- MEJORA #4: CATEGORIZACIÓN DE GASTOS EN CAJA ---
+        function toggleCategoriaGasto(tipo) {
+            const box = document.getElementById('contenedor-categoria-gasto');
+            if (!box) return;
+            if (tipo === 'gasto') box.classList.remove('hidden');
+            else box.classList.add('hidden');
         }
 
         document.getElementById('form-transaccion-capital').addEventListener('submit', (e) => {
@@ -1098,13 +1393,15 @@
             const tipo = document.getElementById('cap-tipo').value;
             const monto = parseFloat(document.getElementById('cap-monto').value);
             const desc = document.getElementById('cap-desc').value.trim();
+            const categoria = tipo === 'gasto' ? document.getElementById('cap-categoria').value : (tipo === 'empleado' ? 'Nómina / Empleados' : 'Ingreso Extra');
 
             neg.finanzas.unshift({
-                id: Date.now(), tipo, monto, desc, fecha: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+                id: Date.now(), tipo, categoria, monto, desc, fecha: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
             });
 
             persistir();
             e.target.reset();
+            toggleCategoriaGasto('ingreso');
             renderFinanzas();
             alert('¡Movimiento registrado con éxito!');
         });
@@ -1112,22 +1409,30 @@
         function renderFinanzas() {
             const neg = obtenerNegocio();
             const contenedor = document.getElementById('lista-finanzas');
+            const filtro = document.getElementById('filtro-historial-caja')?.value || 'todos';
             if (!contenedor) return;
-            if (!neg.finanzas || neg.finanzas.length === 0) {
-                contenedor.innerHTML = `<p class="text-xs text-slate-400 text-center py-4">No hay movimientos en caja.</p>`;
+
+            let movimientos = neg.finanzas || [];
+            if (filtro !== 'todos') {
+                movimientos = movimientos.filter(f => f.tipo === filtro);
+            }
+
+            if (movimientos.length === 0) {
+                contenedor.innerHTML = `<p class="text-xs text-slate-400 text-center py-4">No hay movimientos registrados en esta categoría.</p>`;
                 return;
             }
-            contenedor.innerHTML = neg.finanzas.map(f => {
-                let color = 'text-blue-600';
+            contenedor.innerHTML = movimientos.map(f => {
+                let color = 'text-blue-600 dark:text-blue-400';
                 let signo = '+';
                 if(f.tipo === 'empleado' || f.tipo === 'gasto') {
-                    color = 'text-red-600';
+                    color = 'text-red-600 dark:text-red-400';
                     signo = '-';
                 }
+                const etiquetaCat = f.categoria ? `<span class="bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 px-1.5 py-0.5 rounded text-[9px] ml-1">${f.categoria}</span>` : '';
                 return `
-                    <div class="bg-white p-3 rounded-lg shadow-sm border border-slate-100 flex justify-between items-center">
+                    <div class="bg-white dark:bg-slate-900 p-3 rounded-lg shadow-sm border border-slate-100 dark:border-slate-800 flex justify-between items-center">
                         <div>
-                            <h3 class="text-xs font-semibold text-slate-700">${f.desc}</h3>
+                            <h3 class="text-xs font-semibold text-slate-700 dark:text-slate-200">${f.desc}${etiquetaCat}</h3>
                             <p class="text-[10px] text-slate-400">Tipo: <span class="capitalize">${f.tipo}</span> | Hora: ${f.fecha}</p>
                         </div>
                         <span class="text-xs font-bold ${color}">${signo}$${f.monto.toFixed(2)}</span>
@@ -1136,7 +1441,89 @@
             }).join('');
         }
 
-        // --- MEJORA #4: SOPORTE MULTIDIVISA / TASA DE CAMBIO EN RESUMEN ---
+        // --- MEJORA #5: GRÁFICOS ESTADÍSTICOS VISUALES CON CHART.JS ---
+        function actualizarGraficos() {
+            const ctx = document.getElementById('grafico-resumen');
+            if (!ctx) return;
+
+            const neg = obtenerNegocio();
+            const tipoGrafico = document.getElementById('select-tipo-grafico')?.value || 'ventas';
+            const esOscuro = document.documentElement.classList.contains('dark');
+            const textColor = esOscuro ? '#cbd5e1' : '#475569';
+
+            if (chartInstance) {
+                chartInstance.destroy();
+            }
+
+            if (tipoGrafico === 'ventas') {
+                const ultimasVentas = (neg.ventas || []).slice(0, 7).reverse();
+                const labels = ultimasVentas.length > 0 ? ultimasVentas.map(v => v.nombre.substring(0, 10)) : ['Sin datos'];
+                const dataVentas = ultimasVentas.length > 0 ? ultimasVentas.map(v => v.total) : [0];
+                const dataGanancias = ultimasVentas.length > 0 ? ultimasVentas.map(v => v.ganancia) : [0];
+
+                chartInstance = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: labels,
+                        datasets: [
+                            {
+                                label: 'Venta ($)',
+                                data: dataVentas,
+                                backgroundColor: '#3b82f6',
+                                borderRadius: 4
+                            },
+                            {
+                                label: 'Ganancia ($)',
+                                data: dataGanancias,
+                                backgroundColor: '#10b981',
+                                borderRadius: 4
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: { labels: { color: textColor, font: { size: 10 } } }
+                        },
+                        scales: {
+                            x: { ticks: { color: textColor, font: { size: 9 } }, grid: { display: false } },
+                            y: { ticks: { color: textColor, font: { size: 9 } }, grid: { color: esOscuro ? '#1e293b' : '#f1f5f9' } }
+                        }
+                    }
+                });
+            } else {
+                const gastos = (neg.finanzas || []).filter(f => f.tipo === 'gasto' || f.tipo === 'empleado');
+                const agrupado = {};
+                gastos.forEach(g => {
+                    const cat = g.categoria || (g.tipo === 'empleado' ? 'Nómina / Empleados' : 'Insumos / Mercancía');
+                    agrupado[cat] = (agrupado[cat] || 0) + g.monto;
+                });
+
+                const labels = Object.keys(agrupado).length > 0 ? Object.keys(agrupado) : ['Sin gastos'];
+                const values = Object.values(agrupado).length > 0 ? Object.values(agrupado) : [1];
+
+                chartInstance = new Chart(ctx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            data: values,
+                            backgroundColor: ['#ef4444', '#f59e0b', '#3b82f6', '#8b5cf6', '#10b981', '#64748b'],
+                            borderWidth: 0
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: { position: 'right', labels: { color: textColor, font: { size: 9 }, boxWidth: 10 } }
+                        }
+                    }
+                });
+            }
+        }
+
         function actualizarResumenGeneral() {
             const neg = obtenerNegocio();
             
@@ -1170,7 +1557,6 @@
             const elCaj = document.getElementById('stat-caja');
             if(elCaj) elCaj.innerText = `$${caja.toFixed(2)}`;
 
-            // Mostrar equivalente en Moneda Local si hay tasa configurada
             const elTasaInfo = document.getElementById('res-tasa-info');
             if(elTasaInfo) {
                 if(tasa > 1.0) {
@@ -1267,6 +1653,7 @@
             renderInventario();
             actualizarSelectVentas();
             actualizarResumenGeneral();
+            actualizarGraficos();
             renderVentas();
             renderDeudas();
             renderFinanzas();

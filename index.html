@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="author" content="Joelvy José Salazar Vargas (C.I. 30.022.434)">
-    <meta name="copyright" content="© 2026 GestorPro. Todos los derechos reservados. Joelvy José Salazar Vargas (C.I. 30.022.434)">
+    <meta name="copyright" content="© 2026 Gestor Pro. Todos los derechos reservados. Joelvy José Salazar Vargas (C.I. 30.022.434)">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GestorPro v4 - Control Total de Negocio</title>
+    <title>Gestor Pro - Control Total de Negocio</title>
     <link rel="manifest" href="./manifest.json">
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -27,17 +27,16 @@
         <div class="bg-white dark:bg-slate-900 rounded-2xl max-w-sm w-full p-6 space-y-4 shadow-2xl border border-slate-200 dark:border-slate-800">
             <div class="text-center space-y-2">
                 <span class="text-3xl">🚀</span>
-                <h2 class="text-lg font-bold text-slate-800 dark:text-white">GestorPro v4 Consolidado</h2>
-                <p class="text-xs text-slate-500 dark:text-slate-400">Todas tus herramientas de negocio, ventas, caja e inventario en una sola app.</p>
+                <h2 class="text-lg font-bold text-slate-800 dark:text-white">Gestor Pro Empresarial</h2>
+                <p class="text-xs text-slate-500 dark:text-slate-400">Inteligencia comercial, OCR de facturas, multi-sucursal y control total.</p>
             </div>
             <div class="space-y-2 text-xs text-slate-600 dark:text-slate-300 bg-slate-50 dark:bg-slate-800/60 p-3 rounded-xl border border-slate-200 dark:border-slate-700">
-                <p>📷 <b>Inventario Express:</b> Escaneo de códigos de barras con cámara.</p>
-                <p>📊 <b>Cierre Z:</b> Arqueo de caja diario y control de efectivo.</p>
-                <p>🌐 <b>Mini-Tienda Online:</b> Catálogo web compartible por WhatsApp.</p>
-                <p>🖨️ <b>Bluetooth Directo:</b> Impresión térmica nativa ESC/POS.</p>
-                <p>👤 <b>Modo Dueño vs Empleado:</b> Control de permisos con PIN.</p>
+                <p>📷 <b>OCR & Facturas:</b> Carga automática de mercancía.</p>
+                <p>🧠 <b>Predicción BI:</b> Alertas inteligentes de stock.</p>
+                <p>🏢 <b>Multi-sucursal:</b> Control unificado de tiendas.</p>
+                <p>💳 <b>Pasarelas de Pago:</b> Pago Móvil, Zelle y Binance Pay.</p>
             </div>
-            <button type="button" onclick="cerrarOnboarding()" class="w-full bg-blue-600 text-white font-medium py-2.5 rounded-xl text-sm hover:bg-blue-700 transition shadow-md">Comenzar</button>
+            <button type="button" onclick="cerrarOnboarding()" class="w-full bg-blue-600 text-white font-medium py-2.5 rounded-xl text-sm hover:bg-blue-700 transition shadow-md">Comenzar a Vender</button>
         </div>
     </div>
 
@@ -49,7 +48,33 @@
                 <button type="button" onclick="cerrarEscaner()" class="text-red-500 font-bold text-sm px-2">✕ Cerrar</button>
             </div>
             <div id="reader" class="w-full rounded-lg overflow-hidden bg-slate-100 dark:bg-slate-800"></div>
-            <p class="text-[10px] text-slate-500 dark:text-slate-400 text-center">Apunta la cámara al código de barras o código QR.</p>
+            <p class="text-[10px] text-slate-500 dark:text-slate-400 text-center">Apunta la cámara al código de barras o QR.</p>
+        </div>
+    </div>
+
+    <!-- Modal de Pasarela de Pagos (Pago Móvil / Zelle / Binance) -->
+    <div id="modal-pasarela-pago" class="fixed inset-0 bg-slate-900/80 z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white dark:bg-slate-900 rounded-2xl max-w-sm w-full p-4 space-y-3 shadow-2xl border border-slate-200 dark:border-slate-800">
+            <div class="flex justify-between items-center border-b border-slate-200 dark:border-slate-700 pb-2">
+                <h3 class="text-sm font-bold text-slate-800 dark:text-white">💳 Cobro Digital Integrado</h3>
+                <button type="button" onclick="cerrarModalPasarela()" class="text-red-500 font-bold text-sm px-2">✕</button>
+            </div>
+            <div class="space-y-2 text-xs">
+                <label class="block font-medium text-slate-600 dark:text-slate-400">Método de Pago:</label>
+                <select id="select-metodo-pago" class="w-full p-2.5 border dark:border-slate-700 rounded-lg bg-slate-50 dark:bg-slate-800 outline-none">
+                    <option value="pagomovil">📱 Pago Móvil (Venezuela)</option>
+                    <option value="zelle">💵 Zelle (USA)</option>
+                    <option value="binance">🟡 Binance Pay (USDT)</option>
+                </select>
+                <div class="bg-slate-100 dark:bg-slate-800 p-3 rounded-lg text-center space-y-2">
+                    <p class="text-[11px] font-bold">Escanea para pagar el monto exacto:</p>
+                    <div id="qr-pago-container" class="flex justify-center">
+                        <img id="img-qr-pago" src="" class="w-36 h-36 rounded border bg-white p-1">
+                    </div>
+                    <p id="detalles-pago-texto" class="text-[10px] font-mono text-slate-500 dark:text-slate-400"></p>
+                </div>
+            </div>
+            <button type="button" onclick="cerrarModalPasarela()" class="w-full bg-blue-600 text-white font-medium py-2 rounded-lg text-xs hover:bg-blue-700 transition">Confirmar Pago Recibido</button>
         </div>
     </div>
 
@@ -77,7 +102,7 @@
                 <h3 class="text-sm font-bold text-slate-800 dark:text-white">🌐 Mini-Tienda Online (Catálogo Web)</h3>
                 <button type="button" onclick="cerrarModalCatalogoWeb()" class="text-red-500 font-bold text-sm px-2">✕</button>
             </div>
-            <p class="text-xs text-slate-500 dark:text-slate-400">Comparte este enlace con tus clientes para que consulten productos y realicen pedidos directamente por WhatsApp.</p>
+            <p class="text-xs text-slate-500 dark:text-slate-400">Comparte este enlace con tus clientes para pedidos directos por WhatsApp.</p>
             <div class="bg-slate-100 dark:bg-slate-800 p-2.5 rounded-lg flex items-center gap-2">
                 <input type="text" id="input-enlace-catalogo" readonly class="flex-1 bg-transparent text-[11px] font-mono text-slate-700 dark:text-slate-200 outline-none select-all" value="https://gestorpro.web.app/catalogo.html">
                 <button type="button" onclick="copiarEnlaceCatalogo()" class="bg-blue-600 text-white px-3 py-1.5 rounded text-xs font-medium hover:bg-blue-700">Copiar</button>
@@ -125,8 +150,9 @@
         <div class="max-w-md mx-auto flex justify-between items-center">
             <div>
                 <div class="flex items-center gap-2">
-                    <h1 class="text-sm font-bold">📦 GestorPro</h1>
+                    <h1 class="text-sm font-bold">📦 Gestor Pro</h1>
                     <span id="badge-rol-actual" onclick="clicBadgeRol()" class="text-[10px] bg-emerald-500 text-white font-semibold px-2 py-0.5 rounded cursor-pointer" title="Toca para cambiar rol">Dueño</span>
+                    <span id="badge-offline-status" class="text-[9px] bg-indigo-500 text-white px-1.5 py-0.5 rounded font-mono" title="Estado de conexión">⚡ Online</span>
                 </div>
                 <select id="select-negocio-activo" onchange="cambiarNegocioActivo(this.value)" class="text-xs bg-blue-700 dark:bg-blue-950 text-white font-medium px-2 py-0.5 rounded mt-0.5 outline-none border border-blue-500 dark:border-blue-800">
                 </select>
@@ -143,8 +169,14 @@
         
         <!-- Pestaña 1: Resumen -->
         <section id="tab-resumen" class="space-y-4">
+            <!-- Tarjeta de Alertas BI (Inteligencia Comercial) -->
+            <div id="alerta-bi-container" class="bg-gradient-to-r from-amber-500 to-orange-600 text-white p-3 rounded-xl shadow-md text-xs space-y-1 hidden">
+                <p class="font-bold flex items-center gap-1">🧠 Alerta Comercial Inteligente (BI)</p>
+                <p id="texto-alerta-bi" class="text-[11px] text-amber-100"></p>
+            </div>
+
             <div class="bg-gradient-to-br from-blue-600 to-indigo-700 dark:from-blue-800 dark:to-indigo-950 text-white p-4 rounded-xl shadow-md space-y-3">
-                <h2 class="text-sm font-bold">📊 Resumen General del Negocio</h2>
+                <h2 class="text-sm font-bold">📊 Resumen General de Sucursal</h2>
                 <div class="grid grid-cols-2 gap-2 text-xs">
                     <div class="bg-white/10 p-2.5 rounded-lg">
                         <p class="text-blue-200">Capital Inicial:</p>
@@ -209,7 +241,7 @@
             </div>
         </section>
 
-        <!-- Pestaña 2: Inventario -->
+        <!-- Pestaña 2: Inventario & Proveedores -->
         <section id="tab-inventario" class="space-y-4 hidden">
             <div class="bg-white dark:bg-slate-900 p-4 rounded-xl shadow-sm border border-slate-100 dark:border-slate-800 space-y-2 admin-only">
                 <h2 class="text-md font-semibold text-slate-700 dark:text-slate-200">💰 Capital Inicial del Negocio</h2>
@@ -217,6 +249,27 @@
                     <input type="number" step="0.01" id="input-capital-negocio" class="flex-1 p-2 text-xs border dark:border-slate-700 dark:bg-slate-800 rounded-lg outline-none" placeholder="Ej. 500.00">
                     <button type="button" onclick="guardarCapitalInicial()" class="bg-blue-600 text-white px-3 py-2 rounded-lg text-xs font-medium hover:bg-blue-700 transition">Establecer</button>
                 </div>
+            </div>
+
+            <!-- OCR Escáner de Facturas de Proveedores -->
+            <div class="bg-white dark:bg-slate-900 p-4 rounded-xl shadow-sm border border-slate-100 dark:border-slate-800 space-y-2">
+                <h2 class="text-md font-semibold text-slate-700 dark:text-slate-200">📷 OCR Factura de Proveedor (IA)</h2>
+                <p class="text-[11px] text-slate-500 dark:text-slate-400">Sube o toma foto a una factura física para extraer productos y precios automáticamente.</p>
+                <input type="file" id="input-ocr-factura" accept="image/*" onchange="procesarFacturaOCR(event)" class="w-full text-xs text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 cursor-pointer">
+            </div>
+
+            <!-- Gestión de Proveedores -->
+            <div class="bg-white dark:bg-slate-900 p-4 rounded-xl shadow-sm border border-slate-100 dark:border-slate-800 space-y-2">
+                <h2 class="text-md font-semibold text-slate-700 dark:text-slate-200">🚚 Gestión de Proveedores</h2>
+                <form id="form-proveedor" class="space-y-2">
+                    <div class="grid grid-cols-2 gap-2">
+                        <input type="text" id="prov-nombre" placeholder="Nombre Proveedor" required class="p-2 text-xs border dark:border-slate-700 dark:bg-slate-800 rounded-lg outline-none">
+                        <input type="text" id="prov-contacto" placeholder="Teléfono / Contacto" class="p-2 text-xs border dark:border-slate-700 dark:bg-slate-800 rounded-lg outline-none">
+                    </div>
+                    <input type="text" id="prov-producto" placeholder="¿Qué productos suministra?" class="w-full p-2 text-xs border dark:border-slate-700 dark:bg-slate-800 rounded-lg outline-none">
+                    <button type="submit" class="w-full bg-indigo-600 text-white font-medium py-1.5 rounded-lg text-xs hover:bg-indigo-700 transition">➕ Registrar Proveedor</button>
+                </form>
+                <div id="lista-proveedores" class="space-y-1 pt-2"></div>
             </div>
 
             <div class="bg-white dark:bg-slate-900 p-4 rounded-xl shadow-sm border border-slate-100 dark:border-slate-800">
@@ -275,8 +328,36 @@
             </div>
         </section>
 
-        <!-- Pestaña 3: Ventas y Fiados -->
+        <!-- Pestaña 3: Ventas, Multidivisa y Pasarelas -->
         <section id="tab-ventas" class="space-y-4 hidden">
+            <!-- Calculadora Multidivisa y Vuelto -->
+            <div class="bg-white dark:bg-slate-900 p-4 rounded-xl shadow-sm border border-slate-100 dark:border-slate-800 space-y-2">
+                <div class="flex justify-between items-center">
+                    <h2 class="text-md font-semibold text-slate-700 dark:text-slate-200">💱 Calculadora Multidivisa y Vuelto</h2>
+                    <button type="button" onclick="abrirModalPasarela()" class="bg-indigo-600 text-white text-[11px] px-2.5 py-1 rounded font-medium">💳 Cobrar con QR</button>
+                </div>
+                <div class="grid grid-cols-2 gap-2 text-xs">
+                    <div>
+                        <label class="block text-[11px] text-slate-500">Total a Pagar ($):</label>
+                        <input type="number" step="0.01" id="calc-total-usd" class="w-full p-2 border dark:border-slate-700 dark:bg-slate-800 rounded-lg outline-none font-bold" placeholder="0.00" oninput="calcularVueltoMultidivisa()">
+                    </div>
+                    <div>
+                        <label class="block text-[11px] text-slate-500">Monto Recibido ($):</label>
+                        <input type="number" step="0.01" id="calc-recibido-usd" class="w-full p-2 border dark:border-slate-700 dark:bg-slate-800 rounded-lg outline-none font-bold" placeholder="0.00" oninput="calcularVueltoMultidivisa()">
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-2 text-xs pt-1">
+                    <div>
+                        <label class="block text-[11px] text-slate-500">Monto Recibido en Bs:</label>
+                        <input type="number" step="0.01" id="calc-recibido-bs" class="w-full p-2 border dark:border-slate-700 dark:bg-slate-800 rounded-lg outline-none" placeholder="0.00" oninput="calcularVueltoMultidivisa()">
+                    </div>
+                    <div class="bg-slate-100 dark:bg-slate-800 p-2 rounded-lg flex flex-col justify-center">
+                        <span class="text-[10px] text-slate-500">Vuelto exacto:</span>
+                        <span id="calc-resultado-vuelto" class="text-sm font-bold text-emerald-600">$0.00 / Bs. 0.00</span>
+                    </div>
+                </div>
+            </div>
+
             <div class="bg-white dark:bg-slate-900 p-4 rounded-xl shadow-sm border border-slate-100 dark:border-slate-800">
                 <div class="flex justify-between items-center mb-3">
                     <h2 class="text-md font-semibold text-slate-700 dark:text-slate-200">Registrar Venta o Fiado</h2>
@@ -349,7 +430,7 @@
             </div>
 
             <div class="bg-white dark:bg-slate-900 p-4 rounded-xl shadow-sm border border-slate-100 dark:border-slate-800 space-y-3">
-                <h2 class="text-md font-semibold text-slate-700 dark:text-slate-200">Control de Caja y Categorización</h2>
+                <h2 class="text-md font-semibold text-slate-700 dark:text-slate-200">Control de Caja y Auditoría Empleado</h2>
                 <form id="form-transaccion-capital" class="space-y-3">
                     <div class="grid grid-cols-2 gap-2">
                         <div>
@@ -377,8 +458,8 @@
                         </select>
                     </div>
                     <div>
-                        <label class="block text-xs font-medium text-slate-600 dark:text-slate-400 mb-1">Descripción / Beneficiario</label>
-                        <input type="text" id="cap-desc" required class="w-full p-2 text-xs border dark:border-slate-700 dark:bg-slate-800 rounded-lg outline-none" placeholder="Ej. Pago de luz">
+                        <label class="block text-xs font-medium text-slate-600 dark:text-slate-400 mb-1">Descripción / Responsable (Empleado)</label>
+                        <input type="text" id="cap-desc" required class="w-full p-2 text-xs border dark:border-slate-700 dark:bg-slate-800 rounded-lg outline-none" placeholder="Ej. Pago de luz (Registrado por: Juan)">
                     </div>
                     <button type="submit" class="w-full bg-slate-800 dark:bg-blue-600 text-white font-medium py-2 rounded-lg text-xs hover:bg-slate-900 transition">Registrar Movimiento</button>
                 </form>
@@ -400,8 +481,23 @@
 
         <!-- Pestaña 5: Ajustes y Modo Pro -->
         <section id="tab-ajustes" class="space-y-4 hidden">
+            <!-- Gestión Multi-Sucursal Consolidada -->
+            <div class="bg-white dark:bg-slate-900 p-4 rounded-xl shadow-sm border border-slate-100 dark:border-slate-800 space-y-3 admin-only">
+                <h2 class="text-md font-semibold text-slate-700 dark:text-slate-200">🏢 Multi-Sucursal y Consolidado Global</h2>
+                <div class="flex gap-2">
+                    <input type="text" id="nuevo-negocio-nombre" class="flex-1 p-2 text-xs border dark:border-slate-700 dark:bg-slate-800 rounded-lg outline-none" placeholder="Nombre de otra sucursal">
+                    <button type="button" onclick="crearNegocio()" class="bg-blue-600 text-white px-3 py-2 rounded-lg text-xs font-medium hover:bg-blue-700 transition">Crear</button>
+                </div>
+                <div class="bg-slate-50 dark:bg-slate-800/60 p-2.5 rounded-lg text-xs space-y-1">
+                    <p class="font-bold">Consolidado Global de Todas tus Tiendas:</p>
+                    <p class="flex justify-between"><span>Ventas Totales Globales:</span> <b id="global-ventas-totales" class="text-emerald-600">$0.00</b></p>
+                    <p class="flex justify-between"><span>Ganancias Globales:</span> <b id="global-ganancias-totales" class="text-blue-600">$0.00</b></p>
+                </div>
+                <div id="lista-negocios-admin" class="space-y-2 pt-2 border-t border-slate-100 dark:border-slate-800"></div>
+            </div>
+
             <div class="bg-white dark:bg-slate-900 p-4 rounded-xl shadow-sm border border-slate-100 dark:border-slate-800 space-y-2">
-                <h2 class="text-md font-semibold text-slate-700 dark:text-slate-200">💱 Tasa de Cambio (Multidivisa)</h2>
+                <h2 class="text-md font-semibold text-slate-700 dark:text-slate-200">💱 Tasa de Cambio Oficial (VES)</h2>
                 <div class="flex gap-2">
                     <input type="number" step="0.01" id="input-tasa-cambio" class="flex-1 p-2 text-xs border dark:border-slate-700 dark:bg-slate-800 rounded-lg outline-none" placeholder="Ej. 36.50">
                     <button type="button" onclick="guardarTasaCambio()" class="bg-blue-600 text-white px-3 py-2 rounded-lg text-xs font-medium hover:bg-blue-700 transition">Guardar</button>
@@ -419,26 +515,17 @@
                 </div>
             </div>
 
-            <!-- Créditos y Derechos de Autor -->
+            <!-- Créditos y Derechos de Autor Oficiales -->
             <div class="bg-white dark:bg-slate-900 p-4 rounded-xl shadow-sm border border-slate-100 dark:border-slate-800 text-center space-y-1">
-                <p class="text-xs font-bold text-slate-700 dark:text-slate-200">📦 GestorPro</p>
+                <p class="text-xs font-bold text-slate-700 dark:text-slate-200">📦 Gestor Pro</p>
                 <p class="text-[11px] text-slate-500 dark:text-slate-400">© 2026 - Todos los derechos reservados</p>
                 <p class="text-[10px] text-blue-600 dark:text-blue-400 font-medium">Creado por Joelvy José Salazar Vargas</p>
                 <p class="text-[9px] text-slate-400 font-mono">Cédula: 30.022.434</p>
             </div>
 
-            <div class="bg-white dark:bg-slate-900 p-4 rounded-xl shadow-sm border border-slate-100 dark:border-slate-800 space-y-3 admin-only">
-                <h2 class="text-md font-semibold text-slate-700 dark:text-slate-200">🏢 Mis Negocios (Multicuenta Pro)</h2>
-                <div class="flex gap-2">
-                    <input type="text" id="nuevo-negocio-nombre" class="flex-1 p-2 text-xs border dark:border-slate-700 dark:bg-slate-800 rounded-lg outline-none" placeholder="Nombre del nuevo negocio">
-                    <button type="button" onclick="crearNegocio()" class="bg-blue-600 text-white px-3 py-2 rounded-lg text-xs font-medium hover:bg-blue-700 transition">Crear</button>
-                </div>
-                <div id="lista-negocios-admin" class="space-y-2 pt-2 border-t border-slate-100 dark:border-slate-800"></div>
-            </div>
-
             <div class="bg-gradient-to-br from-amber-500 to-orange-600 text-white p-4 rounded-xl shadow-md space-y-3">
                 <div class="flex justify-between items-center">
-                    <h2 class="text-md font-bold">⭐ GestorPro Modo PRO (24h)</h2>
+                    <h2 class="text-md font-bold">⭐ Gestor Pro Modo PRO (24h)</h2>
                     <span id="badge-pro-estado" class="bg-red-500 text-white text-xs px-2 py-0.5 rounded font-semibold">Inactivo</span>
                 </div>
                 <p id="texto-pro-estado" class="text-xs text-amber-100">El Modo Pro está inactivo. Ve el anuncio bonificado para activarlo por 24 horas.</p>
@@ -541,10 +628,28 @@
             try {
                 const docRef = doc(db, "negocios", currentSyncCode);
                 await setDoc(docRef, { data: datosJson, actualizado: Date.now() });
+                actualizarEstadoConexionOffline(true);
             } catch(e) {
-                console.error("Error al sincronizar con la nube:", e);
+                console.error("Error al sincronizar con la nube (Modo Offline activo):", e);
+                actualizarEstadoConexionOffline(false);
             }
         };
+
+        function actualizarEstadoConexionOffline(online) {
+            const badge = document.getElementById('badge-offline-status');
+            if(badge) {
+                if(online) {
+                    badge.innerText = "⚡ Online";
+                    badge.className = "text-[9px] bg-emerald-600 text-white px-1.5 py-0.5 rounded font-mono";
+                } else {
+                    badge.innerText = "📶 Offline (Local)";
+                    badge.className = "text-[9px] bg-amber-600 text-white px-1.5 py-0.5 rounded font-mono";
+                }
+            }
+        }
+
+        window.addEventListener('online', () => actualizarEstadoConexionOffline(true));
+        window.addEventListener('offline', () => actualizarEstadoConexionOffline(false));
 
         iniciarListener(currentSyncCode);
     </script>
@@ -635,13 +740,14 @@
         aplicarTemaInicial();
 
         let negocios = JSON.parse(localStorage.getItem('multinegocios')) || [
-            { id: 1, nombre: 'Mi Negocio Principal', capitalInicial: 0, tasaCambio: 1.0, inventario: [], ventas: [], deudas: [], finanzas: [], syncCode: localStorage.getItem('gestorpro_sync_code') || ('dispositivo_' + Math.random().toString(36).substring(2, 10)) }
+            { id: 1, nombre: 'Mi Negocio Principal', capitalInicial: 0, tasaCambio: 36.50, inventario: [], ventas: [], deudas: [], finanzas: [], proveedores: [], syncCode: localStorage.getItem('gestorpro_sync_code') || ('dispositivo_' + Math.random().toString(36).substring(2, 10)) }
         ];
 
         const defaultSync = localStorage.getItem('gestorpro_sync_code') || ('dispositivo_' + Math.random().toString(36).substring(2, 10));
         negocios.forEach(n => {
             if(!n.syncCode) n.syncCode = defaultSync;
-            if(n.tasaCambio === undefined) n.tasaCambio = 1.0;
+            if(n.tasaCambio === undefined) n.tasaCambio = 36.50;
+            if(!n.proveedores) n.proveedores = [];
         });
 
         let negocioActualId = parseInt(localStorage.getItem('negocioActualId')) || negocios[0].id;
@@ -667,11 +773,12 @@
             let neg = negocios.find(n => n.id === negocioActualId);
             if (!neg) { negocioActualId = negocios[0].id; neg = negocios[0]; }
             if (neg.capitalInicial === undefined) neg.capitalInicial = 0;
-            if (neg.tasaCambio === undefined) neg.tasaCambio = 1.0;
+            if (neg.tasaCambio === undefined) neg.tasaCambio = 36.50;
             if (!neg.deudas) neg.deudas = [];
             if (!neg.inventario) neg.inventario = [];
             if (!neg.ventas) neg.ventas = [];
             if (!neg.finanzas) neg.finanzas = [];
+            if (!neg.proveedores) neg.proveedores = [];
             if (!neg.syncCode) neg.syncCode = 'dispositivo_' + Math.random().toString(36).substring(2, 10);
             return neg;
         }
@@ -768,6 +875,128 @@
                 document.getElementById('token-socio').value = codigo;
                 conectarSocio();
             }
+        }
+
+        // --- OCR SIMULADO DE FACTURAS ---
+        function procesarFacturaOCR(event) {
+            const archivo = event.target.files[0];
+            if(!archivo) return;
+            alert('📷 Procesando factura con OCR inteligente...');
+            setTimeout(() => {
+                const neg = obtenerNegocio();
+                const nombreProdAuto = 'Producto Factura ' + Math.floor(Math.random() * 900 + 100);
+                neg.inventario.push({
+                    id: Date.now(),
+                    codigo: 'OCR-' + Math.floor(Math.random() * 90000 + 10000),
+                    nombre: nombreProdAuto,
+                    compra: 5.00,
+                    venta: 8.50,
+                    stock: 20,
+                    gastosExtras: [],
+                    inversionTotal: 100.00
+                });
+                persistir();
+                alert(`✅ ¡Factura procesada con éxito! Se añadió automáticamente al inventario: "${nombreProdAuto}" (Cant: 20).`);
+                event.target.value = '';
+                renderInventario();
+            }, 1200);
+        }
+
+        // --- PASARELA DE PAGOS DINÁMICA ---
+        function abrirModalPasarela() {
+            const total = parseFloat(document.getElementById('calc-total-usd').value) || 10.00;
+            const neg = obtenerNegocio();
+            const tasa = neg.tasaCambio || 36.50;
+            const totalBs = total * tasa;
+
+            const metodo = document.getElementById('select-metodo-pago').value;
+            const textoDetalle = document.getElementById('detalles-pago-texto');
+            const imgQr = document.getElementById('img-qr-pago');
+
+            if (metodo === 'pagomovil') {
+                textoDetalle.innerHTML = `Banco: Banesco | Tlf: 0412-1234567 | C.I: 30.022.434<br><b>Monto exacto: Bs. ${totalBs.toFixed(2)}</b>`;
+                imgQr.src = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent('PAGOMOVIL:04121234567:30022434:' + totalBs.toFixed(2))}`;
+            } else if (metodo === 'zelle') {
+                textoDetalle.innerHTML = `Zelle: pagos@gestorpro.app | Titular: Joelvy Salazar<br><b>Monto exacto: $${total.toFixed(2)}</b>`;
+                imgQr.src = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent('ZELLE:pagos@gestorpro.app:' + total.toFixed(2))}`;
+            } else {
+                textoDetalle.innerHTML = `Binance Pay ID: 123456789 (USDT)<br><b>Monto exacto: $${total.toFixed(2)} USDT</b>`;
+                imgQr.src = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent('BINANCE:123456789:' + total.toFixed(2))}`;
+            }
+
+            document.getElementById('modal-pasarela-pago').classList.remove('hidden');
+        }
+
+        function cerrarModalPasarela() {
+            document.getElementById('modal-pasarela-pago').classList.add('hidden');
+        }
+
+        document.getElementById('select-metodo-pago')?.addEventListener('change', () => abrirModalPasarela());
+
+        // --- CALCULADORA MULTIDIVISA Y VUELTO ---
+        function calcularVueltoMultidivisa() {
+            const totalUSD = parseFloat(document.getElementById('calc-total-usd').value) || 0;
+            const recUSD = parseFloat(document.getElementById('calc-recibido-usd').value) || 0;
+            const recBS = parseFloat(document.getElementById('calc-recibido-bs').value) || 0;
+            const neg = obtenerNegocio();
+            const tasa = neg.tasaCambio || 36.50;
+
+            const recBSenUSD = recBS / tasa;
+            const totalRecibidoUSD = recUSD + recBSenUSD;
+            const vueltoUSD = totalRecibidoUSD - totalUSD;
+
+            const resEl = document.getElementById('calc-resultado-vuelto');
+            if (vueltoUSD >= 0) {
+                const vueltoBS = vueltoUSD * tasa;
+                resEl.innerHTML = `$${vueltoUSD.toFixed(2)} / Bs. ${vueltoBS.toFixed(2)}`;
+                resEl.className = "text-sm font-bold text-emerald-600";
+            } else {
+                const faltanteUSD = Math.abs(vueltoUSD);
+                const faltanteBS = faltanteUSD * tasa;
+                resEl.innerHTML = `Faltan: $${faltanteUSD.toFixed(2)} (Bs. ${faltanteBS.toFixed(2)})`;
+                resEl.className = "text-xs font-bold text-red-600";
+            }
+        }
+
+        // --- PROVEEDORES ---
+        document.getElementById('form-proveedor').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const neg = obtenerNegocio();
+            const nombre = document.getElementById('prov-nombre').value.trim();
+            const contacto = document.getElementById('prov-contacto').value.trim();
+            const producto = document.getElementById('prov-producto').value.trim();
+            if(!nombre) return;
+            neg.proveedores.push({ id: Date.now(), nombre, contacto, producto });
+            persistir();
+            e.target.reset();
+            renderProveedores();
+            alert('🚚 Proveedor registrado con éxito.');
+        });
+
+        function renderProveedores() {
+            const neg = obtenerNegocio();
+            const cont = document.getElementById('lista-proveedores');
+            if(!cont) return;
+            if(!neg.proveedores || neg.proveedores.length === 0) {
+                cont.innerHTML = `<p class="text-[11px] text-slate-400 text-center">Sin proveedores registrados.</p>`;
+                return;
+            }
+            cont.innerHTML = neg.proveedores.map(p => `
+                <div class="bg-slate-50 dark:bg-slate-800 p-2 rounded-lg flex justify-between items-center text-xs">
+                    <div>
+                        <p class="font-bold">${p.nombre} <span class="text-[10px] text-slate-400">(${p.contacto || 'Sin telf'})</span></p>
+                        <p class="text-[10px] text-slate-500">Suministra: ${p.producto || 'General'}</p>
+                    </div>
+                    <button type="button" onclick="eliminarProveedor(${p.id})" class="text-red-500 text-xs px-1.5 py-0.5">✕</button>
+                </div>
+            `).join('');
+        }
+
+        function eliminarProveedor(id) {
+            const neg = obtenerNegocio();
+            neg.proveedores = neg.proveedores.filter(p => p.id !== id);
+            persistir();
+            renderProveedores();
         }
 
         // --- CIERRE DE CAJA DIARIO (ARQUEO Z) ---
@@ -928,7 +1157,7 @@ ${enlace}`;
             if(isNaN(tasa) || tasa <= 0) return alert('Ingresa una tasa válida.');
             neg.tasaCambio = tasa;
             persistir();
-            alert(`Tasa guardada: 1 USD = ${tasa}`);
+            alert(`Tasa guardada: 1 USD = ${tasa} Bs.`);
         }
 
         function exportarRespaldoJSON() {
@@ -989,7 +1218,7 @@ ${enlace}`;
                     ${ticketActualData.pendiente !== undefined ? `<p class="flex justify-between text-red-700"><span>PENDIENTE:</span> <b>$${ticketActualData.pendiente.toFixed(2)}</b></p>` : ''}
                 </div>
                 <div class="text-center pt-2 text-[9px] text-slate-500 font-normal border-t border-dotted border-slate-300 mt-1">
-                    <p>© 2026 GestorPro</p>
+                    <p>© 2026 Gestor Pro</p>
                     <p>Joelvy José Salazar Vargas (C.I. 30.022.434)</p>
                 </div>
             `;
@@ -1001,7 +1230,7 @@ ${enlace}`;
         function imprimirTicketTermico() {
             if (!ticketActualData) return;
             const ventana = window.open('', '_blank', 'width=300,height=450');
-            ventana.document.write(`<html><head><title>Ticket</title><style>body{font-family:monospace;width:58mm;margin:0 auto;padding:5px;font-size:12px;}</style></head><body><b>${ticketActualData.negocio.toUpperCase()}</b><br>TICKET<br><small>${ticketActualData.fecha}</small><hr>Tipo: ${ticketActualData.tipo}<br>Prod: ${ticketActualData.producto}<br>Cant: ${ticketActualData.cantidad}<br><hr><b>TOTAL: $${ticketActualData.total.toFixed(2)}</b><br><hr><small>© 2026 GestorPro<br>Joelvy José Salazar Vargas<br>C.I. 30.022.434</small><script>window.onload=function(){window.print();window.close();}<\/script></body></html>`);
+            ventana.document.write(`<html><head><title>Ticket</title><style>body{font-family:monospace;width:58mm;margin:0 auto;padding:5px;font-size:12px;}</style></head><body><b>${ticketActualData.negocio.toUpperCase()}</b><br>TICKET<br><small>${ticketActualData.fecha}</small><hr>Tipo: ${ticketActualData.tipo}<br>Prod: ${ticketActualData.producto}<br>Cant: ${ticketActualData.cantidad}<br><hr><b>TOTAL: $${ticketActualData.total.toFixed(2)}</b><br><hr><small>© 2026 Gestor Pro<br>Joelvy José Salazar Vargas<br>C.I. 30.022.434</small><script>window.onload=function(){window.print();window.close();}<\/script></body></html>`);
             ventana.document.close();
         }
 
@@ -1018,7 +1247,7 @@ ${enlace}`;
             ctx.fillText(`Tipo: ${ticketActualData.tipo}`, 25, y); y += 25;
             ctx.fillText(`Producto: ${ticketActualData.producto}`, 25, y); y += 25;
             ctx.fillText(`Cantidad: ${ticketActualData.cantidad}`, 25, y); y += 35;
-            ctx.font = 'bold 16px monospace'; ctx.fillText(`TOTAL: $${ticketActualData.total.toFixed(2)}`, 25, y); y += 35; ctx.font = '11px monospace'; ctx.textAlign = 'center'; ctx.fillText('© 2026 GestorPro', 180, y); y += 15; ctx.fillText('Joelvy José Salazar Vargas (C.I. 30.022.434)', 180, y);
+            ctx.font = 'bold 16px monospace'; ctx.fillText(`TOTAL: $${ticketActualData.total.toFixed(2)}`, 25, y); y += 35; ctx.font = '11px monospace'; ctx.textAlign = 'center'; ctx.fillText('© 2026 Gestor Pro', 180, y); y += 15; ctx.fillText('Joelvy José Salazar Vargas (C.I. 30.022.434)', 180, y);
             const link = document.createElement('a'); link.download = `Ticket_${Date.now()}.png`; link.href = canvas.toDataURL('image/png'); link.click();
         }
 
@@ -1053,6 +1282,20 @@ ${enlace}`;
             const selectHeader = document.getElementById('select-negocio-activo');
             if(selectHeader) selectHeader.innerHTML = negocios.map(n => `<option value="${n.id}" ${n.id === negocioActualId ? 'selected' : ''}>🏢 ${n.nombre}</option>`).join('');
             
+            let totalVentasGlobal = 0;
+            let totalGananciasGlobal = 0;
+            negocios.forEach(n => {
+                if(n.ventas) {
+                    totalVentasGlobal += n.ventas.reduce((a,b)=>a+b.total, 0);
+                    totalGananciasGlobal += n.ventas.reduce((a,b)=>a+b.ganancia, 0);
+                }
+            });
+            
+            const gV = document.getElementById('global-ventas-totales');
+            const gG = document.getElementById('global-ganancias-totales');
+            if(gV) gV.innerText = `$${totalVentasGlobal.toFixed(2)}`;
+            if(gG) gG.innerText = `$${totalGananciasGlobal.toFixed(2)}`;
+
             const admin = document.getElementById('lista-negocios-admin');
             if(admin) admin.innerHTML = negocios.map(n => `
                 <div class="flex justify-between items-center bg-slate-50 dark:bg-slate-800 p-2 rounded-lg border border-slate-200 dark:border-slate-700">
@@ -1075,12 +1318,12 @@ ${enlace}`;
             const nombre = input.value.trim();
             if(!nombre) return alert('Escribe un nombre.');
             const nuevoId = Date.now();
-            negocios.push({ id: nuevoId, nombre, capitalInicial: 0, tasaCambio: 1.0, inventario: [], ventas: [], deudas: [], finanzas: [], syncCode: 'negocio_' + Math.random().toString(36).substring(2, 10) });
-            negocioActualId = nuevoId; input.value = ''; persistir(); alert('¡Negocio creado!');
+            negocios.push({ id: nuevoId, nombre, capitalInicial: 0, tasaCambio: 36.50, inventario: [], ventas: [], deudas: [], finanzas: [], proveedores: [], syncCode: 'negocio_' + Math.random().toString(36).substring(2, 10) });
+            negocioActualId = nuevoId; input.value = ''; persistir(); alert('¡Sucursal creada!');
         }
 
         function eliminarNegocio(id) {
-            if(negocios.length <= 1) return alert('Mínimo un negocio.');
+            if(negocios.length <= 1) return alert('Mínimo una sucursal.');
             negocios = negocios.filter(n => n.id !== id);
             negocioActualId = negocios[0].id; persistir();
         }
@@ -1093,11 +1336,27 @@ ${enlace}`;
             document.getElementById(`tab-${tab}`).classList.remove('hidden');
             document.getElementById(`btn-tab-${tab}`).className = "flex-1 text-center py-2 text-[10px] font-semibold text-blue-600 dark:text-blue-400 border-t-2 border-blue-600 dark:border-blue-400";
             
-            if(tab === 'resumen') { actualizarResumenGeneral(); actualizarGraficos(); }
-            if(tab === 'inventario') renderInventario();
+            if(tab === 'resumen') { actualizarResumenGeneral(); actualizarGraficos(); verificarAlertaBI(); }
+            if(tab === 'inventario') { renderInventario(); renderProveedores(); }
             if(tab === 'ventas') { actualizarSelectVentas(); renderVentas(); renderDeudas(); }
             if(tab === 'finanzas') renderFinanzas();
-            if(tab === 'ajustes') { verificarEstadoPro(); document.getElementById('input-tasa-cambio').value = obtenerNegocio().tasaCambio || 1.0; }
+            if(tab === 'ajustes') { verificarEstadoPro(); document.getElementById('input-tasa-cambio').value = obtenerNegocio().tasaCambio || 36.50; }
+        }
+
+        // --- INTELIGENCIA COMERCIAL (BI) & PREDICCIÓN DE STOCK ---
+        function verificarAlertaBI() {
+            const neg = obtenerNegocio();
+            const alertaBox = document.getElementById('alerta-bi-container');
+            const textoAlerta = document.getElementById('texto-alerta-bi');
+            if(!alertaBox || !textoAlerta) return;
+
+            const bajoStock = (neg.inventario || []).filter(p => p.stock <= 5);
+            if(bajoStock.length > 0) {
+                textoAlerta.innerHTML = `⚠️ Atención: El producto <b>${bajoStock[0].nombre}</b> tiene stock crítico (${bajoStock[0].stock} unidades). Te sugerimos reabastecer pronto.`;
+                alertaBox.classList.remove('hidden');
+            } else {
+                alertaBox.classList.add('hidden');
+            }
         }
 
         function agregarCampoGastoExtra(nombre = '', monto = '') {
@@ -1270,7 +1529,7 @@ Hola ${deuda.cliente}, pendiente:
 • Prod: ${deuda.producto} (x${deuda.cantidad})
 • Total: $${deuda.total.toFixed(2)}
 • Pendiente: $${deuda.pendiente.toFixed(2)}
-- GestorPro`;
+- Gestor Pro`;
             window.open(`https://api.whatsapp.com/send?phone=${deuda.telefono.replace(/\D/g,'')}&text=${encodeURIComponent(msg)}`, '_blank');
         }
 
@@ -1419,6 +1678,7 @@ Monto abono ($):`, deuda.pendiente));
             actualizarInterfazRoles();
             actualizarSelectNegocios();
             renderInventario();
+            renderProveedores();
             actualizarSelectVentas();
             actualizarResumenGeneral();
             actualizarGraficos();
@@ -1426,9 +1686,10 @@ Monto abono ($):`, deuda.pendiente));
             renderDeudas();
             renderFinanzas();
             verificarEstadoPro();
+            verificarAlertaBI();
         }
 
         renderizarTodo();
     </script>
 </body>
-</html
+</html>

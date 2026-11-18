@@ -586,7 +586,7 @@
         </div>
     </nav>
 
-    <!-- Script de Firebase Firestore con Control de Concurrencia y Limpieza Segura de Listeners -->
+    <!-- Script de Firebase Firestore con Control de Concurrencia y Sincronización Segura -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/13.3.0/firebase-app.js";
         import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/13.3.0/firebase-firestore.js";
@@ -619,7 +619,6 @@
         };
 
         function iniciarListener(code) {
-            // Limpieza segura del listener anterior para evitar fugas de memoria RAM
             if (typeof unsubscribe === 'function') {
                 unsubscribe();
                 unsubscribe = null;
@@ -797,6 +796,35 @@
         let negocios = JSON.parse(localStorage.getItem('multinegocios')) || [
             { id: 1, nombre: 'Mi Negocio Principal', capitalInicial: 0, tasaCambio: 36.50, inventario: [], ventas: [], deudas: [], finanzas: [], proveedores: [], syncCode: localStorage.getItem('gestorpro_sync_code') || ('dispositivo_' + Math.random().toString(36).substring(2, 10)) }
         ];
+
+        // --- LIMPIEZA AUTOMÁTICA DE REGISTROS ANTIGUOS (MANTENIMIENTO CERO) ---
+        function purgarRegistrosAntiguos() {
+            const UN_ANO_EN_MS = 365 * 24 * 60 * 60 * 1000;
+            const ahora = Date.now();
+            let huboCambios = false;
+
+            negocios.forEach(neg => {
+                if (neg.ventas && Array.isArray(neg.ventas)) {
+                    const ventasFiltradas = neg.ventas.filter(v => (ahora - (v.id || 0)) < UN_ANO_EN_MS);
+                    if (ventasFiltradas.length !== neg.ventas.length) {
+                        neg.ventas = ventasFiltradas;
+                        huboCambios = true;
+                    }
+                }
+                if (neg.finanzas && Array.isArray(neg.finanzas)) {
+                    const finanzasFiltradas = neg.finanzas.filter(f => (ahora - (f.id || 0)) < UN_ANO_EN_MS);
+                    if (finanzasFiltradas.length !== neg.finanzas.length) {
+                        neg.finanzas = finanzasFiltradas;
+                        huboCambios = true;
+                    }
+                }
+            });
+
+            if (huboCambios) {
+                localStorage.setItem('multinegocios', JSON.stringify(negocios));
+            }
+        }
+        purgarRegistrosAntiguos();
 
         const defaultSync = localStorage.getItem('gestorpro_sync_code') || ('dispositivo_' + Math.random().toString(36).substring(2, 10));
         negocios.forEach(n => {

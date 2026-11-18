@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catálogo Digital - Gestor Pro</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen p-4 flex flex-col items-center">
+    <div class="max-w-md w-full space-y-4">
+        <header class="bg-blue-600 text-white p-4 rounded-xl text-center shadow">
+            <h1 class="text-lg font-bold">🛍️ Catálogo Online</h1>
+            <p class="text-xs text-blue-100">Selecciona tus productos para hacer pedidos por WhatsApp</p>
+        </header>
+
+        <div id="catalogo-productos" class="space-y-3">
+            <!-- Los productos se cargarán dinámicamente -->
+        </div>
+
+        <div class="bg-white p-4 rounded-xl shadow border space-y-2 sticky bottom-4">
+            <p class="text-xs font-bold">Total del Pedido: <span id="lbl-total-pedido" class="text-emerald-600">$0.00</span></p>
+            <button onclick="enviarPedidoWhatsApp()" class="w-full bg-emerald-600 text-white font-semibold py-2.5 rounded-lg text-xs hover:bg-emerald-700 transition">
+                💬 Enviar Pedido por WhatsApp
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Carga simulada o conectada al almacenamiento local compartido
+        const negocios = JSON.parse(localStorage.getItem('multinegocios')) || [];
+        const neg = negocios[0] || { inventario: [], nombre: 'Tienda' };
+        
+        let carrito = {};
+
+        function renderCatalogo() {
+            const cont = document.getElementById('catalogo-productos');
+            if(!neg.inventario || neg.inventario.length === 0) {
+                cont.innerHTML = `<p class="text-center text-xs text-slate-400 py-8">No hay productos disponibles en este momento.</p>`;
+                return;
+            }
+
+            cont.innerHTML = neg.inventario.map(p => `
+                <div class="bg-white p-3 rounded-xl shadow-sm border flex justify-between items-center">
+                    <div>
+                        <h3 class="text-sm font-semibold">${p.nombre}</h3>
+                        <p class="text-xs text-emerald-600 font-bold">$${p.venta.toFixed(2)} <span class="text-[10px] text-slate-400 font-normal">(Disponibles: ${p.stock})</span></p>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <button onclick="cambiarCantidad(${p.id}, -1)" class="bg-slate-100 px-2.5 py-1 rounded text-xs font-bold">-</button>
+                        <span id="cant-${p.id}" class="text-xs font-bold w-4 text-center">${carrito[p.id] || 0}</span>
+                        <button onclick="cambiarCantidad(${p.id}, 1)" class="bg-blue-600 text-white px-2.5 py-1 rounded text-xs font-bold">+</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function cambiarCantidad(id, delta) {
+            const prod = neg.inventario.find(p => p.id === id);
+            if(!prod) return;
+            let actual = carrito[id] || 0;
+            actual += delta;
+            if(actual < 0) actual = 0;
+            if(actual > prod.stock) { alert('No hay más stock disponible.'); return; }
+            
+            if(actual === 0) delete carrito[id];
+            else carrito[id] = actual;
+
+            document.getElementById(`cant-${id}`).innerText = actual;
+            calcularTotal();
+        }
+
+        function calcularTotal() {
+            let total = 0;
+            for(let id in carrito) {
+                const prod = neg.inventario.find(p => p.id == id);
+                if(prod) total += prod.venta * carrito[id];
+            }
+            document.getElementById('lbl-total-pedido').innerText = `$${total.toFixed(2)}`;
+        }
+
+        function enviarPedidoWhatsApp() {
+            if(Object.keys(carrito).length === 0) { alert('Selecciona al menos un producto.'); return; }
+            let texto = `🛍️ *Nuevo Pedido para ${neg.nombre}*:\n`;
+            let total = 0;
+            for(let id in carrito) {
+                const prod = neg.inventario.find(p => p.id == id);
+                const sub = prod.venta * carrito[id];
+                total += sub;
+                texto += `• ${prod.nombre} (x${carrito[id]}) - $${sub.toFixed(2)}\n`;
+            }
+            texto += `\n*Total a Pagar: $${total.toFixed(2)}*`;
+            window.open(`https://api.whatsapp.com/send?phone=584121234567&text=${encodeURIComponent(texto)}`, '_blank');
+        }
+
+        renderCatalogo();
+    </script>
+</body>
+</html>

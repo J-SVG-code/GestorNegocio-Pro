@@ -1,24 +1,24 @@
 const CACHE_NAME = 'gestorpro-v4-cache';
 const ASSETS_TO_CACHE = [
   './index.html',
+  './catalogo.html',
   './manifest.json',
   'https://cdn.tailwindcss.com',
   'https://unpkg.com/html5-qrcode',
-  'https://cdn.jsdelivr.net/npm/chart.js'
+  'https://cdn.jsdelivr.net/npm/chart.js',
+  'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js'
 ];
 
 // Fase de Instalación: Guarda en caché los archivos principales y librerías CDN
 self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME)
-      .then((cache) => {
-        return cache.addAll(ASSETS_TO_CACHE);
-      })
+      .then((cache) => cache.addAll(ASSETS_TO_CACHE))
       .then(() => self.skipWaiting())
   );
 });
 
-// Fase de Activación: Limpia cachés antiguas si actualizas la versión de la app
+// Fase de Activación: Limpia cachés antiguas
 self.addEventListener('activate', (event) => {
   event.waitUntil(
     caches.keys().then((cacheNames) => {
@@ -33,9 +33,9 @@ self.addEventListener('activate', (event) => {
   );
 });
 
-// Fase de Intercepción (Fetch): Estrategia Cache-First con respaldo de red
+// Fase de Intercepción (Fetch): Estrategia Cache-First con respaldo robusto
 self.addEventListener('fetch', (event) => {
-  // Evitar interceptar peticiones a Firebase o APIs externas que requieran internet en vivo
+  // Evitar interceptar peticiones a Firebase o AdMob que requieran internet en vivo
   if (event.request.url.includes('firestore.googleapis.com') || event.request.url.includes('pagead2.googlesyndication.com')) {
     return;
   }
@@ -52,9 +52,11 @@ self.addEventListener('fetch', (event) => {
             return networkResponse;
           });
         }).catch(() => {
-          // Si falla la red y no está en caché, puedes retornar una página de respaldo offline si lo deseas
+          // Si falla la red y se solicita una página HTML, retornamos el index de respaldo
+          if (event.request.headers.get('accept').includes('text/html')) {
+            return caches.match('./index.html');
+          }
         });
       })
   );
 });
-

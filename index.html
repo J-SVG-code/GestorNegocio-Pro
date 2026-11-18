@@ -6,7 +6,7 @@
     <meta name="copyright" content="© 2026 Gestor Pro. Todos los derechos reservados. Joelvy José Salazar Vargas (C.I. 30.022.434)">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestor Pro - Control Total de Negocio</title>
-    <link rel="manifest" href="./manifest.json">
+    <link rel="manifest" href="./manifest.json">[span_0](start_span)[span_0](end_span)
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -586,7 +586,7 @@
         </div>
     </nav>
 
-    <!-- Script de Firebase Firestore con Control de Concurrencia (Timestamps) -->
+    <!-- Script de Firebase Firestore con Control de Concurrencia y Limpieza Segura de Listeners -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/13.3.0/firebase-app.js";
         import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/13.3.0/firebase-firestore.js";
@@ -619,7 +619,12 @@
         };
 
         function iniciarListener(code) {
-            if (unsubscribe) unsubscribe();
+            // Limpieza segura del listener anterior para evitar fugas de memoria RAM
+            if (typeof unsubscribe === 'function') {
+                unsubscribe();
+                unsubscribe = null;
+            }
+            
             const docRef = doc(db, "negocios", code);
 
             unsubscribe = onSnapshot(docRef, (snap) => {
@@ -756,7 +761,6 @@
             }
         }
 
-        // Nueva función para cambiar el PIN de Administrador
         function cambiarPinAdmin() {
             if (rolActual === 'empleado') return mostrarToast('Acción restringida solo para el Dueño.', 'error');
             const nuevoPin = document.getElementById('input-nuevo-pin').value.trim();
@@ -1519,7 +1523,6 @@ ${enlace}`;
                 return; 
             }
 
-            // Paginación y límite de visualización a 50 elementos para mantener fluidez
             const totalMostrados = filtrados.slice(0, 50);
 
             contenedor.innerHTML = totalMostrados.map(prod => `

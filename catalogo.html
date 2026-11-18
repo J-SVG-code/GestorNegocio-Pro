@@ -25,14 +25,19 @@
         </div>
     </div>
 
-    <script>
-        // Carga simulada o conectada al almacenamiento local compartido
+       <script>
+        // Carga los datos reales sincronizados de la aplicación principal
         const negocios = JSON.parse(localStorage.getItem('multinegocios')) || [];
-        const neg = negocios[0] || { inventario: [], nombre: 'Tienda' };
+        const negocioActualId = parseInt(localStorage.getItem('negocioActualId')) || (negocios[0] ? negocios[0].id : 1);
+        const neg = negocios.find(n => n.id === negocioActualId) || negocios[0] || { inventario: [], nombre: 'Tienda' };
         
         let carrito = {};
 
         function renderCatalogo() {
+            // Muestra el nombre real del negocio activo en el título
+            const headerTitulo = document.querySelector('header h1');
+            if(headerTitulo) headerTitulo.innerText = `🛍️ Catálogo Online - ${neg.nombre}`;
+
             const cont = document.getElementById('catalogo-productos');
             if(!neg.inventario || neg.inventario.length === 0) {
                 cont.innerHTML = `<p class="text-center text-xs text-slate-400 py-8">No hay productos disponibles en este momento.</p>`;
@@ -89,7 +94,10 @@
                 texto += `• ${prod.nombre} (x${carrito[id]}) - $${sub.toFixed(2)}\n`;
             }
             texto += `\n*Total a Pagar: $${total.toFixed(2)}*`;
-            window.open(`https://api.whatsapp.com/send?phone=584121234567&text=${encodeURIComponent(texto)}`, '_blank');
+            
+            // Número de WhatsApp del negocio (puedes ajustarlo o dejarlo predeterminado)
+            const telefonoComercio = "584121234567"; 
+            window.open(`https://api.whatsapp.com/send?phone=${telefonoComercio}&text=${encodeURIComponent(texto)}`, '_blank');
         }
 
         renderCatalogo();

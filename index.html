@@ -1797,25 +1797,25 @@ Monto abono ($):`, deuda.pendiente));
         return mostrarToast('❌ Error: Librería PDF no cargada.', 'error');
     }
 
-    mostrarToast('📄 Generando reporte PDF...', 'info');
+    mostrarToast('📄 Generando reporte PDF ejecutivo...', 'info');
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF();
     const neg = obtenerNegocio();
 
-    // Encabezado del documento
+    // Encabezado
     doc.setFont("helvetica", "bold");
     doc.setFontSize(16);
     doc.text(neg.nombre.toUpperCase(), 15, 20);
 
-    doc.setFontSize(11);
+    doc.setFontSize(10);
     doc.setFont("helvetica", "normal");
-    doc.text(`Reporte Ejecutivo de Gestión - Fecha: ${new Date().toLocaleDateString()}`, 15, 28);
-    doc.line(15, 32, 195, 32);
+    doc.text(`Reporte Ejecutivo y de Caja - Fecha: ${new Date().toLocaleDateString()}`, 15, 26);
+    doc.line(15, 30, 195, 30);
 
-    let y = 42;
+    let y = 38;
     doc.setFont("helvetica", "bold");
-    doc.text("Resumen Financiero:", 15, y);
-    y += 8;
+    doc.text("1. Resumen Financiero General:", 15, y);
+    y += 7;
 
     doc.setFont("helvetica", "normal");
     const ventasTotales = (neg.ventas || []).reduce((a, b) => a + b.total, 0);
@@ -1825,27 +1825,45 @@ Monto abono ($):`, deuda.pendiente));
     doc.text(`• Capital Inicial Registrado: $${(neg.capitalInicial || 0).toFixed(2)}`, 20, y); y += 6;
     doc.text(`• Total Invertido en Mercancía: $${inversionTotal.toFixed(2)}`, 20, y); y += 6;
     doc.text(`• Ventas Totales Acumuladas: $${ventasTotales.toFixed(2)}`, 20, y); y += 6;
-    doc.text(`• Ganancia Neta Estimada: $${gananciaTotal.toFixed(2)}`, 20, y); y += 12;
+    doc.text(`• Ganancia Neta Estimada: $${gananciaTotal.toFixed(2)}`, 20, y); y += 10;
 
     doc.setFont("helvetica", "bold");
-    doc.text("Inventario Actual:", 15, y); y += 8;
+    doc.text("2. Últimos Movimientos de Caja / Gastos Operativos:", 15, y); y += 7;
     doc.setFont("helvetica", "normal");
 
-    // Listado de productos (máximo 15 para mantener orden en la hoja)
-    (neg.inventario || []).slice(0, 15).forEach((p, idx) => {
+    // Listado de finanzas recientes (máximo 10)
+    const finanzasRecientes = (neg.finanzas || []).slice(0, 10);
+    if(finanzasRecientes.length === 0) {
+        doc.text("Sin movimientos registrados recientemente.", 20, y);
+        y += 8;
+    } else {
+        finanzasRecientes.forEach((f) => {
+            if(y > 270) { doc.addPage(); y = 20; }
+            const signo = f.tipo === 'ingreso' ? '+' : '-';
+            doc.text(`[${f.tipo.toUpperCase()}] ${f.desc} (${f.fecha || 'Hoy'}): ${signo}$${f.monto.toFixed(2)}`, 20, y);
+            y += 6;
+        });
+    }
+
+    y += 4;
+    if(y > 260) { doc.addPage(); y = 20; }
+    doc.setFont("helvetica", "bold");
+    doc.text("3. Estado del Inventario:", 15, y); y += 7;
+    doc.setFont("helvetica", "normal");
+
+    (neg.inventario || []).slice(0, 10).forEach((p, idx) => {
         if(y > 270) { doc.addPage(); y = 20; }
         doc.text(`${idx + 1}. ${p.nombre} - Stock: ${p.stock} | Venta: $${p.venta.toFixed(2)}`, 20, y);
         y += 6;
     });
 
-    // Pie de página con créditos oficiales
-    doc.setFontSize(9);
-    doc.setTextColor(150);
-    doc.text("© 2026 Gestor Pro - Creado por Joelvy José Salazar Vargas (C.I. 30.022.434)", 15, 285);
+    // Pie de página oficial protegido
+    doc.setFontSize(8);
+    doc.setTextColor(120);
+    doc.text("© 2026 Gestor Pro - Creado por Joelvy José Salazar Vargas (C.I. 30.022.434)", 15, 288);
 
-    // Guardar archivo PDF
-    doc.save(`Reporte_${neg.nombre.replace(/\s+/g, '_')}_${Date.now()}.pdf`);
-    mostrarToast('✅ ¡Reporte PDF descargado con éxito!', 'success');
+    doc.save(`Reporte_Ejecutivo_${neg.nombre.replace(/\s+/g, '_')}_${Date.now()}.pdf`);
+    mostrarToast('✅ ¡Reporte PDF generado y descargado!', 'success');
 }
 
         function renderizarTodo() {

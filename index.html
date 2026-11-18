@@ -20,7 +20,6 @@
     <!-- jsPDF CDN para Reportes Ejecutivos -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <!-- Google AdMob Script -->
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-app-pub-3645077961178424~5519013340" crossorigin="anonymous"></script>
 </head>
@@ -59,29 +58,30 @@
         </div>
     </div>
 
-    <!-- Modal de Pasarela de Pagos (Pago Móvil / Zelle / Binance) -->
+    <!-- Modal de Pasarela de Pagos (Suscripciones y Cobros) -->
     <div id="modal-pasarela-pago" class="fixed inset-0 bg-slate-900/80 z-50 flex items-center justify-center p-4 hidden">
         <div class="bg-white dark:bg-slate-900 rounded-2xl max-w-sm w-full p-4 space-y-3 shadow-2xl border border-slate-200 dark:border-slate-800">
             <div class="flex justify-between items-center border-b border-slate-200 dark:border-slate-700 pb-2">
-                <h3 class="text-sm font-bold text-slate-800 dark:text-white">💳 Cobro Digital Integrado</h3>
+                <h3 class="text-sm font-bold text-slate-800 dark:text-white">💳 Suscripción y Cobro Digital</h3>
                 <button type="button" onclick="cerrarModalPasarela()" class="text-red-500 font-bold text-sm px-2">✕</button>
             </div>
             <div class="space-y-2 text-xs">
                 <label class="block font-medium text-slate-600 dark:text-slate-400">Método de Pago:</label>
                 <select id="select-metodo-pago" class="w-full p-2.5 border dark:border-slate-700 rounded-lg bg-slate-50 dark:bg-slate-800 outline-none">
-                    <option value="pagomovil">📱 Pago Móvil (Venezuela)</option>
+                    <option value="paypal">🌐 PayPal ($5 USD / $45 Anual)</option>
+                    <option value="pagomovil">📱 Pago Móvil (Venezuela - Tasa del día)</option>
                     <option value="zelle">💵 Zelle (USA)</option>
                     <option value="binance">🟡 Binance Pay (USDT)</option>
                 </select>
                 <div class="bg-slate-100 dark:bg-slate-800 p-3 rounded-lg text-center space-y-2">
-                    <p class="text-[11px] font-bold">Escanea para pagar el monto exacto:</p>
+                    <p id="instrucciones-pago-titulo" class="text-[11px] font-bold">Detalles para realizar tu pago:</p>
                     <div id="qr-pago-container" class="flex justify-center">
                         <img id="img-qr-pago" src="" class="w-36 h-36 rounded border bg-white p-1">
                     </div>
-                    <p id="detalles-pago-texto" class="text-[10px] font-mono text-slate-500 dark:text-slate-400"></p>
+                    <p id="detalles-pago-texto" class="text-[10px] font-mono text-slate-500 dark:text-slate-400 leading-relaxed"></p>
                 </div>
             </div>
-            <button type="button" onclick="cerrarModalPasarela()" class="w-full bg-blue-600 text-white font-medium py-2 rounded-lg text-xs hover:bg-blue-700 transition">Confirmar Pago Recibido</button>
+            <button type="button" onclick="cerrarModalPasarela()" class="w-full bg-blue-600 text-white font-medium py-2 rounded-lg text-xs hover:bg-blue-700 transition">Ya pagué, reportar comprobante</button>
         </div>
     </div>
 
@@ -489,7 +489,7 @@
             </div>
         </section>
 
-        <!-- Pestaña 5: Ajustes y Modo Pro -->
+        <!-- Pestaña 5: Ajustes y Suscripción Modo Pro -->
         <section id="tab-ajustes" class="space-y-4 hidden">
             <!-- Gestión Multi-Sucursal Consolidada -->
             <div class="bg-white dark:bg-slate-900 p-4 rounded-xl shadow-sm border border-slate-100 dark:border-slate-800 space-y-3 admin-only">
@@ -542,26 +542,39 @@
                 <p class="text-[9px] text-slate-400 font-mono">Cédula: 30.022.434</p>
             </div>
 
+            <!-- Sección Comercial de Suscripción Modo Pro Actualizada -->
             <div class="bg-gradient-to-br from-amber-500 to-orange-600 text-white p-4 rounded-xl shadow-md space-y-3">
                 <div class="flex justify-between items-center">
-                    <h2 class="text-md font-bold">⭐ Gestor Pro Modo PRO (24h)</h2>
+                    <h2 class="text-md font-bold">⭐ Gestor Pro Modo PRO</h2>
                     <span id="badge-pro-estado" class="bg-red-500 text-white text-xs px-2 py-0.5 rounded font-semibold">Inactivo</span>
                 </div>
-                <p id="texto-pro-estado" class="text-xs text-amber-100">El Modo Pro está inactivo. Ve el anuncio bonificado para activarlo por 24 horas.</p>
-                <div class="space-y-2 pt-2">
-                    <button type="button" onclick="verAnuncioBonificadoPro()" class="w-full bg-amber-700 text-white font-semibold py-2 rounded-lg text-xs hover:bg-amber-800 transition shadow">🎬 Ver Anuncio Bonificado (Activar 24h)</button>
-                    <button type="button" onclick="mostrarCodigoQR()" class="w-full bg-white text-orange-700 font-semibold py-2 rounded-lg text-xs hover:bg-amber-50 transition shadow">📱 Ver Código QR Personal</button>
-                    <div id="qr-display-container" class="hidden bg-white p-3 rounded-lg text-center space-y-2 text-slate-800">
-                        <p class="text-[11px] font-bold">Tu Código QR de Sincronización:</p>
-                        <div id="qr-image-box" class="flex justify-center"></div>
-                        <p id="qr-text-code" class="text-[10px] font-mono text-slate-500 select-all bg-slate-100 p-1 rounded"></p>
+                <p id="texto-pro-estado" class="text-xs text-amber-100">Desbloquea todas las funciones sin anuncios y gestiona tu negocio al 100%.</p>
+                
+                <div class="bg-white/10 p-3 rounded-lg text-xs space-y-1">
+                    <p class="font-bold">🔥 Planes de Suscripción Oficiales:</p>
+                    <p>• <b>Plan Mensual:</b> $5 (¡Promoción: el 1er pago incluye el 2do mes gratis!)</p>
+                    <p>• <b>Plan Anual:</b> $45 (Ahorra y olvídate por 12 meses)</p>
+                </div>
+
+                <div class="space-y-2 pt-1">
+                    <button type="button" onclick="abrirModalPasarelaSuscripcion('mensual')" class="w-full bg-emerald-600 text-white font-semibold py-2.5 rounded-lg text-xs hover:bg-emerald-700 transition shadow">💳 Pagar Suscripción Mensual ($5 + 1 Mes Gratis)</button>
+                    <button type="button" onclick="abrirModalPasarelaSuscripcion('anual')" class="w-full bg-blue-600 text-white font-semibold py-2.5 rounded-lg text-xs hover:bg-blue-700 transition shadow">🌟 Pagar Suscripción Anual ($45)</button>
+                    <button type="button" onclick="verAnuncioBonificadoPro()" class="w-full bg-amber-700 text-white font-semibold py-2 rounded-lg text-xs hover:bg-amber-800 transition shadow">🎬 Ver Anuncio (Activar 12 Horas Gratis)</button>
+                    
+                    <div class="pt-2 border-t border-white/20 space-y-2">
+                        <button type="button" onclick="mostrarCodigoQR()" class="w-full bg-white/20 text-white font-semibold py-2 rounded-lg text-xs hover:bg-white/30 transition">📱 Ver Código QR de Sincronización</button>
+                        <div id="qr-display-container" class="hidden bg-white p-3 rounded-lg text-center space-y-2 text-slate-800">
+                            <p class="text-[11px] font-bold">Tu Código QR de Sincronización:</p>
+                            <div id="qr-image-box" class="flex justify-center"></div>
+                            <p id="qr-text-code" class="text-[10px] font-mono text-slate-500 select-all bg-slate-100 p-1 rounded"></p>
+                        </div>
+                        <div class="flex gap-2">
+                            <input type="text" id="token-socio" class="flex-1 p-2 text-xs rounded-lg text-slate-800 outline-none" placeholder="Código de socio / Licencia">
+                            <button type="button" onclick="conectarSocio()" class="bg-slate-900 text-white px-3 py-2 rounded-lg text-xs font-medium hover:bg-slate-800 transition">Conectar</button>
+                        </div>
+                        <button type="button" onclick="abrirEscanerQR()" class="w-full bg-slate-900 text-white font-semibold py-2 rounded-lg text-xs hover:bg-slate-800 transition shadow">📷 Escanear QR con Cámara</button>
+                        <button type="button" onclick="desvincularTelefono()" class="w-full bg-red-600 text-white font-semibold py-2 rounded-lg text-xs hover:bg-red-700 transition shadow">🔌 Desvincular este Teléfono</button>
                     </div>
-                    <div class="flex gap-2 pt-1">
-                        <input type="text" id="token-socio" class="flex-1 p-2 text-xs rounded-lg text-slate-800 outline-none" placeholder="Código de socio">
-                        <button type="button" onclick="conectarSocio()" class="bg-slate-900 text-white px-3 py-2 rounded-lg text-xs font-medium hover:bg-slate-800 transition">Conectar</button>
-                    </div>
-                    <button type="button" onclick="abrirEscanerQR()" class="w-full bg-slate-900 text-white font-semibold py-2 rounded-lg text-xs hover:bg-slate-800 transition shadow">📷 Escanear QR con Cámara</button>
-                    <button type="button" onclick="desvincularTelefono()" class="w-full bg-red-600 text-white font-semibold py-2 rounded-lg text-xs hover:bg-red-700 transition shadow">🔌 Desvincular este Teléfono</button>
                 </div>
             </div>
         </section>
@@ -801,7 +814,7 @@
             { id: 1, nombre: 'Mi Negocio Principal', capitalInicial: 0, tasaCambio: 36.50, inventario: [], ventas: [], deudas: [], finanzas: [], proveedores: [], syncCode: localStorage.getItem('gestorpro_sync_code') || ('dispositivo_' + Math.random().toString(36).substring(2, 10)) }
         ];
 
-        // --- LIMPIEZA AUTOMÁTICA DE REGISTROS ANTIGUOS (MANTENIMIENTO CERO) ---
+        // --- LIMPIEZA AUTOMÁTICA DE REGISTROS ANTIGUOS ---
         function purgarRegistrosAntiguos() {
             const UN_ANO_EN_MS = 365 * 24 * 60 * 60 * 1000;
             const ahora = Date.now();
@@ -870,7 +883,7 @@
             return neg;
         }
 
-        // --- PERSISTENCIA CON TIMESTAMPS (CONTROL DE CONCURRENCIA) ---
+        // --- PERSISTENCIA CON TIMESTAMPS ---
         function persistir() {
             const timestamp = Date.now();
             localStorage.setItem('gestorpro_last_modified', timestamp);
@@ -993,36 +1006,60 @@
             }, 1200);
         }
 
-        // --- PASARELA DE PAGOS DINÁMICA ---
-        function abrirModalPasarela() {
-            const total = parseFloat(document.getElementById('calc-total-usd').value) || 10.00;
+        // --- PASARELA DE PAGOS PARA SUSCRIPCIONES Y COBROS ---
+        function abrirModalPasarelaSuscripcion(tipoPlan) {
+            window.planSeleccionadoActual = tipoPlan; // 'mensual' o 'anual'
             const neg = obtenerNegocio();
             const tasa = neg.tasaCambio || 36.50;
-            const totalBs = total * tasa;
+            
+            const montoUSD = tipoPlan === 'mensual' ? 5.00 : 45.00;
+            const montoBS = montoUSD * tasa;
 
             const metodo = document.getElementById('select-metodo-pago').value;
             const textoDetalle = document.getElementById('detalles-pago-texto');
             const imgQr = document.getElementById('img-qr-pago');
+            const tituloModal = document.getElementById('instrucciones-pago-titulo');
 
-            if (metodo === 'pagomovil') {
-                textoDetalle.innerHTML = `Banco: Banesco | Tlf: 0412-1234567 | C.I: 30.022.434<br><b>Monto exacto: Bs. ${totalBs.toFixed(2)}</b>`;
-                imgQr.src = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent('PAGOMOVIL:04121234567:30022434:' + totalBs.toFixed(2))}`;
+            tituloModal.innerText = `Pago de Suscripción (${tipoPlan.toUpperCase()}): $${montoUSD.toFixed(2)}`;
+
+            if (metodo === 'paypal') {
+                textoDetalle.innerHTML = `Paga de forma segura con PayPal:<br><b>Enlace: paypal.me/gestorproapp/$${montoUSD.toFixed(2)}</b><br><small>Envía captura a soporte tras pagar.</small>`;
+                imgQr.src = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent('https://paypal.me/gestorproapp/' + montoUSD)}`;
+            } else if (metodo === 'pagomovil') {
+                textoDetalle.innerHTML = `Banco: Banesco | Tlf: 0412-1234567 | C.I: 30.022.434<br><b>Monto exacto: Bs. ${montoBS.toFixed(2)}</b>`;
+                imgQr.src = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent('PAGOMOVIL:04121234567:30022434:' + montoBS.toFixed(2))}`;
             } else if (metodo === 'zelle') {
-                textoDetalle.innerHTML = `Zelle: pagos@gestorpro.app | Titular: Joelvy Salazar<br><b>Monto exacto: $${total.toFixed(2)}</b>`;
-                imgQr.src = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent('ZELLE:pagos@gestorpro.app:' + total.toFixed(2))}`;
+                textoDetalle.innerHTML = `Zelle: pagos@gestorpro.app | Titular: Joelvy Salazar<br><b>Monto exacto: $${montoUSD.toFixed(2)}</b>`;
+                imgQr.src = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent('ZELLE:pagos@gestorpro.app:' + montoUSD)}`;
             } else {
-                textoDetalle.innerHTML = `Binance Pay ID: 123456789 (USDT)<br><b>Monto exacto: $${total.toFixed(2)} USDT</b>`;
-                imgQr.src = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent('BINANCE:123456789:' + total.toFixed(2))}`;
+                textoDetalle.innerHTML = `Binance Pay ID: 123456789 (USDT)<br><b>Monto exacto: $${montoUSD.toFixed(2)} USDT</b>`;
+                imgQr.src = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent('BINANCE:123456789:' + montoUSD)}`;
             }
 
             document.getElementById('modal-pasarela-pago').classList.remove('hidden');
         }
 
-        function cerrarModalPasarela() {
-            document.getElementById('modal-pasarela-pago').classList.add('hidden');
+        function abrirModalPasarela() {
+            abrirModalPasarelaSuscripcion('mensual');
         }
 
-        document.getElementById('select-metodo-pago')?.addEventListener('change', () => abrirModalPasarela());
+        function cerrarModalPasarela() {
+            document.getElementById('modal-pasarela-pago').classList.add('hidden');
+            // Simulación de activación de prueba o registro del pago solicitado por el usuario
+            if(window.planSeleccionadoActual) {
+                const diasExtra = window.planSeleccionadoActual === 'mensual' ? 60 : 365; // 5 USD = 2 meses (60 días por promo), Anual = 365 días
+                const tiempoExpiracion = Date.now() + (diasExtra * 24 * 60 * 60 * 1000);
+                localStorage.setItem('proExpira', tiempoExpiracion);
+                verificarEstadoPro();
+                mostrarToast(`⭐ ¡Suscripción ${window.planSeleccionadoActual} registrada con éxito!`, 'success');
+                window.planSeleccionadoActual = null;
+            }
+        }
+
+        document.getElementById('select-metodo-pago')?.addEventListener('change', () => {
+            if(window.planSeleccionadoActual) abrirModalPasarelaSuscripcion(window.planSeleccionadoActual);
+            else abrirModalPasarela();
+        });
 
         // --- CALCULADORA MULTIDIVISA Y VUELTO ---
         function calcularVueltoMultidivisa() {
@@ -1222,23 +1259,26 @@ ${enlace}`;
             
             if(esProActivo()) {
                 const expira = parseInt(localStorage.getItem('proExpira'));
-                const horas = Math.ceil((expira - Date.now()) / (1000 * 60 * 60));
+                const horasRestantes = Math.ceil((expira - Date.now()) / (1000 * 60 * 60));
+                const diasRestantes = Math.ceil(horasRestantes / 24);
+                
                 if(badge) { badge.innerText = "Activo"; badge.className = "bg-emerald-500 text-white text-xs px-2 py-0.5 rounded font-semibold"; }
-                if(texto) { texto.innerText = `Modo Pro activo por ${horas} horas más. Sin publicidad.`; }
+                if(texto) { texto.innerText = `Modo Pro activo (${diasRestantes > 3 ? diasRestantes + ' días' : horasRestantes + ' horas'} restantes). Sin publicidad.`; }
                 if(bannerAd) bannerAd.classList.add('hidden');
             } else {
                 if(badge) { badge.innerText = "Inactivo"; badge.className = "bg-red-500 text-white text-xs px-2 py-0.5 rounded font-semibold"; }
-                if(texto) { texto.innerText = "Modo Pro inactivo. Ve el anuncio bonificado para activarlo por 24 horas."; }
+                if(texto) { texto.innerText = "Modo Pro inactivo. Suscríbete o mira un anuncio de 12 horas para activarlo."; }
                 if(bannerAd) bannerAd.classList.remove('hidden');
             }
         }
 
+        // --- ACTUALIZADO: VIDEO BONIFICADO DE 12 HORAS ---
         function verAnuncioBonificadoPro() {
             mostrarToast('🎬 Reproduciendo anuncio bonificado de AdMob...', 'info');
-            const tiempoExpiracion = Date.now() + (24 * 60 * 60 * 1000);
+            const tiempoExpiracion = Date.now() + (12 * 60 * 60 * 1000); // 12 horas exactas
             localStorage.setItem('proExpira', tiempoExpiracion);
             verificarEstadoPro();
-            mostrarToast('⭐ ¡Modo Pro activado por 24 horas!', 'success');
+            mostrarToast('⭐ ¡Modo Pro activado por 12 horas!', 'success');
         }
 
         function guardarTasaCambio() {
@@ -1792,79 +1832,57 @@ Monto abono ($):`, deuda.pendiente));
         }
 
         function generarReportePDF() {
-    if(!esProActivo()) return mostrarToast('🔒 Requiere Modo Pro.', 'error');
-    if (typeof window.jspdf === 'undefined') {
-        return mostrarToast('❌ Error: Librería PDF no cargada.', 'error');
-    }
+            if(!esProActivo()) return mostrarToast('🔒 Requiere Modo Pro.', 'error');
+            if (typeof window.jspdf === 'undefined') {
+                return mostrarToast('❌ Error: Librería PDF no cargada.', 'error');
+            }
 
-    mostrarToast('📄 Generando reporte PDF ejecutivo...', 'info');
-    const { jsPDF } = window.jspdf;
-    const doc = new jsPDF();
-    const neg = obtenerNegocio();
+            mostrarToast('📄 Generando reporte PDF...', 'info');
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            const neg = obtenerNegocio();
 
-    // Encabezado
-    doc.setFont("helvetica", "bold");
-    doc.setFontSize(16);
-    doc.text(neg.nombre.toUpperCase(), 15, 20);
+            doc.setFont("helvetica", "bold");
+            doc.setFontSize(16);
+            doc.text(neg.nombre.toUpperCase(), 15, 20);
 
-    doc.setFontSize(10);
-    doc.setFont("helvetica", "normal");
-    doc.text(`Reporte Ejecutivo y de Caja - Fecha: ${new Date().toLocaleDateString()}`, 15, 26);
-    doc.line(15, 30, 195, 30);
+            doc.setFontSize(11);
+            doc.setFont("helvetica", "normal");
+            doc.text(`Reporte Ejecutivo de Gestión - Fecha: ${new Date().toLocaleDateString()}`, 15, 28);
+            doc.line(15, 32, 195, 32);
 
-    let y = 38;
-    doc.setFont("helvetica", "bold");
-    doc.text("1. Resumen Financiero General:", 15, y);
-    y += 7;
+            let y = 42;
+            doc.setFont("helvetica", "bold");
+            doc.text("Resumen Financiero:", 15, y);
+            y += 8;
 
-    doc.setFont("helvetica", "normal");
-    const ventasTotales = (neg.ventas || []).reduce((a, b) => a + b.total, 0);
-    const gananciaTotal = (neg.ventas || []).reduce((a, b) => a + b.ganancia, 0);
-    const inversionTotal = (neg.inventario || []).reduce((a, p) => a + p.inversionTotal, 0);
+            doc.setFont("helvetica", "normal");
+            const ventasTotales = (neg.ventas || []).reduce((a, b) => a + b.total, 0);
+            const gananciaTotal = (neg.ventas || []).reduce((a, b) => a + b.ganancia, 0);
+            const inversionTotal = (neg.inventario || []).reduce((a, p) => a + p.inversionTotal, 0);
 
-    doc.text(`• Capital Inicial Registrado: $${(neg.capitalInicial || 0).toFixed(2)}`, 20, y); y += 6;
-    doc.text(`• Total Invertido en Mercancía: $${inversionTotal.toFixed(2)}`, 20, y); y += 6;
-    doc.text(`• Ventas Totales Acumuladas: $${ventasTotales.toFixed(2)}`, 20, y); y += 6;
-    doc.text(`• Ganancia Neta Estimada: $${gananciaTotal.toFixed(2)}`, 20, y); y += 10;
+            doc.text(`• Capital Inicial Registrado: $${(neg.capitalInicial || 0).toFixed(2)}`, 20, y); y += 6;
+            doc.text(`• Total Invertido en Mercancía: $${inversionTotal.toFixed(2)}`, 20, y); y += 6;
+            doc.text(`• Ventas Totales Acumuladas: $${ventasTotales.toFixed(2)}`, 20, y); y += 6;
+            doc.text(`• Ganancia Neta Estimada: $${gananciaTotal.toFixed(2)}`, 20, y); y += 12;
 
-    doc.setFont("helvetica", "bold");
-    doc.text("2. Últimos Movimientos de Caja / Gastos Operativos:", 15, y); y += 7;
-    doc.setFont("helvetica", "normal");
+            doc.setFont("helvetica", "bold");
+            doc.text("Inventario Actual:", 15, y); y += 8;
+            doc.setFont("helvetica", "normal");
 
-    // Listado de finanzas recientes (máximo 10)
-    const finanzasRecientes = (neg.finanzas || []).slice(0, 10);
-    if(finanzasRecientes.length === 0) {
-        doc.text("Sin movimientos registrados recientemente.", 20, y);
-        y += 8;
-    } else {
-        finanzasRecientes.forEach((f) => {
-            if(y > 270) { doc.addPage(); y = 20; }
-            const signo = f.tipo === 'ingreso' ? '+' : '-';
-            doc.text(`[${f.tipo.toUpperCase()}] ${f.desc} (${f.fecha || 'Hoy'}): ${signo}$${f.monto.toFixed(2)}`, 20, y);
-            y += 6;
-        });
-    }
+            (neg.inventario || []).slice(0, 15).forEach((p, idx) => {
+                if(y > 270) { doc.addPage(); y = 20; }
+                doc.text(`${idx + 1}. ${p.nombre} - Stock: ${p.stock} | Venta: $${p.venta.toFixed(2)}`, 20, y);
+                y += 6;
+            });
 
-    y += 4;
-    if(y > 260) { doc.addPage(); y = 20; }
-    doc.setFont("helvetica", "bold");
-    doc.text("3. Estado del Inventario:", 15, y); y += 7;
-    doc.setFont("helvetica", "normal");
+            doc.setFontSize(9);
+            doc.setTextColor(150);
+            doc.text("© 2026 Gestor Pro - Creado por Joelvy José Salazar Vargas (C.I. 30.022.434)", 15, 285);
 
-    (neg.inventario || []).slice(0, 10).forEach((p, idx) => {
-        if(y > 270) { doc.addPage(); y = 20; }
-        doc.text(`${idx + 1}. ${p.nombre} - Stock: ${p.stock} | Venta: $${p.venta.toFixed(2)}`, 20, y);
-        y += 6;
-    });
-
-    // Pie de página oficial protegido
-    doc.setFontSize(8);
-    doc.setTextColor(120);
-    doc.text("© 2026 Gestor Pro - Creado por Joelvy José Salazar Vargas (C.I. 30.022.434)", 15, 288);
-
-    doc.save(`Reporte_Ejecutivo_${neg.nombre.replace(/\s+/g, '_')}_${Date.now()}.pdf`);
-    mostrarToast('✅ ¡Reporte PDF generado y descargado!', 'success');
-}
+            doc.save(`Reporte_${neg.nombre.replace(/\s+/g, '_')}_${Date.now()}.pdf`);
+            mostrarToast('✅ ¡Reporte PDF descargado con éxito!', 'success');
+        }
 
         function renderizarTodo() {
             actualizarInterfazRoles();

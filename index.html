@@ -1511,10 +1511,18 @@ ${enlace}`;
             const contenedor = document.getElementById('lista-inventario');
             if(!contenedor) return;
             const texto = (filtro || '').toLowerCase();
-            const filtrados = (neg.inventario || []).filter(p => p.nombre.toLowerCase().includes(texto) || (p.codigo && p.codigo.toLowerCase().includes(texto)));
             
-            if(filtrados.length === 0) { contenedor.innerHTML = `<p class="text-xs text-slate-400 text-center py-4">Sin productos.</p>`; return; }
-            contenedor.innerHTML = filtrados.map(prod => `
+            let filtrados = (neg.inventario || []).filter(p => p.nombre.toLowerCase().includes(texto) || (p.codigo && p.codigo.toLowerCase().includes(texto)));
+            
+            if(filtrados.length === 0) { 
+                contenedor.innerHTML = `<p class="text-xs text-slate-400 text-center py-4">Sin productos.</p>`; 
+                return; 
+            }
+
+            // Paginación y límite de visualización a 50 elementos para mantener fluidez
+            const totalMostrados = filtrados.slice(0, 50);
+
+            contenedor.innerHTML = totalMostrados.map(prod => `
                 <div class="bg-white dark:bg-slate-900 p-3 rounded-lg shadow-sm border border-slate-100 dark:border-slate-800 flex justify-between items-center">
                     <div>
                         <h3 class="text-sm font-semibold">${prod.nombre} (Stock: ${prod.stock})</h3>
@@ -1525,7 +1533,7 @@ ${enlace}`;
                         <button type="button" onclick="eliminarProducto(${prod.id})" class="text-red-500 text-xs bg-red-50 px-2.5 py-1.5 rounded">Eliminar</button>
                     </div>
                 </div>
-            `).join('');
+            `).join('') + (filtrados.length > 50 ? `<p class="text-[10px] text-center text-slate-400 py-2">Mostrando 50 de ${filtrados.length} productos. Usa el buscador para encontrar otros específicos.</p>` : '');
         }
 
         function eliminarProducto(id) {

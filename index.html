@@ -1788,9 +1788,61 @@ Monto abono ($):`, deuda.pendiente));
         }
 
         function generarReportePDF() {
-            if(!esProActivo()) return mostrarToast('🔒 Requiere Modo Pro.', 'error');
-            mostrarToast('Generando reporte PDF ejecutivo...', 'info');
-        }
+    if(!esProActivo()) return mostrarToast('🔒 Requiere Modo Pro.', 'error');
+    if (typeof window.jspdf === 'undefined') {
+        return mostrarToast('❌ Error: Librería PDF no cargada.', 'error');
+    }
+
+    mostrarToast('📄 Generando reporte PDF...', 'info');
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+    const neg = obtenerNegocio();
+
+    // Encabezado del documento
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(16);
+    doc.text(neg.nombre.toUpperCase(), 15, 20);
+
+    doc.setFontSize(11);
+    doc.setFont("helvetica", "normal");
+    doc.text(`Reporte Ejecutivo de Gestión - Fecha: ${new Date().toLocaleDateString()}`, 15, 28);
+    doc.line(15, 32, 195, 32);
+
+    let y = 42;
+    doc.setFont("helvetica", "bold");
+    doc.text("Resumen Financiero:", 15, y);
+    y += 8;
+
+    doc.setFont("helvetica", "normal");
+    const ventasTotales = (neg.ventas || []).reduce((a, b) => a + b.total, 0);
+    const gananciaTotal = (neg.ventas || []).reduce((a, b) => a + b.ganancia, 0);
+    const inversionTotal = (neg.inventario || []).reduce((a, p) => a + p.inversionTotal, 0);
+
+    doc.text(`• Capital Inicial Registrado: $${(neg.capitalInicial || 0).toFixed(2)}`, 20, y); y += 6;
+    doc.text(`• Total Invertido en Mercancía: $${inversionTotal.toFixed(2)}`, 20, y); y += 6;
+    doc.text(`• Ventas Totales Acumuladas: $${ventasTotales.toFixed(2)}`, 20, y); y += 6;
+    doc.text(`• Ganancia Neta Estimada: $${gananciaTotal.toFixed(2)}`, 20, y); y += 12;
+
+    doc.setFont("helvetica", "bold");
+    doc.text("Inventario Actual:", 15, y); y += 8;
+    doc.setFont("helvetica", "normal");
+
+    // Listado de productos (máximo 15 para mantener orden en la hoja)
+    (neg.inventario || []).slice(0, 15).forEach((p, idx) => {
+        if(y > 270) { doc.addPage(); y = 20; }
+        doc.text(`${idx + 1}. ${p.nombre} - Stock: ${p.stock} | Venta: $${p.venta.toFixed(2)}`, 20, y);
+        y += 6;
+    });
+
+    // Pie de página con créditos oficiales
+    doc.setFontSize(9);
+    doc.setTextColor(150);
+    doc.text("© 2026 Gestor Pro - Creado por Joelvy José Salazar Vargas (C.I. 30.022.434)", 15, 285);
+
+    // Guardar archivo PDF
+    doc.save(`Reporte_${neg.nombre.replace(/\s+/g, '_')}_${Date.now()}.pdf`);
+    mostrarToast('✅ ¡Reporte PDF descargado con éxito!', 'success');
+}
 
         function renderizarTodo() {
             actualizarInterfazRoles();

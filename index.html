@@ -28,6 +28,74 @@
     <!-- Contenedor de Notificaciones Flotantes (Toasts) -->
     <div id="toast-container" class="fixed top-4 right-4 left-4 max-w-md mx-auto z-50 space-y-2 pointer-events-none"></div>
 
+    <!-- Fondo Oscuro para Menú Lateral -->
+    <div id="menu-lateral-backdrop" onclick="cerrarMenuLateral()" class="fixed inset-0 bg-slate-950/60 backdrop-blur-xs z-40 hidden transition-opacity duration-200"></div>
+
+    <!-- Menú Lateral Izquierdo Desplegable -->
+    <aside id="menu-lateral" class="fixed top-0 left-0 bottom-0 w-72 max-w-[82vw] bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 z-50 -translate-x-full transition-transform duration-200 ease-out flex flex-col justify-between shadow-2xl">
+        <div class="p-4 space-y-4 overflow-y-auto">
+            <!-- Cabecera del Menú Lateral -->
+            <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3">
+                <div class="min-w-0">
+                    <div class="flex items-center gap-2">
+                        <span class="font-bold text-sm text-slate-900 dark:text-white">Gestor Pro</span>
+                        <span id="drawer-pro-pill" class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-300">Gratis</span>
+                    </div>
+                    <p id="drawer-negocio-nombre" class="text-[11px] text-slate-500 dark:text-slate-400 truncate mt-0.5">Mi Negocio Principal</p>
+                </div>
+                <button type="button" onclick="cerrarMenuLateral()" class="text-slate-400 hover:text-rose-500 text-sm font-bold px-2 py-1 rounded-lg">✕</button>
+            </div>
+
+            <!-- Secciones Principales -->
+            <div class="space-y-1">
+                <p class="text-[10px] font-bold uppercase tracking-wider text-slate-400 px-2.5 pb-1">Secciones</p>
+                <button type="button" onclick="navegarDesdeMenu('resumen')" id="drawer-btn-resumen" class="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-xs font-semibold bg-blue-50 text-blue-700 dark:bg-blue-950/70 dark:text-blue-300 transition text-left">
+                    <span>📊</span>
+                    <span>Resumen</span>
+                </button>
+                <button type="button" onclick="navegarDesdeMenu('inventario')" id="drawer-btn-inventario" class="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-xs font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition text-left">
+                    <span>📦</span>
+                    <span>Stock y proveedores</span>
+                </button>
+                <button type="button" onclick="navegarDesdeMenu('ventas')" id="drawer-btn-ventas" class="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-xs font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition text-left">
+                    <span>🛒</span>
+                    <span>Ventas y fiados</span>
+                </button>
+                <button type="button" onclick="navegarDesdeMenu('finanzas')" id="drawer-btn-finanzas" class="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-xs font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition text-left">
+                    <span>💵</span>
+                    <span>Caja y movimientos</span>
+                </button>
+                <button type="button" onclick="navegarDesdeMenu('ajustes')" id="drawer-btn-ajustes" class="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-xs font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition text-left">
+                    <span>⚙️</span>
+                    <span>Ajustes y Modo Pro</span>
+                </button>
+            </div>
+
+            <!-- Herramientas Rápidas -->
+            <div class="space-y-1 pt-2 border-t border-slate-100 dark:border-slate-800">
+                <p class="text-[10px] font-bold uppercase tracking-wider text-slate-400 px-2.5 pb-1">Herramientas</p>
+                <button type="button" onclick="cerrarMenuLateral(); requierePro(abrirModalCierreZ, 'Cierre de Caja (Arqueo Z)')" class="w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition text-left">
+                    <span class="flex items-center gap-2.5"><span>🧾</span><span>Cierre de Caja (Z)</span></span>
+                    <span class="pro-tag text-[9px] font-bold bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300 px-1.5 py-0.5 rounded-full">PRO</span>
+                </button>
+                <button type="button" onclick="cerrarMenuLateral(); requierePro(abrirModalCatalogoWeb, 'Catálogo Digital')" class="w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition text-left">
+                    <span class="flex items-center gap-2.5"><span>🌐</span><span>Catálogo Web</span></span>
+                    <span class="pro-tag text-[9px] font-bold bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300 px-1.5 py-0.5 rounded-full">PRO</span>
+                </button>
+                <button type="button" onclick="cerrarMenuLateral(); abrirOnboarding()" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition text-left">
+                    <span>📘</span>
+                    <span>Guía rápida</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Pie del Menú Lateral -->
+        <div class="p-3.5 border-t border-slate-100 dark:border-slate-800 bg-slate-50/80 dark:bg-slate-800/40 text-[11px] text-slate-500 dark:text-slate-400 space-y-0.5">
+            <p class="font-semibold text-slate-700 dark:text-slate-200">Gestor Pro · © 2026</p>
+            <p class="truncate">Joelbi José Salazar Vargas</p>
+        </div>
+    </aside>
+
     <!-- Pantalla de Bienvenida / Onboarding -->
     <div id="modal-onboarding" class="fixed inset-0 bg-slate-950/75 backdrop-blur-xs z-50 flex items-center justify-center p-4 hidden">
         <div class="bg-white dark:bg-slate-900 rounded-2xl max-w-sm w-full p-5 space-y-4 shadow-xl border border-slate-200 dark:border-slate-800">
@@ -151,17 +219,22 @@
         </div>
     </div>
 
-    <!-- Encabezado Limpio y Compacto -->
-    <header class="bg-blue-600 dark:bg-slate-900 text-white border-b border-blue-700/40 dark:border-slate-800 sticky top-0 z-40 transition-colors">
-        <div class="max-w-md mx-auto px-4 py-2.5 flex items-center justify-between gap-2">
-            <div class="min-w-0 flex-1">
-                <div class="flex items-center gap-1.5">
-                    <h1 class="text-sm font-bold tracking-tight truncate">Gestor Pro</h1>
-                    <span id="badge-rol-actual" onclick="clicBadgeRol()" class="text-[10px] bg-white/15 hover:bg-white/25 text-white font-medium px-2 py-0.5 rounded-full cursor-pointer whitespace-nowrap shrink-0 transition" title="Toca para cambiar rol">Dueño</span>
-                    <span id="badge-offline-status" class="text-[10px] bg-emerald-500/25 text-emerald-100 px-1.5 py-0.5 rounded-full font-medium whitespace-nowrap shrink-0" title="Estado de conexión">Online</span>
+    <!-- Encabezado Limpio y Compacto con Botón de Menú Lateral -->
+    <header class="bg-blue-600 dark:bg-slate-900 text-white border-b border-blue-700/40 dark:border-slate-800 sticky top-0 z-30 transition-colors">
+        <div class="max-w-md mx-auto px-3 py-2.5 flex items-center justify-between gap-2">
+            <div class="flex items-start gap-2 min-w-0 flex-1">
+                <button type="button" onclick="abrirMenuLateral()" aria-label="Abrir menú lateral" class="mt-0.5 text-sm bg-white/15 hover:bg-white/25 px-2.5 py-1.5 rounded-lg transition shrink-0 font-bold">
+                    ☰
+                </button>
+                <div class="min-w-0 flex-1">
+                    <div class="flex items-center gap-1.5">
+                        <h1 class="text-sm font-bold tracking-tight truncate">Gestor Pro</h1>
+                        <span id="badge-rol-actual" onclick="clicBadgeRol()" class="text-[10px] bg-white/15 hover:bg-white/25 text-white font-medium px-2 py-0.5 rounded-full cursor-pointer whitespace-nowrap shrink-0 transition" title="Toca para cambiar rol">Dueño</span>
+                        <span id="badge-offline-status" class="text-[10px] bg-emerald-500/25 text-emerald-100 px-1.5 py-0.5 rounded-full font-medium whitespace-nowrap shrink-0" title="Estado de conexión">Online</span>
+                    </div>
+                    <select id="select-negocio-activo" onchange="cambiarNegocioActivo(this.value)" class="mt-1 max-w-full text-xs bg-blue-700/80 dark:bg-slate-800 text-white font-medium px-2.5 py-1 rounded-lg outline-none border border-blue-400/30 dark:border-slate-700 truncate">
+                    </select>
                 </div>
-                <select id="select-negocio-activo" onchange="cambiarNegocioActivo(this.value)" class="mt-1 max-w-full text-xs bg-blue-700/80 dark:bg-slate-800 text-white font-medium px-2.5 py-1 rounded-lg outline-none border border-blue-400/30 dark:border-slate-700 truncate">
-                </select>
             </div>
             <div class="flex items-center gap-1.5 shrink-0">
                 <button type="button" onclick="toggleDarkMode()" id="btn-dark-mode" title="Cambiar Tema" class="text-xs bg-white/15 hover:bg-white/25 px-2.5 py-1.5 rounded-lg transition whitespace-nowrap">🌙</button>
@@ -613,7 +686,7 @@
     </main>
 
     <!-- Contenedor Fijo de Anuncio Banner AdMob -->
-    <div id="admob-banner-container" class="fixed bottom-14 left-0 right-0 bg-white dark:bg-slate-900 border-t border-slate-200/80 dark:border-slate-800 min-h-[52px] flex flex-col justify-center items-center z-30 max-w-md mx-auto overflow-hidden">
+    <div id="admob-banner-container" class="fixed bottom-14 left-0 right-0 bg-white dark:bg-slate-900 border-t border-slate-200/80 dark:border-slate-800 min-h-[52px] flex flex-col justify-center items-center z-20 max-w-md mx-auto overflow-hidden">
         <ins class="adsbygoogle"
              style="display:inline-block;width:320px;height:50px"
              data-ad-client="ca-app-pub-3645077961178424~5519013340"
@@ -624,7 +697,7 @@
     </div>
 
     <!-- Barra de Navegación Inferior -->
-    <nav class="bg-white/95 dark:bg-slate-900/95 backdrop-blur-xs border-t border-slate-200/90 dark:border-slate-800 fixed bottom-0 left-0 right-0 z-40 transition-colors">
+    <nav class="bg-white/95 dark:bg-slate-900/95 backdrop-blur-xs border-t border-slate-200/90 dark:border-slate-800 fixed bottom-0 left-0 right-0 z-30 transition-colors">
         <div class="max-w-md mx-auto grid grid-cols-5 px-1 py-1">
             <button type="button" onclick="cambiarTab('resumen')" id="btn-tab-resumen" class="text-center py-2 text-[11px] font-semibold text-blue-600 dark:text-blue-400 border-t-2 border-blue-600 dark:border-blue-400 truncate">Resumen</button>
             <button type="button" onclick="cambiarTab('inventario')" id="btn-tab-inventario" class="text-center py-2 text-[11px] font-medium text-slate-500 dark:text-slate-400 border-t-2 border-transparent truncate">Stock</button>
@@ -738,8 +811,57 @@
                     registration.update();
                 }
             });
-            navigator.serviceWorker.register('./sw.js?v=20261118b').catch(err => console.log('SW error:', err));
+            navigator.serviceWorker.register('./sw.js?v=20261118c').catch(err => console.log('SW error:', err));
         }
+
+        function abrirMenuLateral() {
+            const menu = document.getElementById('menu-lateral');
+            const backdrop = document.getElementById('menu-lateral-backdrop');
+            const neg = obtenerNegocio();
+            const nombreEl = document.getElementById('drawer-negocio-nombre');
+            const pillEl = document.getElementById('drawer-pro-pill');
+            if (nombreEl) nombreEl.innerText = neg.nombre;
+            if (pillEl) {
+                pillEl.innerText = esProActivo() ? 'PRO' : 'Gratis';
+                pillEl.className = esProActivo()
+                    ? 'text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300'
+                    : 'text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-300';
+            }
+            backdrop?.classList.remove('hidden');
+            requestAnimationFrame(() => {
+                menu?.classList.remove('-translate-x-full');
+            });
+        }
+
+        function cerrarMenuLateral() {
+            const menu = document.getElementById('menu-lateral');
+            const backdrop = document.getElementById('menu-lateral-backdrop');
+            menu?.classList.add('-translate-x-full');
+            setTimeout(() => {
+                backdrop?.classList.add('hidden');
+            }, 200);
+        }
+
+        function navegarDesdeMenu(tab) {
+            cerrarMenuLateral();
+            cambiarTab(tab);
+        }
+
+        function marcarSeccionActivaMenu(tab) {
+            ['resumen', 'inventario', 'ventas', 'finanzas', 'ajustes'].forEach(t => {
+                const btn = document.getElementById(`drawer-btn-${t}`);
+                if (!btn) return;
+                if (t === tab) {
+                    btn.className = 'w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-xs font-semibold bg-blue-50 text-blue-700 dark:bg-blue-950/70 dark:text-blue-300 transition text-left';
+                } else {
+                    btn.className = 'w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-xs font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition text-left';
+                }
+            });
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') cerrarMenuLateral();
+        });
 
         function mostrarToast(mensaje, tipo = 'success') {
             const container = document.getElementById('toast-container');
@@ -1301,12 +1423,20 @@
             const texto = document.getElementById('texto-pro-estado');
             const bannerAd = document.getElementById('admob-banner-container');
             const proTags = document.querySelectorAll('.pro-tag');
+            const drawerPill = document.getElementById('drawer-pro-pill');
             const activo = esProActivo();
 
             proTags.forEach(tag => {
                 if (activo) tag.classList.add('hidden');
                 else tag.classList.remove('hidden');
             });
+
+            if (drawerPill) {
+                drawerPill.innerText = activo ? 'PRO' : 'Gratis';
+                drawerPill.className = activo
+                    ? 'text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300'
+                    : 'text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-300';
+            }
 
             if (activo) {
                 const expira = parseInt(localStorage.getItem('proExpira'));
@@ -1459,6 +1589,8 @@
         function actualizarSelectNegocios() {
             const selectHeader = document.getElementById('select-negocio-activo');
             if(selectHeader) selectHeader.innerHTML = negocios.map(n => `<option value="${n.id}" ${n.id === negocioActualId ? 'selected' : ''}>${n.nombre}</option>`).join('');
+            const drawerNombre = document.getElementById('drawer-negocio-nombre');
+            if(drawerNombre) drawerNombre.innerText = obtenerNegocio().nombre;
             
             let totalVentasGlobal = 0;
             let totalGananciasGlobal = 0;
@@ -1512,6 +1644,7 @@
             });
             document.getElementById(`tab-${tab}`).classList.remove('hidden');
             document.getElementById(`btn-tab-${tab}`).className = "text-center py-2 text-[11px] font-semibold text-blue-600 dark:text-blue-400 border-t-2 border-blue-600 dark:border-blue-400 truncate";
+            marcarSeccionActivaMenu(tab);
             
             if(tab === 'resumen') { actualizarResumenGeneral(); actualizarGraficos(); verificarAlertaBI(); }
             if(tab === 'inventario') { renderInventario(); renderProveedores(); }

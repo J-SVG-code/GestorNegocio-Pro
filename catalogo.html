@@ -7,96 +7,138 @@
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-slate-50 text-slate-800 min-h-screen p-4 flex flex-col items-center">
-    <div class="max-w-md w-full space-y-4">
-        <header class="bg-blue-600 text-white p-4 rounded-xl text-center shadow">
-            <h1 class="text-lg font-bold">🛍️ Catálogo Online</h1>
-            <p class="text-xs text-blue-100">Selecciona tus productos para hacer pedidos por WhatsApp</p>
+    <div class="max-w-md w-full space-y-4 pb-24">
+        <header class="bg-blue-600 text-white p-4 rounded-xl text-center shadow space-y-1">
+            <h1 id="titulo-catalogo" class="text-lg font-bold">Catálogo Online</h1>
+            <p id="subtitulo-catalogo" class="text-xs text-blue-100">Selecciona tus productos para hacer pedidos por WhatsApp</p>
+            <p id="whatsapp-catalogo-badge" class="text-[11px] text-blue-50/90 font-mono"></p>
         </header>
 
-        <div id="catalogo-productos" class="space-y-3">
-            <!-- Los productos se cargarán dinámicamente -->
-        </div>
+        <div id="catalogo-productos" class="space-y-3"></div>
+    </div>
 
-        <div class="bg-white p-4 rounded-xl shadow border space-y-2 sticky bottom-4">
-            <p class="text-xs font-bold">Total del Pedido: <span id="lbl-total-pedido" class="text-emerald-600">$0.00</span></p>
-            <button onclick="enviarPedidoWhatsApp()" class="w-full bg-emerald-600 text-white font-semibold py-2.5 rounded-lg text-xs hover:bg-emerald-700 transition">
-                💬 Enviar Pedido por WhatsApp
+    <div class="fixed bottom-0 left-0 right-0 p-3 bg-white/95 backdrop-blur border-t border-slate-200">
+        <div class="max-w-md mx-auto space-y-2">
+            <div class="flex justify-between items-center text-xs font-bold">
+                <span>Total del Pedido:</span>
+                <span id="lbl-total-pedido" class="text-emerald-600 text-sm">$0.00</span>
+            </div>
+            <button type="button" onclick="enviarPedidoWhatsApp()" class="w-full bg-emerald-600 text-white font-semibold py-2.5 rounded-xl text-xs hover:bg-emerald-700 transition">
+                Enviar Pedido por WhatsApp
             </button>
         </div>
     </div>
 
-       <script>
-        // Carga los datos reales sincronizados de la aplicación principal
+    <script>
         const negocios = JSON.parse(localStorage.getItem('multinegocios')) || [];
-        const negocioActualId = parseInt(localStorage.getItem('negocioActualId')) || (negocios[0] ? negocios[0].id : 1);
-        const neg = negocios.find(n => n.id === negocioActualId) || negocios[0] || { inventario: [], nombre: 'Tienda' };
-        
+        const negocioActualId = parseInt(localStorage.getItem('negocioActualId'), 10) || (negocios[0] ? negocios[0].id : 1);
+        const neg = negocios.find(n => n.id === negocioActualId) || negocios[0] || {
+            nombre: 'Tienda',
+            whatsapp: '',
+            inventario: []
+        };
+
         let carrito = {};
 
+        function normalizarTelefonoWhatsApp(raw) {
+            const limpio = String(raw || '').replace(/\D/g, '');
+            if (!limpio) return '';
+            if (limpio.startsWith('0') && limpio.length === 11) {
+                return '58' + limpio.slice(1);
+            }
+            return limpio;
+        }
+
         function renderCatalogo() {
-            // Muestra el nombre real del negocio activo en el título
-            const headerTitulo = document.querySelector('header h1');
-            if(headerTitulo) headerTitulo.innerText = `🛍️ Catálogo Online - ${neg.nombre}`;
+            const titulo = document.getElementById('titulo-catalogo');
+            const badgeWa = document.getElementById('whatsapp-catalogo-badge');
+            if (titulo) titulo.innerText = `Catálogo · ${neg.nombre}`;
+
+            const telNormalizado = normalizarTelefonoWhatsApp(neg.whatsapp);
+            if (badgeWa) {
+                badgeWa.innerText = telNormalizado
+                    ? `WhatsApp de pedidos: +${telNormalizado}`
+                    : 'Configura el WhatsApp del negocio en Ajustes para recibir pedidos directos';
+            }
 
             const cont = document.getElementById('catalogo-productos');
-            if(!neg.inventario || neg.inventario.length === 0) {
-                cont.innerHTML = `<p class="text-center text-xs text-slate-400 py-8">No hay productos disponibles en este momento.</p>`;
+            if (!neg.inventario || neg.inventario.length === 0) {
+                cont.innerHTML = `<p class="text-center text-xs text-slate-400 py-8 bg-white rounded-xl border">No hay productos disponibles en este momento.</p>`;
                 return;
             }
 
-            cont.innerHTML = neg.inventario.map(p => `
-                <div class="bg-white p-3 rounded-xl shadow-sm border flex justify-between items-center">
-                    <div>
-                        <h3 class="text-sm font-semibold">${p.nombre}</h3>
-                        <p class="text-xs text-emerald-600 font-bold">$${p.venta.toFixed(2)} <span class="text-[10px] text-slate-400 font-normal">(Disponibles: ${p.stock})</span></p>
+            cont.innerHTML = neg.inventario.map(p => {
+                const stockDisp = Math.max(0, parseInt(p.stock, 10) || 0);
+                const cantActual = carrito[p.id] || 0;
+                return `
+                    <div class="bg-white p-3.5 rounded-xl shadow-xs border border-slate-200 flex justify-between items-center gap-3">
+                        <div class="min-w-0">
+                            <h3 class="text-sm font-semibold text-slate-800 truncate">${p.nombre}</h3>
+                            <p class="text-xs text-emerald-600 font-bold mt-0.5">$${Number(p.venta || 0).toFixed(2)} <span class="text-[11px] text-slate-400 font-normal">(${stockDisp} disp.)</span></p>
+                        </div>
+                        <div class="flex items-center gap-2 shrink-0">
+                            <button type="button" onclick="cambiarCantidad(${p.id}, -1)" class="bg-slate-100 hover:bg-slate-200 px-2.5 py-1.5 rounded-lg text-xs font-bold">-</button>
+                            <span id="cant-${p.id}" class="text-xs font-bold w-5 text-center">${cantActual}</span>
+                            <button type="button" onclick="cambiarCantidad(${p.id}, 1)" class="bg-blue-600 hover:bg-blue-700 text-white px-2.5 py-1.5 rounded-lg text-xs font-bold">+</button>
+                        </div>
                     </div>
-                    <div class="flex items-center gap-2">
-                        <button onclick="cambiarCantidad(${p.id}, -1)" class="bg-slate-100 px-2.5 py-1 rounded text-xs font-bold">-</button>
-                        <span id="cant-${p.id}" class="text-xs font-bold w-4 text-center">${carrito[p.id] || 0}</span>
-                        <button onclick="cambiarCantidad(${p.id}, 1)" class="bg-blue-600 text-white px-2.5 py-1 rounded text-xs font-bold">+</button>
-                    </div>
-                </div>
-            `).join('');
+                `;
+            }).join('');
+            calcularTotal();
         }
 
         function cambiarCantidad(id, delta) {
-            const prod = neg.inventario.find(p => p.id === id);
-            if(!prod) return;
+            const prod = (neg.inventario || []).find(p => p.id === id);
+            if (!prod) return;
+            const stockMax = Math.max(0, parseInt(prod.stock, 10) || 0);
             let actual = carrito[id] || 0;
             actual += delta;
-            if(actual < 0) actual = 0;
-            if(actual > prod.stock) { alert('No hay más stock disponible.'); return; }
-            
-            if(actual === 0) delete carrito[id];
+            if (actual < 0) actual = 0;
+            if (actual > stockMax) {
+                alert(`Solo hay ${stockMax} unidades disponibles de ${prod.nombre}.`);
+                actual = stockMax;
+            }
+            if (actual === 0) delete carrito[id];
             else carrito[id] = actual;
 
-            document.getElementById(`cant-${id}`).innerText = actual;
+            const span = document.getElementById(`cant-${id}`);
+            if (span) span.innerText = actual;
             calcularTotal();
         }
 
         function calcularTotal() {
             let total = 0;
-            for(let id in carrito) {
-                const prod = neg.inventario.find(p => p.id == id);
-                if(prod) total += prod.venta * carrito[id];
+            for (const id in carrito) {
+                const prod = (neg.inventario || []).find(p => String(p.id) === String(id));
+                if (prod) total += Number(prod.venta || 0) * carrito[id];
             }
             document.getElementById('lbl-total-pedido').innerText = `$${total.toFixed(2)}`;
         }
 
         function enviarPedidoWhatsApp() {
-            if(Object.keys(carrito).length === 0) { alert('Selecciona al menos un producto.'); return; }
-            let texto = `🛍️ *Nuevo Pedido para ${neg.nombre}*:\n`;
-            let total = 0;
-            for(let id in carrito) {
-                const prod = neg.inventario.find(p => p.id == id);
-                const sub = prod.venta * carrito[id];
-                total += sub;
-                texto += `• ${prod.nombre} (x${carrito[id]}) - $${sub.toFixed(2)}\n`;
+            const items = Object.keys(carrito);
+            if (items.length === 0) {
+                alert('Selecciona al menos un producto.');
+                return;
             }
-            texto += `\n*Total a Pagar: $${total.toFixed(2)}*`;
-            
-            // Número de WhatsApp del negocio (puedes ajustarlo o dejarlo predeterminado)
-            const telefonoComercio = "584121234567"; 
+            const telefonoComercio = normalizarTelefonoWhatsApp(neg.whatsapp);
+            if (!telefonoComercio) {
+                alert('El negocio aún no tiene un número de WhatsApp configurado en Ajustes.');
+                return;
+            }
+
+            let texto = `Hola, deseo realizar un pedido en *${neg.nombre}*:\n`;
+            let total = 0;
+            items.forEach(id => {
+                const prod = (neg.inventario || []).find(p => String(p.id) === String(id));
+                if (!prod) return;
+                const cant = carrito[id];
+                const sub = Number(prod.venta || 0) * cant;
+                total += sub;
+                texto += `• ${prod.nombre} (x${cant}) - $${sub.toFixed(2)}\n`;
+            });
+            texto += `\n*Total estimado: $${total.toFixed(2)}*`;
+
             window.open(`https://api.whatsapp.com/send?phone=${telefonoComercio}&text=${encodeURIComponent(texto)}`, '_blank');
         }
 

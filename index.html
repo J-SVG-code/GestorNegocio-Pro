@@ -13,6 +13,15 @@
             darkMode: 'class'
         }
     </script>
+    <style>
+        /* Aislamiento estricto: cada sección solo se muestra cuando está activa */
+        main > section.app-section {
+            display: none;
+        }
+        main > section.app-section.seccion-activa {
+            display: block;
+        }
+    </style>
     <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -104,7 +113,7 @@
 
             <div class="space-y-1.5 pt-1">
                 <div class="flex items-center justify-between text-[10px] font-bold uppercase tracking-wider text-slate-400">
-                    <span id="onb-paso-texto">Paso 1 de 3</span>
+                    <span id="onb-paso-texto">1 / 3</span>
                     <span id="onb-paso-porcentaje" class="text-blue-600 dark:text-blue-400">33%</span>
                 </div>
                 <div class="w-full h-1.5 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
@@ -334,11 +343,13 @@
         </div>
     </header>
 
-    <!-- Contenedor Principal -->
-    <main class="flex-1 max-w-md w-full mx-auto px-4 pt-4 pb-24 space-y-4">
+    <!-- Contenedor Principal (Cada sección es independiente y exclusiva) -->
+    <main class="flex-1 max-w-md w-full mx-auto px-4 pt-4 pb-24">
 
-        <!-- Sección 1: Resumen -->
-        <section id="tab-resumen" class="space-y-4">
+        <!-- ================================================================
+             SECCIÓN 1: RESUMEN (Solo KPIs de sucursal, gráfico y PDF)
+             ================================================================ -->
+        <section id="tab-resumen" class="app-section seccion-activa space-y-4">
             <div id="alerta-bi-container" class="bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-800/70 text-amber-900 dark:text-amber-200 p-3.5 rounded-2xl text-xs space-y-1 hidden">
                 <p class="font-semibold">Alerta de inventario bajo</p>
                 <p id="texto-alerta-bi" class="text-[11px] leading-relaxed"></p>
@@ -390,7 +401,7 @@
                 </div>
             </div>
 
-            <div data-oculto-empleado="true" class="bg-white dark:bg-slate-900 p-4 rounded-2xl shadow-xs border border-slate-200/80 dark:border-slate-800 space-y-2.5 admin-only">
+            <div data-oculto-empleado="true" class="bg-white dark:bg-slate-900 p-4 rounded-2xl shadow-xs border border-slate-200/80 dark:border-slate-800 space-y-2.5">
                 <div class="flex items-center justify-between">
                     <h3 class="text-xs font-semibold text-slate-600 dark:text-slate-300">Reportes ejecutivos</h3>
                     <span class="pro-tag text-[9px] font-bold bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300 px-1.5 py-0.5 rounded-full">PRO</span>
@@ -401,9 +412,11 @@
             </div>
         </section>
 
-        <!-- Sección 2: Inventario & Proveedores -->
-        <section id="tab-inventario" class="space-y-4 hidden">
-            <div data-oculto-empleado="true" class="bg-white dark:bg-slate-900 p-4 rounded-2xl shadow-xs border border-slate-200/80 dark:border-slate-800 space-y-2.5 admin-only">
+        <!-- ================================================================
+             SECCIÓN 2: STOCK Y PROVEEDORES
+             ================================================================ -->
+        <section id="tab-inventario" class="app-section space-y-4">
+            <div data-oculto-empleado="true" class="bg-white dark:bg-slate-900 p-4 rounded-2xl shadow-xs border border-slate-200/80 dark:border-slate-800 space-y-2.5">
                 <h2 class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Capital inicial</h2>
                 <div class="flex gap-2">
                     <input type="number" step="0.01" id="input-capital-negocio" class="flex-1 p-2.5 text-xs border border-slate-200 dark:border-slate-700 dark:bg-slate-800 rounded-xl outline-none" placeholder="0.00">
@@ -518,8 +531,10 @@
             </div>
         </section>
 
-        <!-- Sección 3: Ventas, Multidivisa y Fiados -->
-        <section id="tab-ventas" class="space-y-4 hidden">
+        <!-- ================================================================
+             SECCIÓN 3: VENTAS Y FIADOS
+             ================================================================ -->
+        <section id="tab-ventas" class="app-section space-y-4">
             <div class="bg-white dark:bg-slate-900 p-4 rounded-2xl shadow-xs border border-slate-200/80 dark:border-slate-800 space-y-3">
                 <div class="flex justify-between items-center gap-2">
                     <h2 class="text-sm font-bold text-slate-800 dark:text-white">Calculadora de vuelto</h2>
@@ -618,8 +633,10 @@
             </div>
         </section>
 
-        <!-- Sección 4: Finanzas y Caja -->
-        <section id="tab-finanzas" data-oculto-empleado="true" class="space-y-4 hidden">
+        <!-- ================================================================
+             SECCIÓN 4: CAJA Y MOVIMIENTOS (Exclusiva de Caja)
+             ================================================================ -->
+        <section id="tab-finanzas" data-oculto-empleado="true" class="app-section space-y-4">
             <div class="grid grid-cols-2 gap-2.5">
                 <div class="bg-white dark:bg-slate-900 p-3.5 rounded-2xl shadow-xs border border-slate-200/80 dark:border-slate-800">
                     <p class="text-[11px] text-slate-500 dark:text-slate-400">Entradas</p>
@@ -684,8 +701,10 @@
             </div>
         </section>
 
-        <!-- Sección 5: Audios -->
-        <section id="tab-audios" class="space-y-4 hidden">
+        <!-- ================================================================
+             SECCIÓN 5: AUDIOS Y SONIDOS
+             ================================================================ -->
+        <section id="tab-audios" class="app-section space-y-4">
             <div class="bg-white dark:bg-slate-900 p-4 rounded-2xl shadow-xs border border-slate-200/80 dark:border-slate-800 space-y-3">
                 <div class="flex justify-between items-center">
                     <div>
@@ -745,8 +764,10 @@
             </div>
         </section>
 
-        <!-- Sección 6: QR Empleado / Socio y Vinculación -->
-        <section id="tab-qr-empleado" class="space-y-4 hidden">
+        <!-- ================================================================
+             SECCIÓN 6: QR EMPLEADO / SOCIO
+             ================================================================ -->
+        <section id="tab-qr-empleado" class="app-section space-y-4">
             <div id="aviso-bloqueo-qr-pro" class="bg-amber-50 dark:bg-amber-950/40 border border-amber-300 dark:border-amber-800 text-amber-900 dark:text-amber-200 p-3.5 rounded-2xl text-xs space-y-2 hidden">
                 <p class="font-bold">Sección exclusiva de Modo Pro</p>
                 <p class="text-[11px]">Activa el Modo Pro para generar QR de empleado o socio, vincular/desvincular teléfonos y controlar permisos.</p>
@@ -808,8 +829,10 @@
             </div>
         </section>
 
-        <!-- Sección 7: Modo Pro (Suscripción Google Play Billing + Bono 12h) -->
-        <section id="tab-pro" class="space-y-4 hidden">
+        <!-- ================================================================
+             SECCIÓN 7: MODO PRO (Exclusiva de Suscripción Google Play y Bono 12h)
+             ================================================================ -->
+        <section id="tab-pro" class="app-section space-y-4">
             <div id="seccion-modo-pro" class="bg-white dark:bg-slate-900 p-4 rounded-2xl shadow-xs border border-amber-300/80 dark:border-amber-700/60 space-y-3">
                 <div class="flex justify-between items-center">
                     <h2 class="text-sm font-bold text-slate-800 dark:text-white">Modo Pro · Google Play Billing</h2>
@@ -831,7 +854,7 @@
                     </div>
                 </div>
 
-                <!-- Planes vía Google Play Billing (Códigos vacíos para configurar en Google Play Console) -->
+                <!-- Planes vía Google Play Billing (Códigos vacíos para Google Play Console) -->
                 <div id="pro-planes-dueno" class="space-y-2.5">
                     <div class="bg-slate-50 dark:bg-slate-800/70 p-3 rounded-xl text-xs space-y-1 border border-slate-100 dark:border-slate-800">
                         <p class="font-semibold text-slate-700 dark:text-slate-200">Suscripciones Google Play Billing</p>
@@ -862,9 +885,10 @@
             </div>
         </section>
 
-        <!-- Sección 8: Ajustes Generales -->
-        <section id="tab-ajustes" data-oculto-empleado="true" class="space-y-4 hidden">
-            <!-- Idioma de la aplicación -->
+        <!-- ================================================================
+             SECCIÓN 8: AJUSTES (Exclusiva de Configuración del Negocio)
+             ================================================================ -->
+        <section id="tab-ajustes" data-oculto-empleado="true" class="app-section space-y-4">
             <div class="bg-white dark:bg-slate-900 p-4 rounded-2xl shadow-xs border border-slate-200/80 dark:border-slate-800 space-y-2.5">
                 <div class="flex items-center justify-between gap-2">
                     <h2 class="text-sm font-bold text-slate-800 dark:text-white" data-i18n="lang_title">Idioma de la aplicación</h2>
@@ -879,7 +903,7 @@
                 <p id="texto-idioma-telefono" class="text-[11px] text-slate-500 dark:text-slate-400"></p>
             </div>
 
-            <div class="bg-white dark:bg-slate-900 p-4 rounded-2xl shadow-xs border border-slate-200/80 dark:border-slate-800 space-y-3 admin-only">
+            <div class="bg-white dark:bg-slate-900 p-4 rounded-2xl shadow-xs border border-slate-200/80 dark:border-slate-800 space-y-3">
                 <h2 class="text-sm font-bold text-slate-800 dark:text-white">Datos del negocio y catálogo</h2>
                 <div class="grid grid-cols-1 gap-2.5 text-xs">
                     <div>
@@ -902,7 +926,7 @@
                 <button type="button" onclick="guardarDatosNegocio()" class="w-full bg-blue-600 text-white font-semibold py-2.5 rounded-xl text-xs hover:bg-blue-700 transition">Guardar datos del negocio</button>
             </div>
 
-            <div class="bg-white dark:bg-slate-900 p-4 rounded-2xl shadow-xs border border-slate-200/80 dark:border-slate-800 space-y-3 admin-only">
+            <div class="bg-white dark:bg-slate-900 p-4 rounded-2xl shadow-xs border border-slate-200/80 dark:border-slate-800 space-y-3">
                 <h2 class="text-sm font-bold text-slate-800 dark:text-white">Permisos de empleados</h2>
                 <div class="flex items-center justify-between gap-3 bg-slate-50 dark:bg-slate-800/70 p-3 rounded-xl border border-slate-200/70 dark:border-slate-700 text-xs">
                     <div>
@@ -913,7 +937,7 @@
                 </div>
             </div>
 
-            <div class="bg-white dark:bg-slate-900 p-4 rounded-2xl shadow-xs border border-slate-200/80 dark:border-slate-800 space-y-3 admin-only">
+            <div class="bg-white dark:bg-slate-900 p-4 rounded-2xl shadow-xs border border-slate-200/80 dark:border-slate-800 space-y-3">
                 <div class="flex items-center justify-between">
                     <h2 class="text-sm font-bold text-slate-800 dark:text-white">Multi-sucursal</h2>
                     <span class="pro-tag text-[9px] font-bold bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300 px-1.5 py-0.5 rounded-full">PRO</span>
@@ -939,7 +963,7 @@
                         <button type="button" onclick="guardarTasaCambio()" class="bg-blue-600 text-white px-3.5 py-2.5 rounded-xl text-xs font-semibold hover:bg-blue-700 transition whitespace-nowrap">Guardar</button>
                     </div>
                 </div>
-                <div class="space-y-1.5 pt-2 border-t border-slate-100 dark:border-slate-800 admin-only">
+                <div class="space-y-1.5 pt-2 border-t border-slate-100 dark:border-slate-800">
                     <label class="block text-xs font-medium text-slate-500 dark:text-slate-400">PIN de dueño (4 dígitos)</label>
                     <div class="flex gap-2">
                         <input type="password" id="input-nuevo-pin" maxlength="4" class="flex-1 p-2.5 text-xs border border-slate-200 dark:border-slate-700 dark:bg-slate-800 rounded-xl outline-none" placeholder="Nuevo PIN">
@@ -1092,8 +1116,8 @@
            HASTA TENER TUS IDs DE SUSCRIPCIÓN EN GOOGLE PLAY CONSOLE)
            ===================================================================== */
         const GOOGLE_BILLING_CONFIG = {
-            monthlyProductId: '', // Ej. al configurar en Play Console: 'gestorpro_pro_monthly'
-            annualProductId: ''   // Ej. al configurar en Play Console: 'gestorpro_pro_annual'
+            monthlyProductId: '',
+            annualProductId: ''
         };
 
         function activarSuscripcionDesdeGooglePlay(planType, purchaseToken = '') {
@@ -1124,13 +1148,11 @@
                 );
             }
 
-            // Puente nativo Android (WebView / TWA / Capacitor / Cordova) si está expuesto
             if (window.AndroidBilling && typeof window.AndroidBilling.launchSubscription === 'function') {
                 window.AndroidBilling.launchSubscription(productId, planType);
                 return;
             }
 
-            // Digital Goods API (navegadores/entornos compatibles con Google Play Billing)
             if ('getDigitalGoodsService' in window) {
                 window.getDigitalGoodsService('https://play.google.com/billing')
                     .then(service => service.getDetails([productId]))
@@ -1367,7 +1389,7 @@
             navigator.serviceWorker.getRegistrations().then((registrations) => {
                 registrations.forEach((reg) => reg.update());
             });
-            navigator.serviceWorker.register('./sw.js?v=20261119b').catch((err) => console.log('SW error:', err));
+            navigator.serviceWorker.register('./sw.js?v=20261119c').catch((err) => console.log('SW error:', err));
         }
 
         const SECCIONES_VALIDAS = ['resumen', 'inventario', 'ventas', 'finanzas', 'audios', 'qr-empleado', 'pro', 'ajustes'];
@@ -1382,6 +1404,7 @@
             ajustes: 'Ajustes'
         };
 
+        let seccionActual = 'resumen';
         let audioConfig = JSON.parse(localStorage.getItem('gestorpro_audio_config')) || {
             habilitado: true,
             venta: true,
@@ -1811,12 +1834,9 @@
                 el.disabled = esEmpleado && !puedeProv;
             });
 
-            if (esEmpleado) {
-                const tabFin = document.getElementById('tab-finanzas');
-                const tabAj = document.getElementById('tab-ajustes');
-                if ((tabFin && !tabFin.classList.contains('hidden')) || (tabAj && !tabAj.classList.contains('hidden'))) {
-                    cambiarTab('resumen');
-                }
+            if (esEmpleado && (seccionActual === 'finanzas' || seccionActual === 'ajustes')) {
+                cambiarTab('resumen');
+                return;
             }
 
             sincronizarControlesSincronizacion();
@@ -2631,7 +2651,7 @@
 
         function exportarRespaldoJSON() {
             if (!esProActivo()) return requierePro(null, 'Exportar respaldo JSON');
-            const datos = { version: 'GestorPro_v8', fecha: new Date().toISOString(), negocios };
+            const datos = { version: 'GestorPro_v9', fecha: new Date().toISOString(), negocios };
             const blob = new Blob([JSON.stringify(datos, null, 2)], { type: 'application/json' });
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
@@ -2979,20 +2999,23 @@
             if (rolActual === 'empleado' && (targetTab === 'finanzas' || targetTab === 'ajustes')) {
                 targetTab = 'resumen';
             }
+            seccionActual = targetTab;
 
             SECCIONES_VALIDAS.forEach(t => {
-                document.getElementById(`tab-${t}`)?.classList.add('hidden');
+                const sec = document.getElementById(`tab-${t}`);
+                if (!sec) return;
+                sec.classList.toggle('seccion-activa', t === targetTab);
             });
-            document.getElementById(`tab-${targetTab}`)?.classList.remove('hidden');
             marcarSeccionActivaMenu(targetTab);
+            window.scrollTo({ top: 0, behavior: 'instant' });
 
             if (targetTab === 'resumen') { actualizarResumenGeneral(); actualizarGraficos(); verificarAlertaBI(); }
             if (targetTab === 'inventario') { renderInventario(); renderProveedores(); sincronizarFormularioAjustes(); }
             if (targetTab === 'ventas') { actualizarSelectVentas(); renderVentas(); renderDeudas(); }
-            if (targetTab === 'finanzas') renderFinanzas();
+            if (targetTab === 'finanzas') { actualizarEstadisticasCaja(); renderFinanzas(); }
             if (targetTab === 'audios') sincronizarControlesAudio();
             if (targetTab === 'qr-empleado') { sincronizarControlesSincronizacion(); }
-            if (targetTab === 'pro') { verificarEstadoPro(); actualizarInterfazRoles(); }
+            if (targetTab === 'pro') { verificarEstadoPro(); }
             if (targetTab === 'ajustes') { actualizarSelectNegocios(); sincronizarFormularioAjustes(); aplicarIdioma(idiomaActual); }
         }
 
@@ -3440,9 +3463,21 @@
             persistir();
             e.target.reset();
             toggleCategoriaGasto('ingreso');
+            actualizarEstadisticasCaja();
             renderFinanzas();
             mostrarToast('Movimiento registrado.', 'success');
         });
+
+        function actualizarEstadisticasCaja() {
+            const neg = obtenerNegocio();
+            const cap = neg.capitalInicial || 0;
+            const ent = (neg.finanzas || []).filter(f => f.tipo === 'ingreso').reduce((a, f) => a + f.monto, 0);
+            const sal = (neg.finanzas || []).filter(f => f.tipo !== 'ingreso').reduce((a, f) => a + f.monto, 0);
+            const stEnt = document.getElementById('stat-entradas');
+            const stCaja = document.getElementById('stat-caja');
+            if (stEnt) stEnt.innerText = `$${ent.toFixed(2)}`;
+            if (stCaja) stCaja.innerText = `$${(cap + ent - sal).toFixed(2)}`;
+        }
 
         function renderFinanzas() {
             const neg = obtenerNegocio();
@@ -3528,11 +3563,6 @@
             document.getElementById('res-ganancia').innerText = `$${gan.toFixed(2)}`;
             document.getElementById('res-falta-vender').innerText = `$${falta.toFixed(2)}`;
             document.getElementById('res-deudas').innerText = `$${deudas.toFixed(2)}`;
-
-            const ent = (neg.finanzas || []).filter(f => f.tipo === 'ingreso').reduce((a, f) => a + f.monto, 0);
-            const sal = (neg.finanzas || []).filter(f => f.tipo !== 'ingreso').reduce((a, f) => a + f.monto, 0);
-            document.getElementById('stat-entradas').innerText = `$${ent.toFixed(2)}`;
-            document.getElementById('stat-caja').innerText = `$${(cap + ent - sal).toFixed(2)}`;
         }
 
         function generarReportePDF() {
@@ -3724,6 +3754,7 @@
             sincronizarFormularioAjustes();
             actualizarInterfazRoles();
             actualizarResumenGeneral();
+            actualizarEstadisticasCaja();
             actualizarGraficos();
             verificarAlertaBI();
             renderInventario();

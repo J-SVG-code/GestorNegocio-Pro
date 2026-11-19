@@ -70,11 +70,18 @@
             cont.innerHTML = neg.inventario.map(p => {
                 const stockDisp = Math.max(0, parseInt(p.stock, 10) || 0);
                 const cantActual = carrito[p.id] || 0;
+                const fotoHtml = (p.foto && p.mostrarFotoPdf !== false)
+                    ? `<img src="${p.foto}" alt="${p.nombre}" class="w-12 h-12 object-cover rounded-lg border border-slate-200 shrink-0">`
+                    : `<div class="w-12 h-12 rounded-lg bg-slate-100 flex items-center justify-center text-base shrink-0">🛍️</div>`;
+
                 return `
                     <div class="bg-white p-3.5 rounded-xl shadow-xs border border-slate-200 flex justify-between items-center gap-3">
-                        <div class="min-w-0">
-                            <h3 class="text-sm font-semibold text-slate-800 truncate">${p.nombre}</h3>
-                            <p class="text-xs text-emerald-600 font-bold mt-0.5">$${Number(p.venta || 0).toFixed(2)} <span class="text-[11px] text-slate-400 font-normal">(${stockDisp} disp.)</span></p>
+                        <div class="flex items-center gap-2.5 min-w-0">
+                            ${fotoHtml}
+                            <div class="min-w-0">
+                                <h3 class="text-sm font-semibold text-slate-800 truncate">${p.nombre}</h3>
+                                <p class="text-xs text-emerald-600 font-bold mt-0.5">$${Number(p.venta || 0).toFixed(2)} <span class="text-[11px] text-slate-400 font-normal">(${stockDisp} disp.)</span></p>
+                            </div>
                         </div>
                         <div class="flex items-center gap-2 shrink-0">
                             <button type="button" onclick="cambiarCantidad(${p.id}, -1)" class="bg-slate-100 hover:bg-slate-200 px-2.5 py-1.5 rounded-lg text-xs font-bold">-</button>

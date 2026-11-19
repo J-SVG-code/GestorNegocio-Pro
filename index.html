@@ -51,7 +51,7 @@
                 <button type="button" onclick="navegarDesdeMenu('ventas')" id="drawer-btn-ventas" class="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-xs font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition text-left">
                     <span>🛒</span><span>Ventas y fiados</span>
                 </button>
-                <button type="button" onclick="navegarDesdeMenu('finanzas')" id="drawer-btn-finanzas" class="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-xs font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition text-left">
+                <button type="button" onclick="navegarDesdeMenu('finanzas')" id="drawer-btn-finanzas" data-oculto-empleado="true" class="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-xs font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition text-left">
                     <span>💵</span><span>Caja y movimientos</span>
                 </button>
             </div>
@@ -70,14 +70,14 @@
                     <span class="flex items-center gap-2.5"><span>⭐</span><span>Modo Pro</span></span>
                     <span class="pro-tag text-[9px] font-bold bg-amber-200/80 text-amber-900 dark:bg-amber-900 dark:text-amber-200 px-1.5 py-0.5 rounded-full">PRO</span>
                 </button>
-                <button type="button" onclick="navegarDesdeMenu('ajustes')" id="drawer-btn-ajustes" class="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-xs font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition text-left">
+                <button type="button" onclick="navegarDesdeMenu('ajustes')" id="drawer-btn-ajustes" data-oculto-empleado="true" class="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-xs font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition text-left">
                     <span>⚙️</span><span>Ajustes</span>
                 </button>
             </div>
 
             <div class="space-y-1 pt-2 border-t border-slate-100 dark:border-slate-800">
                 <p class="text-[10px] font-bold uppercase tracking-wider text-slate-400 px-2.5 pb-1">Herramientas</p>
-                <button type="button" onclick="cerrarMenuLateral(); requierePro(abrirModalCierreZ, 'Cierre de Caja (Arqueo Z)')" class="w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition text-left">
+                <button type="button" onclick="cerrarMenuLateral(); requierePro(abrirModalCierreZ, 'Cierre de Caja (Arqueo Z)')" data-oculto-empleado="true" class="w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition text-left">
                     <span class="flex items-center gap-2.5"><span>🧾</span><span>Cierre de Caja (Z)</span></span>
                     <span class="pro-tag text-[9px] font-bold bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300 px-1.5 py-0.5 rounded-full">PRO</span>
                 </button>
@@ -99,8 +99,10 @@
 
     <!-- Modal de Inicio: Registro de Nuevo Negocio (Dueño) o Vincular (Empleado / Socio) -->
     <div id="modal-onboarding" class="fixed inset-0 bg-slate-950/80 backdrop-blur-xs z-50 flex items-center justify-center p-4 hidden overflow-y-auto">
-        <div class="bg-white dark:bg-slate-900 rounded-2xl max-w-sm w-full p-5 space-y-4 shadow-2xl border border-slate-200 dark:border-slate-800 my-auto">
-            <div class="text-center space-y-1">
+        <div class="bg-white dark:bg-slate-900 rounded-2xl max-w-sm w-full p-5 space-y-4 shadow-2xl border border-slate-200 dark:border-slate-800 my-auto relative">
+            <button type="button" id="btn-cerrar-onboarding" onclick="cerrarModalOnboarding()" aria-label="Cerrar ventana de registro o vinculación" class="hidden absolute top-3.5 right-3.5 w-7 h-7 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-500 hover:text-rose-600 dark:text-slate-300 dark:hover:text-rose-400 flex items-center justify-center text-xs font-bold transition">✕</button>
+
+            <div class="text-center space-y-1 pt-1">
                 <h2 class="text-base font-bold text-slate-900 dark:text-white">Bienvenido a Gestor Pro</h2>
                 <p class="text-xs text-slate-500 dark:text-slate-400">Registra tu negocio como dueño o vincula un teléfono a una cuenta existente.</p>
             </div>
@@ -119,6 +121,10 @@
                 <div>
                     <label class="block font-medium text-slate-600 dark:text-slate-300 mb-1">Nombre del negocio</label>
                     <input type="text" id="onb-negocio-nombre" required class="w-full p-2.5 border border-slate-200 dark:border-slate-700 dark:bg-slate-800 rounded-xl outline-none" placeholder="Ej. Bodega y Catálogo Central">
+                </div>
+                <div>
+                    <label class="block font-medium text-slate-600 dark:text-slate-300 mb-1">RIF / Cédula fiscal (opcional para PDF)</label>
+                    <input type="text" id="onb-negocio-rif" class="w-full p-2.5 border border-slate-200 dark:border-slate-700 dark:bg-slate-800 rounded-xl outline-none" placeholder="Ej. J-12345678-9 o V-30022434">
                 </div>
                 <div>
                     <label class="block font-medium text-slate-600 dark:text-slate-300 mb-1">WhatsApp del negocio (para el catálogo)</label>
@@ -142,7 +148,7 @@
                 <div>
                     <label class="block font-medium text-slate-600 dark:text-slate-300 mb-1">Conectar como</label>
                     <select id="onb-rol-vinculo" class="w-full p-2.5 border border-slate-200 dark:border-slate-700 dark:bg-slate-800 rounded-xl outline-none">
-                        <option value="empleado">Empleado (operación diaria en caja y ventas)</option>
+                        <option value="empleado">Empleado (operación diaria en ventas y stock)</option>
                         <option value="socio">Socio (acceso amplio y gestión compartida)</option>
                     </select>
                 </div>
@@ -158,7 +164,7 @@
         </div>
     </div>
 
-    <!-- Modal de Abono de Deuda (sin prompt) -->
+    <!-- Modal de Abono de Deuda -->
     <div id="modal-abono-deuda" class="fixed inset-0 bg-slate-950/75 z-50 flex items-center justify-center p-4 hidden">
         <div class="bg-white dark:bg-slate-900 rounded-2xl max-w-xs w-full p-4 space-y-3 shadow-xl border border-slate-200 dark:border-slate-800">
             <div class="flex justify-between items-center border-b border-slate-100 dark:border-slate-800 pb-2">
@@ -322,11 +328,11 @@
                     <span class="text-[11px] text-slate-400">USD ($)</span>
                 </div>
                 <div class="grid grid-cols-2 gap-2.5 text-xs">
-                    <div class="bg-slate-50 dark:bg-slate-800/70 p-3 rounded-xl border border-slate-100 dark:border-slate-800">
+                    <div data-solo-dueno="true" class="bg-slate-50 dark:bg-slate-800/70 p-3 rounded-xl border border-slate-100 dark:border-slate-800">
                         <p class="text-[11px] text-slate-500 dark:text-slate-400">Capital inicial</p>
                         <p id="res-capital-inicial" class="text-sm font-bold text-slate-800 dark:text-white mt-0.5">$0.00</p>
                     </div>
-                    <div class="bg-slate-50 dark:bg-slate-800/70 p-3 rounded-xl border border-slate-100 dark:border-slate-800">
+                    <div data-solo-dueno="true" class="bg-slate-50 dark:bg-slate-800/70 p-3 rounded-xl border border-slate-100 dark:border-slate-800">
                         <p class="text-[11px] text-slate-500 dark:text-slate-400">Invertido en stock</p>
                         <p id="res-invertido-prod" class="text-sm font-bold text-slate-800 dark:text-white mt-0.5">$0.00</p>
                     </div>
@@ -334,7 +340,7 @@
                         <p class="text-[11px] text-slate-500 dark:text-slate-400">Ventas totales</p>
                         <p id="res-ventas" class="text-sm font-bold text-blue-600 dark:text-blue-400 mt-0.5">$0.00</p>
                     </div>
-                    <div class="bg-slate-50 dark:bg-slate-800/70 p-3 rounded-xl border border-slate-100 dark:border-slate-800">
+                    <div data-solo-dueno="true" class="bg-slate-50 dark:bg-slate-800/70 p-3 rounded-xl border border-slate-100 dark:border-slate-800">
                         <p class="text-[11px] text-slate-500 dark:text-slate-400">Ganancia neta</p>
                         <p id="res-ganancia" class="text-sm font-bold text-emerald-600 dark:text-emerald-400 mt-0.5">$0.00</p>
                     </div>
@@ -354,7 +360,7 @@
                     <h3 class="text-sm font-bold text-slate-800 dark:text-white">Rendimiento</h3>
                     <select id="select-tipo-grafico" onchange="actualizarGraficos()" class="text-xs bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 px-2.5 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 outline-none">
                         <option value="ventas">Ventas recientes</option>
-                        <option value="gastos">Gastos</option>
+                        <option value="gastos" id="opcion-grafico-gastos">Gastos</option>
                     </select>
                 </div>
                 <div class="relative h-44 w-full">
@@ -362,7 +368,7 @@
                 </div>
             </div>
 
-            <div class="bg-white dark:bg-slate-900 p-4 rounded-2xl shadow-xs border border-slate-200/80 dark:border-slate-800 space-y-2.5 admin-only">
+            <div data-oculto-empleado="true" class="bg-white dark:bg-slate-900 p-4 rounded-2xl shadow-xs border border-slate-200/80 dark:border-slate-800 space-y-2.5 admin-only">
                 <div class="flex items-center justify-between">
                     <h3 class="text-xs font-semibold text-slate-600 dark:text-slate-300">Reportes ejecutivos</h3>
                     <span class="pro-tag text-[9px] font-bold bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300 px-1.5 py-0.5 rounded-full">PRO</span>
@@ -375,7 +381,7 @@
 
         <!-- Sección 2: Inventario & Proveedores -->
         <section id="tab-inventario" class="space-y-4 hidden">
-            <div class="bg-white dark:bg-slate-900 p-4 rounded-2xl shadow-xs border border-slate-200/80 dark:border-slate-800 space-y-2.5 admin-only">
+            <div data-oculto-empleado="true" class="bg-white dark:bg-slate-900 p-4 rounded-2xl shadow-xs border border-slate-200/80 dark:border-slate-800 space-y-2.5 admin-only">
                 <h2 class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Capital inicial</h2>
                 <div class="flex gap-2">
                     <input type="number" step="0.01" id="input-capital-negocio" class="flex-1 p-2.5 text-xs border border-slate-200 dark:border-slate-700 dark:bg-slate-800 rounded-xl outline-none" placeholder="0.00">
@@ -397,10 +403,27 @@
                         <label class="block text-xs font-medium text-slate-600 dark:text-slate-400 mb-1">Nombre del producto</label>
                         <input type="text" id="prod-nombre" required class="w-full p-2.5 text-xs border border-slate-200 dark:border-slate-700 dark:bg-slate-800 rounded-xl outline-none" placeholder="Ej. Harina Pan">
                     </div>
-                    <div class="grid grid-cols-3 gap-2">
-                        <div>
+
+                    <!-- Foto del producto con cámara / galería y opción para PDF -->
+                    <div class="bg-slate-50 dark:bg-slate-800/60 p-3 rounded-xl border border-slate-200/80 dark:border-slate-700/70 space-y-2">
+                        <div class="flex items-center justify-between gap-2">
+                            <label class="text-xs font-medium text-slate-700 dark:text-slate-300">Foto del producto (opcional)</label>
+                            <button type="button" onclick="limpiarFotoProducto()" class="text-[11px] text-rose-600 dark:text-rose-400 font-semibold">Quitar</button>
+                        </div>
+                        <input type="file" id="prod-foto-input" accept="image/*" capture="environment" onchange="procesarFotoProducto(event)" class="w-full text-[11px] text-slate-500 file:mr-2.5 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 cursor-pointer">
+                        <div class="flex items-center gap-3">
+                            <img id="prod-foto-preview" alt="Vista previa del producto" class="hidden w-14 h-14 object-cover rounded-xl border border-slate-200 dark:border-slate-700 bg-white shrink-0">
+                            <label class="flex items-center gap-2 text-xs text-slate-600 dark:text-slate-300 cursor-pointer">
+                                <input type="checkbox" id="prod-mostrar-foto-pdf" checked class="w-4 h-4 accent-blue-600 rounded">
+                                <span>Reflejar imagen en catálogo y reporte PDF</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div id="grid-precios-producto" class="grid grid-cols-3 gap-2">
+                        <div data-solo-dueno="true">
                             <label class="block text-xs font-medium text-slate-600 dark:text-slate-400 mb-1">Compra ($)</label>
-                            <input type="number" step="0.01" id="prod-compra" required oninput="calcularPreviewProducto()" class="w-full p-2.5 text-xs border border-slate-200 dark:border-slate-700 dark:bg-slate-800 rounded-xl outline-none" placeholder="0.00">
+                            <input type="number" step="0.01" id="prod-compra" oninput="calcularPreviewProducto()" class="w-full p-2.5 text-xs border border-slate-200 dark:border-slate-700 dark:bg-slate-800 rounded-xl outline-none" placeholder="0.00">
                         </div>
                         <div>
                             <label class="block text-xs font-medium text-slate-600 dark:text-slate-400 mb-1">Venta ($)</label>
@@ -412,7 +435,7 @@
                         </div>
                     </div>
 
-                    <div class="space-y-2 pt-2 border-t border-slate-100 dark:border-slate-800">
+                    <div data-solo-dueno="true" class="space-y-2 pt-2 border-t border-slate-100 dark:border-slate-800">
                         <div class="flex justify-between items-center">
                             <label class="text-xs font-medium text-slate-500 dark:text-slate-400">Gastos extra del lote</label>
                             <button type="button" onclick="agregarCampoGastoExtra()" class="text-xs text-blue-600 dark:text-blue-400 font-semibold hover:underline">+ Añadir</button>
@@ -420,7 +443,7 @@
                         <div id="contenedor-gastos-extras" class="space-y-2"></div>
                     </div>
 
-                    <div id="preview-prod-box" class="bg-slate-50 dark:bg-slate-800/70 p-3 rounded-xl border border-slate-200/80 dark:border-slate-700 text-xs text-slate-600 dark:text-slate-300 space-y-1 hidden">
+                    <div data-solo-dueno="true" id="preview-prod-box" class="bg-slate-50 dark:bg-slate-800/70 p-3 rounded-xl border border-slate-200/80 dark:border-slate-700 text-xs text-slate-600 dark:text-slate-300 space-y-1 hidden">
                         <div class="flex justify-between"><span>Inversión total:</span> <span id="prev-inv" class="font-semibold text-blue-600 dark:text-blue-400">$0.00</span></div>
                         <div class="flex justify-between"><span>Venta estimada:</span> <span id="prev-vent" class="font-semibold text-emerald-600 dark:text-emerald-400">$0.00</span></div>
                         <div class="flex justify-between border-t border-slate-200 dark:border-slate-700 pt-1 font-bold text-slate-800 dark:text-white"><span>Ganancia estimada:</span> <span id="prev-gan">$0.00</span></div>
@@ -437,11 +460,14 @@
             </div>
 
             <div id="seccion-proveedores" class="bg-white dark:bg-slate-900 p-4 rounded-2xl shadow-xs border border-slate-200/80 dark:border-slate-800 space-y-3">
-                <div class="flex justify-between items-center">
+                <div class="flex justify-between items-center gap-2">
                     <h2 class="text-sm font-bold text-slate-800 dark:text-white">Proveedores</h2>
-                    <span class="text-[11px] text-slate-400">Datos de contacto</span>
+                    <span id="badge-permiso-proveedores" class="text-[11px] text-slate-400">Datos de contacto</span>
                 </div>
-                <form id="form-proveedor" class="space-y-2.5">
+                <p id="aviso-proveedores-bloqueados" class="text-[11px] text-amber-700 dark:text-amber-300 bg-amber-50 dark:bg-amber-950/40 border border-amber-200/80 dark:border-amber-800/60 p-2.5 rounded-xl hidden">
+                    El dueño tiene restringido agregar, editar o eliminar proveedores en Modo Empleado.
+                </p>
+                <form id="form-proveedor" data-gestion-proveedor="true" class="space-y-2.5">
                     <div class="grid grid-cols-2 gap-2">
                         <div>
                             <label class="block text-xs font-medium text-slate-600 dark:text-slate-400 mb-1">Nombre del proveedor</label>
@@ -456,13 +482,13 @@
                         <label class="block text-xs font-medium text-slate-600 dark:text-slate-400 mb-1">Productos que suministra</label>
                         <input type="text" id="prov-producto" placeholder="Ej. Harina, arroz, bebidas" class="w-full p-2.5 text-xs border border-slate-200 dark:border-slate-700 dark:bg-slate-800 rounded-xl outline-none">
                     </div>
-                    <button type="submit" class="w-full bg-slate-800 dark:bg-slate-700 text-white font-semibold py-2.5 rounded-xl text-xs hover:bg-slate-900 transition">Guardar proveedor</button>
+                    <button type="submit" id="btn-guardar-proveedor" data-gestion-proveedor="true" class="w-full bg-slate-800 dark:bg-slate-700 text-white font-semibold py-2.5 rounded-xl text-xs hover:bg-slate-900 transition">Guardar proveedor</button>
                 </form>
                 <div id="lista-proveedores" class="space-y-2 pt-1"></div>
             </div>
 
             <!-- Factura / Comprobante -->
-            <div class="bg-white dark:bg-slate-900 p-4 rounded-2xl shadow-xs border border-slate-200/80 dark:border-slate-800 space-y-2">
+            <div data-oculto-empleado="true" class="bg-white dark:bg-slate-900 p-4 rounded-2xl shadow-xs border border-slate-200/80 dark:border-slate-800 space-y-2">
                 <div class="flex items-center justify-between">
                     <p class="text-xs font-bold text-slate-700 dark:text-slate-200">Adjuntar foto de factura</p>
                     <span class="pro-tag text-[9px] font-bold bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300 px-1.5 py-0.5 rounded-full">PRO</span>
@@ -528,6 +554,25 @@
                         </div>
                     </div>
 
+                    <!-- Método de pago y referencia para ventas de contado -->
+                    <div id="bloque-metodo-pago-venta" class="grid grid-cols-2 gap-2.5 bg-slate-50 dark:bg-slate-800/60 p-3 rounded-xl border border-slate-200/70 dark:border-slate-700/70">
+                        <div>
+                            <label class="block text-xs font-medium text-slate-600 dark:text-slate-400 mb-1">Método de pago</label>
+                            <select id="venta-metodo-pago" class="w-full p-2 text-xs border border-slate-200 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-800 outline-none">
+                                <option value="Efectivo ($)">Efectivo ($)</option>
+                                <option value="Efectivo (Bs)">Efectivo (Bs)</option>
+                                <option value="Pago Móvil">Pago Móvil</option>
+                                <option value="Transferencia">Transferencia</option>
+                                <option value="Punto de Venta">Punto de Venta</option>
+                                <option value="Otro">Otro</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium text-slate-600 dark:text-slate-400 mb-1">Referencia / Nota</label>
+                            <input type="text" id="venta-referencia" class="w-full p-2 text-xs border border-slate-200 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-800 outline-none" placeholder="Ej. Ref. 4821">
+                        </div>
+                    </div>
+
                     <div id="campos-fiado" class="space-y-2.5 bg-amber-50/80 dark:bg-amber-950/30 p-3 rounded-xl border border-amber-200/80 dark:border-amber-800/60 hidden">
                         <div>
                             <label class="block text-xs font-medium text-slate-700 dark:text-amber-200 mb-1">Cliente</label>
@@ -558,8 +603,8 @@
             </div>
         </section>
 
-        <!-- Sección 4: Finanzas y Caja -->
-        <section id="tab-finanzas" class="space-y-4 hidden">
+        <!-- Sección 4: Finanzas y Caja (Solo Dueño / Socio) -->
+        <section id="tab-finanzas" data-oculto-empleado="true" class="space-y-4 hidden">
             <div class="grid grid-cols-2 gap-2.5">
                 <div class="bg-white dark:bg-slate-900 p-3.5 rounded-2xl shadow-xs border border-slate-200/80 dark:border-slate-800">
                     <p class="text-[11px] text-slate-500 dark:text-slate-400">Entradas</p>
@@ -757,22 +802,49 @@
                 </div>
                 <p id="texto-pro-estado" class="text-xs text-slate-500 dark:text-slate-400">Sin Modo Pro las funciones Pro quedan bloqueadas y se muestran anuncios. Al activar Modo Pro se apagan los anuncios y se habilitan todas las funciones Pro.</p>
 
-                <div class="bg-slate-50 dark:bg-slate-800/70 p-3 rounded-xl text-xs space-y-1 border border-slate-100 dark:border-slate-800">
-                    <p class="font-semibold text-slate-700 dark:text-slate-200">Planes disponibles</p>
-                    <p>• <b>Mensual:</b> $5 (promoción: 1er pago incluye 2do mes)</p>
-                    <p>• <b>Anual:</b> $45 (12 meses)</p>
+                <!-- Menú desplegable de beneficios del Modo Pro -->
+                <div class="border border-amber-200/80 dark:border-amber-800/60 rounded-xl overflow-hidden bg-amber-50/50 dark:bg-amber-950/20">
+                    <button type="button" onclick="toggleBeneficiosPro()" class="w-full px-3 py-2.5 flex items-center justify-between text-xs font-bold text-amber-900 dark:text-amber-200 text-left hover:bg-amber-100/60 dark:hover:bg-amber-950/40 transition">
+                        <span>Beneficios de activar el Modo Pro</span>
+                        <span id="icono-beneficios-pro" class="text-[11px] font-mono">▼</span>
+                    </button>
+                    <div id="panel-beneficios-pro" class="hidden px-3 pb-3 pt-1 text-xs text-slate-700 dark:text-slate-300 space-y-1.5 border-t border-amber-200/60 dark:border-amber-800/40">
+                        <p>• Eliminación total de anuncios publicitarios en la aplicación.</p>
+                        <p>• Exportación de Reporte PDF Ejecutivo con fotos de producto, desglose por método de pago y movimientos.</p>
+                        <p>• Sincronización en tiempo real en la nube y gestión multi-sucursal.</p>
+                        <p>• Vinculación por QR para empleados y socios con control de permisos.</p>
+                        <p>• Cierre de caja (Arqueo Z), catálogo digital por WhatsApp, impresión Bluetooth y respaldos JSON.</p>
+                    </div>
                 </div>
 
-                <div class="space-y-2">
-                    <button type="button" onclick="abrirModalPasarelaSuscripcion('mensual')" class="w-full bg-emerald-600 text-white font-semibold py-2.5 rounded-xl text-xs hover:bg-emerald-700 transition">Pagar Plan Mensual ($5)</button>
-                    <button type="button" onclick="abrirModalPasarelaSuscripcion('anual')" class="w-full bg-blue-600 text-white font-semibold py-2.5 rounded-xl text-xs hover:bg-blue-700 transition">Pagar Plan Anual ($45)</button>
-                    <button type="button" onclick="verAnuncioBonificadoPro()" class="w-full bg-amber-600 text-white font-semibold py-2 rounded-xl text-xs hover:bg-amber-700 transition">Bono de prueba 12h (apaga anuncios)</button>
+                <!-- Planes y suscripción (exclusivos para Dueño / Socio) -->
+                <div id="pro-planes-dueno" class="space-y-2.5">
+                    <div class="bg-slate-50 dark:bg-slate-800/70 p-3 rounded-xl text-xs space-y-1 border border-slate-100 dark:border-slate-800">
+                        <p class="font-semibold text-slate-700 dark:text-slate-200">Planes disponibles</p>
+                        <p>• <b>Mensual:</b> $5 (promoción: 1er pago incluye 2do mes)</p>
+                        <p>• <b>Anual:</b> $45 (12 meses)</p>
+                    </div>
+
+                    <div class="space-y-2">
+                        <button type="button" onclick="abrirModalPasarelaSuscripcion('mensual')" class="w-full bg-emerald-600 text-white font-semibold py-2.5 rounded-xl text-xs hover:bg-emerald-700 transition">Pagar Plan Mensual ($5)</button>
+                        <button type="button" onclick="abrirModalPasarelaSuscripcion('anual')" class="w-full bg-blue-600 text-white font-semibold py-2.5 rounded-xl text-xs hover:bg-blue-700 transition">Pagar Plan Anual ($45)</button>
+                    </div>
+                </div>
+
+                <!-- Bono 12h por anuncio (visible para todos, y única opción en Modo Empleado) -->
+                <div class="space-y-1.5">
+                    <p id="aviso-bono-empleado" class="hidden text-[11px] text-slate-500 dark:text-slate-400">
+                        La suscripción del negocio la gestiona el dueño. Como empleado puedes ver un anuncio para activar el bono de 12 horas.
+                    </p>
+                    <button type="button" onclick="verAnuncioBonificadoPro()" class="w-full bg-amber-600 text-white font-semibold py-2.5 rounded-xl text-xs hover:bg-amber-700 transition">
+                        Ver anuncio · Bono 12h (apaga anuncios)
+                    </button>
                 </div>
             </div>
         </section>
 
-        <!-- Sección 8: Ajustes Generales -->
-        <section id="tab-ajustes" class="space-y-4 hidden">
+        <!-- Sección 8: Ajustes Generales (Solo Dueño / Socio) -->
+        <section id="tab-ajustes" data-oculto-empleado="true" class="space-y-4 hidden">
             <div class="bg-white dark:bg-slate-900 p-4 rounded-2xl shadow-xs border border-slate-200/80 dark:border-slate-800 space-y-3 admin-only">
                 <h2 class="text-sm font-bold text-slate-800 dark:text-white">Datos del negocio y catálogo</h2>
                 <div class="grid grid-cols-1 gap-2.5 text-xs">
@@ -785,11 +857,27 @@
                         <input type="text" id="input-nombre-negocio" class="w-full p-2.5 border border-slate-200 dark:border-slate-700 dark:bg-slate-800 rounded-xl outline-none" placeholder="Nombre de la sucursal">
                     </div>
                     <div>
+                        <label class="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-1">RIF / Cédula fiscal (opcional para PDF)</label>
+                        <input type="text" id="input-rif-negocio" class="w-full p-2.5 border border-slate-200 dark:border-slate-700 dark:bg-slate-800 rounded-xl outline-none" placeholder="Ej. J-12345678-9 o V-30022434">
+                    </div>
+                    <div>
                         <label class="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-1">WhatsApp de pedidos del catálogo</label>
                         <input type="tel" id="input-whatsapp-negocio" class="w-full p-2.5 border border-slate-200 dark:border-slate-700 dark:bg-slate-800 rounded-xl outline-none" placeholder="Ej. 04121234567 o 584121234567">
                     </div>
                 </div>
                 <button type="button" onclick="guardarDatosNegocio()" class="w-full bg-blue-600 text-white font-semibold py-2.5 rounded-xl text-xs hover:bg-blue-700 transition">Guardar datos del negocio</button>
+            </div>
+
+            <!-- Permisos de empleados -->
+            <div class="bg-white dark:bg-slate-900 p-4 rounded-2xl shadow-xs border border-slate-200/80 dark:border-slate-800 space-y-3 admin-only">
+                <h2 class="text-sm font-bold text-slate-800 dark:text-white">Permisos de empleados</h2>
+                <div class="flex items-center justify-between gap-3 bg-slate-50 dark:bg-slate-800/70 p-3 rounded-xl border border-slate-200/70 dark:border-slate-700 text-xs">
+                    <div>
+                        <p class="font-semibold text-slate-700 dark:text-slate-200">Permitir agregar, editar y borrar proveedores</p>
+                        <p class="text-[11px] text-slate-500 dark:text-slate-400">Por defecto desactivado en Modo Empleado.</p>
+                    </div>
+                    <input type="checkbox" id="chk-empleado-gestiona-proveedores" onchange="togglePermisoProveedoresEmpleado()" class="w-4 h-4 accent-blue-600 rounded shrink-0 cursor-pointer">
+                </div>
             </div>
 
             <div class="bg-white dark:bg-slate-900 p-4 rounded-2xl shadow-xs border border-slate-200/80 dark:border-slate-800 space-y-3 admin-only">
@@ -970,7 +1058,7 @@
             navigator.serviceWorker.getRegistrations().then((registrations) => {
                 registrations.forEach((reg) => reg.update());
             });
-            navigator.serviceWorker.register('./sw.js?v=20261118k').catch((err) => console.log('SW error:', err));
+            navigator.serviceWorker.register('./sw.js?v=20261118l').catch((err) => console.log('SW error:', err));
         }
 
         const SECCIONES_VALIDAS = ['resumen', 'inventario', 'ventas', 'finanzas', 'audios', 'qr-empleado', 'pro', 'ajustes'];
@@ -994,6 +1082,15 @@
             customNombre: ''
         };
         let audioPersonalizadoDataUrl = localStorage.getItem('gestorpro_audio_custom_src') || '';
+        let fotoProductoActualBase64 = '';
+
+        function escaparHTML(texto) {
+            return String(texto ?? '')
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;');
+        }
 
         function normalizarTelefono(raw) {
             const limpio = String(raw || '').replace(/\D/g, '');
@@ -1147,6 +1244,7 @@
                     : 'text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-300';
             }
             sincronizarControlesAudio();
+            actualizarInterfazRoles();
             backdrop?.classList.remove('hidden');
             requestAnimationFrame(() => {
                 menu?.classList.remove('-translate-x-full');
@@ -1185,7 +1283,10 @@
         }
 
         document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') cerrarMenuLateral();
+            if (e.key === 'Escape') {
+                cerrarMenuLateral();
+                cerrarModalOnboarding();
+            }
         });
 
         function mostrarToast(mensaje, tipo = 'success') {
@@ -1236,7 +1337,36 @@
             return true;
         }
 
+        function toggleBeneficiosPro() {
+            const panel = document.getElementById('panel-beneficios-pro');
+            const icono = document.getElementById('icono-beneficios-pro');
+            if (!panel) return;
+            const estaOculto = panel.classList.contains('hidden');
+            panel.classList.toggle('hidden', !estaOculto);
+            if (icono) icono.innerText = estaOculto ? '▲' : '▼';
+        }
+
         let rolActual = localStorage.getItem('gestorpro_rol') || 'dueño';
+
+        function empleadoPuedeGestionarProveedores() {
+            if (rolActual !== 'empleado') return true;
+            const neg = obtenerNegocio();
+            return !!neg.empleadoGestionaProveedores;
+        }
+
+        function togglePermisoProveedoresEmpleado() {
+            if (rolActual === 'empleado') return mostrarToast('Solo disponible para el Dueño o Socio.', 'error');
+            const neg = obtenerNegocio();
+            const chk = document.getElementById('chk-empleado-gestiona-proveedores');
+            neg.empleadoGestionaProveedores = !!chk?.checked;
+            persistir();
+            mostrarToast(
+                neg.empleadoGestionaProveedores
+                    ? 'Empleados ahora pueden gestionar proveedores.'
+                    : 'Gestión de proveedores bloqueada para empleados.',
+                'info'
+            );
+        }
 
         function obtenerTipoConexionSeleccionado() {
             if (rolActual === 'empleado') return 'empleado';
@@ -1321,6 +1451,7 @@
         }
 
         function actualizarInterfazRoles() {
+            const esEmpleado = rolActual === 'empleado';
             const badge = document.getElementById('badge-rol-actual');
             if (badge) {
                 if (rolActual === 'dueño') {
@@ -1335,16 +1466,60 @@
                 }
             }
 
-            const elementosAdmin = document.querySelectorAll('.admin-only');
-            elementosAdmin.forEach(el => {
-                if (rolActual === 'empleado') {
-                    el.classList.add('opacity-50', 'pointer-events-none');
-                } else {
-                    el.classList.remove('opacity-50', 'pointer-events-none');
-                }
+            // Ocultar por completo secciones, botones del menú y datos reservados al dueño en Modo Empleado
+            document.querySelectorAll('[data-oculto-empleado="true"]').forEach(el => {
+                el.classList.toggle('hidden', esEmpleado);
+            });
+            document.querySelectorAll('[data-solo-dueno="true"]').forEach(el => {
+                el.classList.toggle('hidden', esEmpleado);
             });
 
+            // Ajustar cuadrícula de precios del producto (sin columna Compra en Modo Empleado)
+            const gridPrecios = document.getElementById('grid-precios-producto');
+            if (gridPrecios) {
+                gridPrecios.classList.toggle('grid-cols-3', !esEmpleado);
+                gridPrecios.classList.toggle('grid-cols-2', esEmpleado);
+            }
+
+            // Ocultar opción de gráfico "Gastos" en Modo Empleado
+            const opGastos = document.getElementById('opcion-grafico-gastos');
+            const selGrafico = document.getElementById('select-tipo-grafico');
+            if (opGastos) {
+                opGastos.hidden = esEmpleado;
+                opGastos.disabled = esEmpleado;
+                if (esEmpleado && selGrafico && selGrafico.value === 'gastos') {
+                    selGrafico.value = 'ventas';
+                }
+            }
+
+            // Modo Pro: empleado solo ve el bono de 12h por anuncio y no ve planes de pago
+            const planesDueno = document.getElementById('pro-planes-dueno');
+            const avisoBonoEmp = document.getElementById('aviso-bono-empleado');
+            if (planesDueno) planesDueno.classList.toggle('hidden', esEmpleado);
+            if (avisoBonoEmp) avisoBonoEmp.classList.toggle('hidden', !esEmpleado);
+
+            // Proveedores: bloqueado para empleado salvo permiso del dueño
+            const puedeProv = empleadoPuedeGestionarProveedores();
+            const avisoProv = document.getElementById('aviso-proveedores-bloqueados');
+            if (avisoProv) avisoProv.classList.toggle('hidden', !esEmpleado || puedeProv);
+            document.querySelectorAll('[data-gestion-proveedor="true"]').forEach(el => {
+                el.classList.toggle('hidden', esEmpleado && !puedeProv);
+                el.disabled = esEmpleado && !puedeProv;
+            });
+
+            // Si el empleado estaba en una sección restringida (finanzas o ajustes), redirigir a resumen
+            if (esEmpleado) {
+                const tabFin = document.getElementById('tab-finanzas');
+                const tabAj = document.getElementById('tab-ajustes');
+                if ((tabFin && !tabFin.classList.contains('hidden')) || (tabAj && !tabAj.classList.contains('hidden'))) {
+                    cambiarTab('resumen');
+                }
+            }
+
             sincronizarControlesSincronizacion();
+            renderInventario();
+            renderProveedores();
+            actualizarGraficos();
         }
 
         function clicBadgeRol() {
@@ -1417,6 +1592,7 @@
                 id: 1,
                 nombre: 'Mi Negocio Principal',
                 duenoNombre: '',
+                rif: '',
                 whatsapp: '',
                 capitalInicial: 0,
                 tasaCambio: 36.50,
@@ -1425,6 +1601,7 @@
                 deudas: [],
                 finanzas: [],
                 proveedores: [],
+                empleadoGestionaProveedores: false,
                 socioPermiteQrEmpleado: false,
                 dispositivosVinculados: [],
                 syncCode: localStorage.getItem('gestorpro_sync_code') || ('negocio_' + Math.random().toString(36).substring(2, 10))
@@ -1464,10 +1641,12 @@
         negocios.forEach(n => {
             if (!n.syncCode) n.syncCode = defaultSync;
             if (n.duenoNombre === undefined) n.duenoNombre = '';
+            if (n.rif === undefined) n.rif = '';
             if (n.whatsapp === undefined) n.whatsapp = '';
             if (n.capitalInicial === undefined) n.capitalInicial = 0;
             if (n.tasaCambio === undefined) n.tasaCambio = 36.50;
             if (!n.proveedores) n.proveedores = [];
+            if (n.empleadoGestionaProveedores === undefined) n.empleadoGestionaProveedores = false;
             if (n.socioPermiteQrEmpleado === undefined) n.socioPermiteQrEmpleado = false;
             if (!Array.isArray(n.dispositivosVinculados)) n.dispositivosVinculados = [];
         });
@@ -1484,7 +1663,22 @@
         let deudaAbonoPendienteId = null;
         let vinculoInicialEscaneando = false;
 
-        // Flujo de Inicio: Registro Dueño vs Vincular Empleado/Socio
+        function existeCuentaRegistrada() {
+            const neg0 = negocios[0] || {};
+            return localStorage.getItem('onboardingVisto') === 'true' || !!(neg0.duenoNombre && neg0.nombre);
+        }
+
+        function actualizarBotonCerrarOnboarding() {
+            const btnCerrar = document.getElementById('btn-cerrar-onboarding');
+            if (!btnCerrar) return;
+            btnCerrar.classList.toggle('hidden', !existeCuentaRegistrada());
+        }
+
+        function cerrarModalOnboarding() {
+            if (!existeCuentaRegistrada()) return;
+            document.getElementById('modal-onboarding')?.classList.add('hidden');
+        }
+
         function alternarModoInicio(modo) {
             const formDueno = document.getElementById('form-registro-dueno');
             const panelVincular = document.getElementById('panel-vincular-equipo');
@@ -1502,19 +1696,23 @@
                 if (btnReg) btnReg.className = 'py-2 rounded-lg bg-blue-600 text-white transition';
                 if (btnVinc) btnVinc.className = 'py-2 rounded-lg text-slate-600 dark:text-slate-300 transition';
             }
+            actualizarBotonCerrarOnboarding();
         }
 
         function abrirAsistenteInicial() {
             const neg = obtenerNegocio();
             const dInput = document.getElementById('onb-dueno-nombre');
             const nInput = document.getElementById('onb-negocio-nombre');
+            const rInput = document.getElementById('onb-negocio-rif');
             const wInput = document.getElementById('onb-negocio-whatsapp');
             const cInput = document.getElementById('onb-capital-inicial');
             if (dInput) dInput.value = neg.duenoNombre || '';
             if (nInput) nInput.value = neg.nombre || '';
+            if (rInput) rInput.value = neg.rif || '';
             if (wInput) wInput.value = neg.whatsapp || '';
             if (cInput) cInput.value = neg.capitalInicial || '';
             alternarModoInicio('registro');
+            actualizarBotonCerrarOnboarding();
             document.getElementById('modal-onboarding')?.classList.remove('hidden');
         }
 
@@ -1522,6 +1720,7 @@
             event.preventDefault();
             const duenoNombre = document.getElementById('onb-dueno-nombre').value.trim();
             const nombreNeg = document.getElementById('onb-negocio-nombre').value.trim();
+            const rif = document.getElementById('onb-negocio-rif').value.trim();
             const whatsapp = normalizarTelefono(document.getElementById('onb-negocio-whatsapp').value.trim());
             const capitalInicial = parseFloat(document.getElementById('onb-capital-inicial').value) || 0;
             const pin = document.getElementById('onb-pin-dueno').value.trim();
@@ -1539,6 +1738,7 @@
             const neg = negocios[0];
             neg.duenoNombre = duenoNombre;
             neg.nombre = nombreNeg;
+            neg.rif = rif;
             neg.whatsapp = whatsapp;
             neg.capitalInicial = capitalInicial;
             negocioActualId = neg.id;
@@ -1600,8 +1800,9 @@
             mostrarToast(`Vinculado como ${rolElegido === 'socio' ? 'Socio' : 'Empleado'}.`, 'success');
         }
 
-        if (localStorage.getItem('onboardingVisto') !== 'true') {
+        if (!existeCuentaRegistrada()) {
             alternarModoInicio('registro');
+            actualizarBotonCerrarOnboarding();
             document.getElementById('modal-onboarding')?.classList.remove('hidden');
         }
 
@@ -1618,6 +1819,7 @@
             let neg = negocios.find(n => n.id === idObjetivo);
             if (!neg) neg = negocios[0];
             if (neg.duenoNombre === undefined) neg.duenoNombre = '';
+            if (neg.rif === undefined) neg.rif = '';
             if (neg.whatsapp === undefined) neg.whatsapp = '';
             if (neg.capitalInicial === undefined) neg.capitalInicial = 0;
             if (neg.tasaCambio === undefined) neg.tasaCambio = 36.50;
@@ -1626,6 +1828,7 @@
             if (!neg.ventas) neg.ventas = [];
             if (!neg.finanzas) neg.finanzas = [];
             if (!neg.proveedores) neg.proveedores = [];
+            if (neg.empleadoGestionaProveedores === undefined) neg.empleadoGestionaProveedores = false;
             if (neg.socioPermiteQrEmpleado === undefined) neg.socioPermiteQrEmpleado = false;
             if (!Array.isArray(neg.dispositivosVinculados)) neg.dispositivosVinculados = [];
             if (!neg.syncCode) neg.syncCode = 'negocio_' + Math.random().toString(36).substring(2, 10);
@@ -1653,11 +1856,13 @@
             const neg = obtenerNegocio();
             const duenoNombre = document.getElementById('input-nombre-dueno')?.value.trim() || '';
             const nombreNeg = document.getElementById('input-nombre-negocio')?.value.trim() || '';
+            const rif = document.getElementById('input-rif-negocio')?.value.trim() || '';
             const whatsapp = normalizarTelefono(document.getElementById('input-whatsapp-negocio')?.value.trim() || '');
 
             if (!nombreNeg) return mostrarToast('El nombre del negocio no puede quedar vacío.', 'error');
             neg.duenoNombre = duenoNombre;
             neg.nombre = nombreNeg;
+            neg.rif = rif;
             neg.whatsapp = whatsapp;
             persistir();
             mostrarToast('Datos del negocio y catálogo actualizados.', 'success');
@@ -1766,6 +1971,9 @@
         }
 
         function abrirModalPasarelaSuscripcion(tipoPlan) {
+            if (rolActual === 'empleado') {
+                return mostrarToast('La suscripción del negocio corresponde al dueño.', 'error');
+            }
             window.planSeleccionadoActual = tipoPlan;
             const neg = obtenerNegocio();
             const tasa = neg.tasaCambio || 36.50;
@@ -1844,6 +2052,9 @@
 
         document.getElementById('form-proveedor').addEventListener('submit', (e) => {
             e.preventDefault();
+            if (!empleadoPuedeGestionarProveedores()) {
+                return mostrarToast('No tienes permiso para agregar proveedores.', 'error');
+            }
             const neg = obtenerNegocio();
             const nombre = document.getElementById('prov-nombre').value.trim();
             const contacto = document.getElementById('prov-contacto').value.trim();
@@ -1859,7 +2070,16 @@
         function renderProveedores() {
             const neg = obtenerNegocio();
             const cont = document.getElementById('lista-proveedores');
+            const badgePerm = document.getElementById('badge-permiso-proveedores');
             if (!cont) return;
+
+            const puedeGestionar = empleadoPuedeGestionarProveedores();
+            if (badgePerm) {
+                badgePerm.innerText = (rolActual === 'empleado')
+                    ? (puedeGestionar ? 'Autorizado por dueño' : 'Solo lectura')
+                    : 'Datos de contacto';
+            }
+
             if (!neg.proveedores || neg.proveedores.length === 0) {
                 cont.innerHTML = `<p class="text-[11px] text-slate-400 text-center py-1">Sin proveedores registrados.</p>`;
                 return;
@@ -1867,15 +2087,20 @@
             cont.innerHTML = neg.proveedores.map(p => `
                 <div class="bg-slate-50 dark:bg-slate-800/80 px-3 py-2.5 rounded-xl flex justify-between items-center gap-2 text-xs border border-slate-100 dark:border-slate-700/70">
                     <div class="min-w-0">
-                        <p class="font-semibold text-slate-800 dark:text-slate-100 truncate">${p.nombre} <span class="text-[11px] font-normal text-slate-400">${p.contacto ? '· ' + p.contacto : ''}</span></p>
-                        <p class="text-[11px] text-slate-500 dark:text-slate-400 truncate">${p.producto || 'Suministro general'}</p>
+                        <p class="font-semibold text-slate-800 dark:text-slate-100 truncate">${escaparHTML(p.nombre)} <span class="text-[11px] font-normal text-slate-400">${p.contacto ? '· ' + escaparHTML(p.contacto) : ''}</span></p>
+                        <p class="text-[11px] text-slate-500 dark:text-slate-400 truncate">${escaparHTML(p.producto || 'Suministro general')}</p>
                     </div>
-                    <button type="button" onclick="eliminarProveedor(${p.id})" class="text-rose-500 text-xs px-2 py-1 shrink-0">✕</button>
+                    ${puedeGestionar
+                        ? `<button type="button" onclick="eliminarProveedor(${p.id})" class="text-rose-500 text-xs px-2 py-1 shrink-0">✕</button>`
+                        : `<span class="text-[10px] text-slate-400 shrink-0">Bloqueado</span>`}
                 </div>
             `).join('');
         }
 
         function eliminarProveedor(id) {
+            if (!empleadoPuedeGestionarProveedores()) {
+                return mostrarToast('No tienes permiso para eliminar proveedores.', 'error');
+            }
             const neg = obtenerNegocio();
             neg.proveedores = neg.proveedores.filter(p => p.id !== id);
             persistir();
@@ -1883,6 +2108,7 @@
         }
 
         function abrirModalCierreZ() {
+            if (rolActual === 'empleado') return mostrarToast('Solo disponible para el Dueño o Socio.', 'error');
             if (!esProActivo()) return requierePro(null, 'Cierre de Caja (Arqueo Z)');
             const neg = obtenerNegocio();
             const capitalInicial = neg.capitalInicial || 0;
@@ -1930,6 +2156,7 @@
         }
 
         function guardarCierreZDefinitivo() {
+            if (rolActual === 'empleado') return mostrarToast('Solo disponible para el Dueño o Socio.', 'error');
             if (!esProActivo()) return requierePro(null, 'Registrar Cierre Z');
             const contado = parseFloat(document.getElementById('input-efectivo-contado').value);
             if (isNaN(contado)) return mostrarToast('Ingresa el efectivo contado.', 'error');
@@ -2006,6 +2233,7 @@
                     `\x1B\x40${ticketActualData.negocio.toUpperCase()}\n` +
                     `${ticketActualData.fecha}\n` +
                     `Tipo: ${ticketActualData.tipo}\n` +
+                    (ticketActualData.metodoPago ? `Pago: ${ticketActualData.metodoPago}\n` : '') +
                     `Prod: ${ticketActualData.producto} (x${ticketActualData.cantidad})\n` +
                     `TOTAL: $${Number(ticketActualData.total || 0).toFixed(2)}\n\n\n`;
                 const bytes = encoder.encode(textoTicket);
@@ -2096,7 +2324,7 @@
             localStorage.setItem('proExpira', String(tiempoExpiracion));
             verificarEstadoPro();
             persistir();
-            mostrarToast('Bono de prueba de 12h activado localmente.', 'success');
+            mostrarToast('Bono de 12h activado tras ver anuncio.', 'success');
         }
 
         function guardarTasaCambio() {
@@ -2160,19 +2388,21 @@
             ticketActualData = { negocio: neg.nombre, fecha: new Date().toLocaleString(), ...datos };
             document.getElementById('ticket-contenido-visual').innerHTML = `
                 <div class="text-center font-bold border-b border-dashed border-slate-300 pb-1.5">
-                    <p class="text-xs uppercase">${ticketActualData.negocio}</p>
-                    <p class="text-[10px] font-normal text-slate-500">${ticketActualData.fecha}</p>
+                    <p class="text-xs uppercase">${escaparHTML(ticketActualData.negocio)}</p>
+                    <p class="text-[10px] font-normal text-slate-500">${escaparHTML(ticketActualData.fecha)}</p>
                 </div>
                 <div class="py-1.5 space-y-0.5">
-                    <p><b>Tipo:</b> ${ticketActualData.tipo}</p>
-                    ${ticketActualData.cliente ? `<p><b>Cliente:</b> ${ticketActualData.cliente}</p>` : ''}
-                    <p><b>Producto:</b> ${ticketActualData.producto}</p>
+                    <p><b>Tipo:</b> ${escaparHTML(ticketActualData.tipo)}</p>
+                    ${ticketActualData.metodoPago ? `<p><b>Pago:</b> ${escaparHTML(ticketActualData.metodoPago)}</p>` : ''}
+                    ${ticketActualData.referencia ? `<p><b>Ref.:</b> ${escaparHTML(ticketActualData.referencia)}</p>` : ''}
+                    ${ticketActualData.cliente ? `<p><b>Cliente:</b> ${escaparHTML(ticketActualData.cliente)}</p>` : ''}
+                    <p><b>Producto:</b> ${escaparHTML(ticketActualData.producto)}</p>
                     <p><b>Cantidad:</b> ${ticketActualData.cantidad}</p>
                 </div>
                 <div class="border-t border-dashed border-slate-300 pt-1.5 space-y-0.5">
-                    <p class="flex justify-between"><span>TOTAL:</span> <b>$${ticketActualData.total.toFixed(2)}</b></p>
-                    ${ticketActualData.abonado !== undefined ? `<p class="flex justify-between"><span>ABONADO:</span> <span>$${ticketActualData.abonado.toFixed(2)}</span></p>` : ''}
-                    ${ticketActualData.pendiente !== undefined ? `<p class="flex justify-between text-rose-700"><span>PENDIENTE:</span> <b>$${ticketActualData.pendiente.toFixed(2)}</b></p>` : ''}
+                    <p class="flex justify-between"><span>TOTAL:</span> <b>$${Number(ticketActualData.total || 0).toFixed(2)}</b></p>
+                    ${ticketActualData.abonado !== undefined ? `<p class="flex justify-between"><span>ABONADO:</span> <span>$${Number(ticketActualData.abonado || 0).toFixed(2)}</span></p>` : ''}
+                    ${ticketActualData.pendiente !== undefined ? `<p class="flex justify-between text-rose-700"><span>PENDIENTE:</span> <b>$${Number(ticketActualData.pendiente || 0).toFixed(2)}</b></p>` : ''}
                 </div>
                 <div class="text-center pt-2 text-[10px] text-slate-500 font-normal border-t border-dotted border-slate-300 mt-1">
                     <p>© 2026 Gestor Pro · Joelbi J. Salazar V.</p>
@@ -2188,24 +2418,25 @@
         function imprimirTicketTermico() {
             if (!ticketActualData) return;
             const ventana = window.open('', '_blank', 'width=300,height=450');
-            ventana.document.write(`<html><head><title>Ticket</title><style>body{font-family:monospace;width:58mm;margin:0 auto;padding:5px;font-size:12px;}</style></head><body><b>${ticketActualData.negocio.toUpperCase()}</b><br><small>${ticketActualData.fecha}</small><hr>Tipo: ${ticketActualData.tipo}<br>Prod: ${ticketActualData.producto}<br>Cant: ${ticketActualData.cantidad}<br><hr><b>TOTAL: $${ticketActualData.total.toFixed(2)}</b><br><hr><small>© 2026 Gestor Pro<br>Joelbi José Salazar Vargas (C.I. 30.022.434)</small><script>window.onload=function(){window.print();window.close();}<\/script></body></html>`);
+            ventana.document.write(`<html><head><title>Ticket</title><style>body{font-family:monospace;width:58mm;margin:0 auto;padding:5px;font-size:12px;}</style></head><body><b>${escaparHTML(ticketActualData.negocio.toUpperCase())}</b><br><small>${escaparHTML(ticketActualData.fecha)}</small><hr>Tipo: ${escaparHTML(ticketActualData.tipo)}<br>${ticketActualData.metodoPago ? `Pago: ${escaparHTML(ticketActualData.metodoPago)}<br>` : ''}Prod: ${escaparHTML(ticketActualData.producto)}<br>Cant: ${ticketActualData.cantidad}<br><hr><b>TOTAL: $${Number(ticketActualData.total || 0).toFixed(2)}</b><br><hr><small>© 2026 Gestor Pro<br>Joelbi José Salazar Vargas (C.I. 30.022.434)</small><script>window.onload=function(){window.print();window.close();}<\/script></body></html>`);
             ventana.document.close();
         }
 
         function descargarTicketImagen() {
             if (!ticketActualData) return;
             const canvas = document.createElement('canvas');
-            canvas.width = 360; canvas.height = 410;
+            canvas.width = 360; canvas.height = 420;
             const ctx = canvas.getContext('2d');
-            ctx.fillStyle = '#fffbeb'; ctx.fillRect(0, 0, 360, 410);
+            ctx.fillStyle = '#fffbeb'; ctx.fillRect(0, 0, 360, 420);
             ctx.fillStyle = '#0f172a'; ctx.font = 'bold 16px monospace'; ctx.textAlign = 'center';
             ctx.fillText(ticketActualData.negocio.toUpperCase(), 180, 40);
             ctx.font = '12px monospace'; ctx.fillText(ticketActualData.fecha, 180, 68);
-            ctx.textAlign = 'left'; ctx.font = '14px monospace'; let y = 115;
-            ctx.fillText(`Tipo: ${ticketActualData.tipo}`, 25, y); y += 26;
-            ctx.fillText(`Producto: ${ticketActualData.producto}`, 25, y); y += 26;
-            ctx.fillText(`Cantidad: ${ticketActualData.cantidad}`, 25, y); y += 36;
-            ctx.font = 'bold 16px monospace'; ctx.fillText(`TOTAL: $${ticketActualData.total.toFixed(2)}`, 25, y); y += 45;
+            ctx.textAlign = 'left'; ctx.font = '14px monospace'; let y = 112;
+            ctx.fillText(`Tipo: ${ticketActualData.tipo}`, 25, y); y += 24;
+            if (ticketActualData.metodoPago) { ctx.fillText(`Pago: ${ticketActualData.metodoPago}`, 25, y); y += 24; }
+            ctx.fillText(`Producto: ${ticketActualData.producto}`, 25, y); y += 24;
+            ctx.fillText(`Cantidad: ${ticketActualData.cantidad}`, 25, y); y += 34;
+            ctx.font = 'bold 16px monospace'; ctx.fillText(`TOTAL: $${Number(ticketActualData.total || 0).toFixed(2)}`, 25, y); y += 45;
             ctx.font = '11px monospace'; ctx.textAlign = 'center'; ctx.fillText('© 2026 Gestor Pro · Joelbi J. Salazar V.', 180, y);
             const link = document.createElement('a');
             link.download = `Ticket_${Date.now()}.png`;
@@ -2332,9 +2563,9 @@
                         <div class="min-w-0">
                             <div class="flex items-center gap-1.5">
                                 <span class="text-[10px] font-bold px-2 py-0.5 rounded-full ${badgeClase}">${esSocio ? 'Socio' : 'Empleado'}</span>
-                                <span class="font-mono text-[11px] text-slate-700 dark:text-slate-200 truncate">${d.codigo}</span>
+                                <span class="font-mono text-[11px] text-slate-700 dark:text-slate-200 truncate">${escaparHTML(d.codigo)}</span>
                             </div>
-                            <p class="text-[10px] text-slate-400 mt-0.5">Vinculado: ${d.vinculadoEn || 'Hoy'}</p>
+                            <p class="text-[10px] text-slate-400 mt-0.5">Vinculado: ${escaparHTML(d.vinculadoEn || 'Hoy')}</p>
                         </div>
                         ${btnDesvincular}
                     </div>
@@ -2347,7 +2578,7 @@
             const negociosDisponibles = proOk ? negocios : [negocios[0]];
             const selectHeader = document.getElementById('select-negocio-activo');
             if (selectHeader) {
-                selectHeader.innerHTML = negociosDisponibles.map(n => `<option value="${n.id}" ${n.id === obtenerNegocio().id ? 'selected' : ''}>${n.nombre}</option>`).join('');
+                selectHeader.innerHTML = negociosDisponibles.map(n => `<option value="${n.id}" ${n.id === obtenerNegocio().id ? 'selected' : ''}>${escaparHTML(n.nombre)}</option>`).join('');
                 selectHeader.disabled = !proOk;
             }
             const drawerNombre = document.getElementById('drawer-negocio-nombre');
@@ -2371,7 +2602,7 @@
             if (admin) {
                 admin.innerHTML = negocios.map(n => `
                     <div class="flex justify-between items-center bg-slate-50 dark:bg-slate-800/80 px-3 py-2 rounded-xl border border-slate-200/70 dark:border-slate-700">
-                        <span class="text-xs font-semibold">${n.nombre} ${n.id === obtenerNegocio().id ? '<span class="text-[10px] text-blue-600 dark:text-blue-400">· Activa</span>' : ''}</span>
+                        <span class="text-xs font-semibold">${escaparHTML(n.nombre)} ${n.id === obtenerNegocio().id ? '<span class="text-[10px] text-blue-600 dark:text-blue-400">· Activa</span>' : ''}</span>
                         ${negocios.length > 1 ? `<button type="button" onclick="eliminarNegocio(${n.id})" class="text-rose-600 text-xs font-medium px-2 py-0.5 rounded-lg">Eliminar</button>` : ''}
                     </div>
                 `).join('');
@@ -2402,6 +2633,7 @@
                 id: nuevoId,
                 nombre,
                 duenoNombre: actual.duenoNombre || '',
+                rif: actual.rif || '',
                 whatsapp: actual.whatsapp || '',
                 capitalInicial: 0,
                 tasaCambio: actual.tasaCambio || 36.50,
@@ -2410,6 +2642,7 @@
                 deudas: [],
                 finanzas: [],
                 proveedores: [],
+                empleadoGestionaProveedores: false,
                 socioPermiteQrEmpleado: false,
                 dispositivosVinculados: [],
                 syncCode: 'negocio_' + Math.random().toString(36).substring(2, 10)
@@ -2432,18 +2665,26 @@
             const neg = obtenerNegocio();
             const dEl = document.getElementById('input-nombre-dueno');
             const nEl = document.getElementById('input-nombre-negocio');
+            const rEl = document.getElementById('input-rif-negocio');
             const wEl = document.getElementById('input-whatsapp-negocio');
             const tEl = document.getElementById('input-tasa-cambio');
             const cEl = document.getElementById('input-capital-negocio');
+            const chkProv = document.getElementById('chk-empleado-gestiona-proveedores');
             if (dEl) dEl.value = neg.duenoNombre || '';
             if (nEl) nEl.value = neg.nombre || '';
+            if (rEl) rEl.value = neg.rif || '';
             if (wEl) wEl.value = neg.whatsapp || '';
             if (tEl) tEl.value = neg.tasaCambio || 36.50;
             if (cEl) cEl.value = neg.capitalInicial || 0;
+            if (chkProv) chkProv.checked = !!neg.empleadoGestionaProveedores;
         }
 
         function cambiarTab(tab) {
-            const targetTab = SECCIONES_VALIDAS.includes(tab) ? tab : 'resumen';
+            let targetTab = SECCIONES_VALIDAS.includes(tab) ? tab : 'resumen';
+            if (rolActual === 'empleado' && (targetTab === 'finanzas' || targetTab === 'ajustes')) {
+                targetTab = 'resumen';
+            }
+
             SECCIONES_VALIDAS.forEach(t => {
                 document.getElementById(`tab-${t}`)?.classList.add('hidden');
             });
@@ -2456,7 +2697,7 @@
             if (targetTab === 'finanzas') renderFinanzas();
             if (targetTab === 'audios') sincronizarControlesAudio();
             if (targetTab === 'qr-empleado') { sincronizarControlesSincronizacion(); }
-            if (targetTab === 'pro') { verificarEstadoPro(); }
+            if (targetTab === 'pro') { verificarEstadoPro(); actualizarInterfazRoles(); }
             if (targetTab === 'ajustes') { actualizarSelectNegocios(); sincronizarFormularioAjustes(); }
         }
 
@@ -2468,11 +2709,61 @@
 
             const bajoStock = (neg.inventario || []).filter(p => p.stock <= 5);
             if (bajoStock.length > 0) {
-                textoAlerta.innerHTML = `<b>${bajoStock[0].nombre}</b> tiene solo ${bajoStock[0].stock} unidades disponibles.`;
+                textoAlerta.innerHTML = `<b>${escaparHTML(bajoStock[0].nombre)}</b> tiene solo ${bajoStock[0].stock} unidades disponibles.`;
                 alertaBox.classList.remove('hidden');
             } else {
                 alertaBox.classList.add('hidden');
             }
+        }
+
+        // Foto del producto con compresión en canvas
+        function aplicarFotoPreview(dataUrl) {
+            fotoProductoActualBase64 = dataUrl || '';
+            const img = document.getElementById('prod-foto-preview');
+            if (!img) return;
+            if (fotoProductoActualBase64) {
+                img.src = fotoProductoActualBase64;
+                img.classList.remove('hidden');
+            } else {
+                img.src = '';
+                img.classList.add('hidden');
+            }
+        }
+
+        function limpiarFotoProducto() {
+            const inp = document.getElementById('prod-foto-input');
+            if (inp) inp.value = '';
+            aplicarFotoPreview('');
+        }
+
+        function procesarFotoProducto(event) {
+            const file = event.target.files?.[0];
+            if (!file) return;
+            if (!file.type.startsWith('image/')) {
+                event.target.value = '';
+                return mostrarToast('Selecciona una imagen válida.', 'error');
+            }
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const img = new Image();
+                img.onload = function() {
+                    const maxSize = 240;
+                    const canvas = document.createElement('canvas');
+                    canvas.width = maxSize;
+                    canvas.height = maxSize;
+                    const ctx = canvas.getContext('2d');
+                    const ladoMenor = Math.min(img.width, img.height);
+                    const sx = (img.width - ladoMenor) / 2;
+                    const sy = (img.height - ladoMenor) / 2;
+                    ctx.drawImage(img, sx, sy, ladoMenor, ladoMenor, 0, 0, maxSize, maxSize);
+                    const comprimida = canvas.toDataURL('image/jpeg', 0.72);
+                    aplicarFotoPreview(comprimida);
+                    mostrarToast('Foto del producto lista.', 'success');
+                };
+                img.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
         }
 
         function agregarCampoGastoExtra(nombre = '', monto = '') {
@@ -2481,8 +2772,8 @@
             const div = document.createElement('div');
             div.className = "flex gap-2 items-center";
             div.innerHTML = `
-                <input type="text" class="gasto-nombre flex-1 p-2 text-xs border border-slate-200 dark:border-slate-700 dark:bg-slate-800 rounded-xl outline-none" placeholder="Concepto" value="${nombre}">
-                <input type="number" step="0.01" class="gasto-monto w-24 p-2 text-xs border border-slate-200 dark:border-slate-700 dark:bg-slate-800 rounded-xl outline-none" placeholder="0.00" value="${monto}" oninput="calcularPreviewProducto()">
+                <input type="text" class="gasto-nombre flex-1 p-2 text-xs border border-slate-200 dark:border-slate-700 dark:bg-slate-800 rounded-xl outline-none" placeholder="Concepto" value="${escaparHTML(nombre)}">
+                <input type="number" step="0.01" class="gasto-monto w-24 p-2 text-xs border border-slate-200 dark:border-slate-700 dark:bg-slate-800 rounded-xl outline-none" placeholder="0.00" value="${escaparHTML(monto)}" oninput="calcularPreviewProducto()">
                 <button type="button" onclick="this.parentElement.remove(); calcularPreviewProducto();" class="text-rose-500 text-xs px-2 py-1">✕</button>
             `;
             contenedor.appendChild(div);
@@ -2521,6 +2812,9 @@
             document.getElementById('prod-compra').value = prod.compra;
             document.getElementById('prod-venta').value = prod.venta;
             document.getElementById('prod-stock').value = prod.stock;
+            const chkPdf = document.getElementById('prod-mostrar-foto-pdf');
+            if (chkPdf) chkPdf.checked = prod.mostrarFotoPdf !== false;
+            aplicarFotoPreview(prod.foto || '');
             const cont = document.getElementById('contenedor-gastos-extras');
             cont.innerHTML = '';
             if (prod.gastosExtras) prod.gastosExtras.forEach(g => agregarCampoGastoExtra(g.nombre, g.monto));
@@ -2534,42 +2828,61 @@
             const neg = obtenerNegocio();
             const codigo = document.getElementById('prod-codigo').value.trim() || ('SKU-' + Date.now().toString().slice(-6));
             const nombre = document.getElementById('prod-nombre').value.trim();
-            const compra = parseFloat(document.getElementById('prod-compra').value);
             const venta = parseFloat(document.getElementById('prod-venta').value);
             const stock = parseInt(document.getElementById('prod-stock').value, 10);
+            const mostrarFotoPdf = !!document.getElementById('prod-mostrar-foto-pdf')?.checked;
+            const foto = fotoProductoActualBase64 || '';
+
+            const existente = editandoProductoId !== null ? neg.inventario.find(p => p.id === editandoProductoId) : null;
+            const compraInputVal = parseFloat(document.getElementById('prod-compra').value);
+            const compra = !isNaN(compraInputVal)
+                ? compraInputVal
+                : (existente ? Number(existente.compra || 0) : 0);
 
             let gastosExtras = [], totalExtras = 0;
-            document.querySelectorAll('#contenedor-gastos-extras > div').forEach(div => {
-                const n = div.querySelector('.gasto-nombre').value.trim();
-                const m = parseFloat(div.querySelector('.gasto-monto').value) || 0;
-                if (n && m > 0) { gastosExtras.push({ nombre: n, monto: m }); totalExtras += m; }
-            });
+            if (rolActual !== 'empleado') {
+                document.querySelectorAll('#contenedor-gastos-extras > div').forEach(div => {
+                    const n = div.querySelector('.gasto-nombre').value.trim();
+                    const m = parseFloat(div.querySelector('.gasto-monto').value) || 0;
+                    if (n && m > 0) { gastosExtras.push({ nombre: n, monto: m }); totalExtras += m; }
+                });
+            } else if (existente && Array.isArray(existente.gastosExtras)) {
+                gastosExtras = existente.gastosExtras;
+                totalExtras = gastosExtras.reduce((a, b) => a + (Number(b.monto) || 0), 0);
+            }
             const inversionTotal = (compra * stock) + totalExtras;
 
             if (editandoProductoId !== null) {
-                const prod = neg.inventario.find(p => p.id === editandoProductoId);
-                if (prod) {
-                    prod.codigo = codigo;
-                    prod.nombre = nombre;
-                    prod.compra = compra;
-                    prod.venta = venta;
-                    prod.stock = stock;
-                    prod.gastosExtras = gastosExtras;
-                    prod.inversionTotal = inversionTotal;
+                if (existente) {
+                    existente.codigo = codigo;
+                    existente.nombre = nombre;
+                    existente.compra = compra;
+                    existente.venta = venta;
+                    existente.stock = stock;
+                    existente.foto = foto;
+                    existente.mostrarFotoPdf = mostrarFotoPdf;
+                    existente.gastosExtras = gastosExtras;
+                    existente.inversionTotal = inversionTotal;
                 }
                 editandoProductoId = null;
                 document.getElementById('btn-guardar-producto').innerText = 'Guardar Producto';
                 e.target.reset();
+                limpiarFotoProducto();
+                const chkReset = document.getElementById('prod-mostrar-foto-pdf');
+                if (chkReset) chkReset.checked = true;
                 document.getElementById('contenedor-gastos-extras').innerHTML = '';
                 document.getElementById('preview-prod-box').classList.add('hidden');
                 persistir();
                 renderInventario();
                 mostrarToast('Producto actualizado.', 'success');
             } else {
-                neg.inventario.push({ id: Date.now(), codigo, nombre, compra, venta, stock, gastosExtras, inversionTotal });
+                neg.inventario.push({ id: Date.now(), codigo, nombre, compra, venta, stock, foto, mostrarFotoPdf, gastosExtras, inversionTotal });
                 neg.finanzas.unshift({ id: Date.now(), tipo: 'gasto', categoria: 'Insumos / Mercancía', monto: inversionTotal, desc: `Stock: ${nombre}`, fecha: new Date().toLocaleTimeString() });
                 persistir();
                 e.target.reset();
+                limpiarFotoProducto();
+                const chkReset = document.getElementById('prod-mostrar-foto-pdf');
+                if (chkReset) chkReset.checked = true;
                 document.getElementById('contenedor-gastos-extras').innerHTML = '';
                 document.getElementById('preview-prod-box').classList.add('hidden');
                 renderInventario();
@@ -2577,7 +2890,7 @@
             }
         });
 
-        function renderInventario() { filtrarInventario(document.getElementById('buscar-inventario').value); }
+        function renderInventario() { filtrarInventario(document.getElementById('buscar-inventario')?.value || ''); }
 
         function filtrarInventario(filtro) {
             const neg = obtenerNegocio();
@@ -2592,18 +2905,26 @@
             }
 
             const totalMostrados = filtrados.slice(0, 50);
-            contenedor.innerHTML = totalMostrados.map(prod => `
-                <div class="bg-slate-50 dark:bg-slate-800/70 p-3 rounded-xl border border-slate-200/70 dark:border-slate-700/70 flex justify-between items-center gap-2">
-                    <div class="min-w-0">
-                        <h3 class="text-xs font-bold text-slate-800 dark:text-white truncate">${prod.nombre}</h3>
-                        <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">$${prod.venta.toFixed(2)} · Stock: <b>${prod.stock}</b></p>
+            contenedor.innerHTML = totalMostrados.map(prod => {
+                const thumb = prod.foto
+                    ? `<img src="${prod.foto}" alt="${escaparHTML(prod.nombre)}" class="w-10 h-10 object-cover rounded-lg border border-slate-200 dark:border-slate-700 bg-white shrink-0">`
+                    : `<div class="w-10 h-10 rounded-lg bg-slate-200/70 dark:bg-slate-700 flex items-center justify-center text-xs text-slate-500 shrink-0">📦</div>`;
+                return `
+                    <div class="bg-slate-50 dark:bg-slate-800/70 p-3 rounded-xl border border-slate-200/70 dark:border-slate-700/70 flex justify-between items-center gap-2">
+                        <div class="flex items-center gap-2.5 min-w-0">
+                            ${thumb}
+                            <div class="min-w-0">
+                                <h3 class="text-xs font-bold text-slate-800 dark:text-white truncate">${escaparHTML(prod.nombre)}</h3>
+                                <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">$${Number(prod.venta || 0).toFixed(2)} · Stock: <b>${prod.stock}</b></p>
+                            </div>
+                        </div>
+                        <div class="flex gap-1.5 shrink-0">
+                            <button type="button" onclick="prepararEdicionProducto(${prod.id})" class="text-blue-600 dark:text-blue-400 text-xs font-medium bg-blue-50 dark:bg-blue-950/60 px-2.5 py-1 rounded-lg">Editar</button>
+                            <button type="button" onclick="eliminarProducto(${prod.id})" class="text-rose-600 dark:text-rose-400 text-xs font-medium bg-rose-50 dark:bg-rose-950/60 px-2.5 py-1 rounded-lg">Borrar</button>
+                        </div>
                     </div>
-                    <div class="flex gap-1.5 shrink-0">
-                        <button type="button" onclick="prepararEdicionProducto(${prod.id})" class="text-blue-600 dark:text-blue-400 text-xs font-medium bg-blue-50 dark:bg-blue-950/60 px-2.5 py-1 rounded-lg">Editar</button>
-                        <button type="button" onclick="eliminarProducto(${prod.id})" class="text-rose-600 dark:text-rose-400 text-xs font-medium bg-rose-50 dark:bg-rose-950/60 px-2.5 py-1 rounded-lg">Borrar</button>
-                    </div>
-                </div>
-            `).join('') + (filtrados.length > 50 ? `<p class="text-[11px] text-center text-slate-400 pt-1">Mostrando 50 de ${filtrados.length} productos.</p>` : '');
+                `;
+            }).join('') + (filtrados.length > 50 ? `<p class="text-[11px] text-center text-slate-400 pt-1">Mostrando 50 de ${filtrados.length} productos.</p>` : '');
         }
 
         function eliminarProducto(id) {
@@ -2618,14 +2939,19 @@
             const select = document.getElementById('venta-producto');
             if (!select) return;
             select.innerHTML = `<option value="">-- Elige un producto --</option>` +
-                (neg.inventario || []).map(p => `<option value="${p.id}">${p.nombre} (${p.stock} disp.) · $${p.venta.toFixed(2)}</option>`).join('');
+                (neg.inventario || []).map(p => `<option value="${p.id}">${escaparHTML(p.nombre)} (${p.stock} disp.) · $${Number(p.venta || 0).toFixed(2)}</option>`).join('');
         }
 
         function toggleCamposFiado(val) {
             const campos = document.getElementById('campos-fiado');
+            const bloqueMetodo = document.getElementById('bloque-metodo-pago-venta');
             if (campos) {
                 if (val === 'fiado') campos.classList.remove('hidden');
                 else campos.classList.add('hidden');
+            }
+            if (bloqueMetodo) {
+                if (val === 'contado') bloqueMetodo.classList.remove('hidden');
+                else bloqueMetodo.classList.add('hidden');
             }
         }
 
@@ -2635,6 +2961,11 @@
             const prodId = parseInt(document.getElementById('venta-producto').value, 10);
             const cantidad = parseInt(document.getElementById('venta-cantidad').value, 10);
             const tipo = document.getElementById('venta-tipo').value;
+            const metodoPago = tipo === 'contado'
+                ? (document.getElementById('venta-metodo-pago')?.value || 'Efectivo ($)')
+                : 'Fiado';
+            const referencia = (document.getElementById('venta-referencia')?.value || '').trim();
+
             const producto = neg.inventario.find(p => p.id === prodId);
             if (!producto) return;
             if (producto.stock < cantidad) return mostrarToast('Stock insuficiente.', 'error');
@@ -2642,29 +2973,50 @@
             const stockAnterior = producto.stock;
             producto.stock -= cantidad;
             const total = producto.venta * cantidad;
-            const ganancia = total - ((producto.inversionTotal / stockAnterior) * cantidad);
+            const ganancia = total - ((producto.inversionTotal / Math.max(1, stockAnterior)) * cantidad);
 
             if (tipo === 'contado') {
-                neg.ventas.unshift({ id: Date.now(), nombre: producto.nombre, cantidad, total, ganancia, tipo: 'Contado', fecha: new Date().toLocaleTimeString() });
-                neg.finanzas.unshift({ id: Date.now(), tipo: 'ingreso', monto: total, desc: `Venta: ${producto.nombre} (x${cantidad})`, fecha: new Date().toLocaleTimeString() });
+                neg.ventas.unshift({
+                    id: Date.now(),
+                    nombre: producto.nombre,
+                    cantidad,
+                    total,
+                    ganancia,
+                    tipo: 'Contado',
+                    metodoPago,
+                    referencia,
+                    fecha: new Date().toLocaleTimeString()
+                });
+                neg.finanzas.unshift({
+                    id: Date.now(),
+                    tipo: 'ingreso',
+                    categoria: metodoPago,
+                    monto: total,
+                    desc: `Venta: ${producto.nombre} (x${cantidad}) · ${metodoPago}${referencia ? ' [' + referencia + ']' : ''}`,
+                    fecha: new Date().toLocaleTimeString()
+                });
                 persistir();
                 e.target.reset();
+                toggleCamposFiado('contado');
                 renderVentas();
                 reproducirSonidoEvento('venta');
                 if (producto.stock <= 5) reproducirSonidoEvento('alerta');
                 mostrarToast('Venta registrada.', 'success');
-                if (confirm('¿Mostrar comprobante?')) abrirModalTicket({ tipo: 'Contado', producto: producto.nombre, cantidad, total });
+                if (confirm('¿Mostrar comprobante?')) abrirModalTicket({ tipo: 'Contado', metodoPago, referencia, producto: producto.nombre, cantidad, total });
             } else {
                 const cliente = document.getElementById('fiado-cliente').value.trim() || 'Cliente';
                 const telefono = normalizarTelefono(document.getElementById('fiado-telefono').value.trim());
                 const abono = parseFloat(document.getElementById('fiado-abono').value) || 0;
                 const pendiente = Math.max(0, total - abono);
-                const deudaObj = { id: Date.now(), cliente, telefono, producto: producto.nombre, cantidad, total, abonado: abono, pendiente, fecha: new Date().toLocaleTimeString() };
+                const deudaObj = { id: Date.now(), cliente, telefono, producto: producto.nombre, cantidad, total, abonado: abono, pendiente, metodoPago: 'Fiado', referencia, fecha: new Date().toLocaleTimeString() };
                 neg.deudas.unshift(deudaObj);
-                if (abono > 0) neg.finanzas.unshift({ id: Date.now(), tipo: 'ingreso', monto: abono, desc: `Abono fiado (${cliente})`, fecha: new Date().toLocaleTimeString() });
+                if (abono > 0) {
+                    const metodoAbono = document.getElementById('venta-metodo-pago')?.value || 'Efectivo ($)';
+                    neg.finanzas.unshift({ id: Date.now(), tipo: 'ingreso', categoria: metodoAbono, monto: abono, desc: `Abono fiado (${cliente}) · ${metodoAbono}`, fecha: new Date().toLocaleTimeString() });
+                }
                 persistir();
                 e.target.reset();
-                document.getElementById('campos-fiado').classList.add('hidden');
+                toggleCamposFiado('contado');
                 renderVentas();
                 renderDeudas();
                 reproducirSonidoEvento('venta');
@@ -2711,10 +3063,10 @@
 
             deuda.abonado += m;
             deuda.pendiente = Math.max(0, deuda.pendiente - m);
-            neg.finanzas.unshift({ id: Date.now(), tipo: 'ingreso', monto: m, desc: `Abono (${deuda.cliente})`, fecha: new Date().toLocaleTimeString() });
+            neg.finanzas.unshift({ id: Date.now(), tipo: 'ingreso', categoria: 'Abono Fiado', monto: m, desc: `Abono (${deuda.cliente})`, fecha: new Date().toLocaleTimeString() });
 
             if (deuda.pendiente <= 0) {
-                neg.ventas.unshift({ id: Date.now(), nombre: deuda.producto, cantidad: deuda.cantidad, total: deuda.total, ganancia: deuda.total * 0.3, tipo: 'Fiado Pagado', fecha: new Date().toLocaleTimeString() });
+                neg.ventas.unshift({ id: Date.now(), nombre: deuda.producto, cantidad: deuda.cantidad, total: deuda.total, ganancia: deuda.total * 0.3, tipo: 'Fiado Pagado', metodoPago: 'Abono / Fiado', fecha: new Date().toLocaleTimeString() });
                 neg.deudas = neg.deudas.filter(d => d.id !== deuda.id);
                 mostrarToast('Crédito saldado.', 'success');
             } else {
@@ -2739,8 +3091,8 @@
             cont.innerHTML = neg.deudas.map(d => `
                 <div class="bg-amber-50/70 dark:bg-amber-950/30 p-3 rounded-xl border border-amber-200/80 dark:border-amber-800/60 flex justify-between items-center gap-2">
                     <div class="min-w-0">
-                        <h3 class="text-xs font-bold text-slate-800 dark:text-white truncate">${d.cliente} · ${d.producto}</h3>
-                        <p class="text-[11px] text-slate-600 dark:text-slate-300 mt-0.5">Total: $${d.total.toFixed(2)} · Pendiente: <b class="text-rose-600 dark:text-rose-400">$${d.pendiente.toFixed(2)}</b></p>
+                        <h3 class="text-xs font-bold text-slate-800 dark:text-white truncate">${escaparHTML(d.cliente)} · ${escaparHTML(d.producto)}</h3>
+                        <p class="text-[11px] text-slate-600 dark:text-slate-300 mt-0.5">Total: $${Number(d.total || 0).toFixed(2)} · Pendiente: <b class="text-rose-600 dark:text-rose-400">$${Number(d.pendiente || 0).toFixed(2)}</b></p>
                     </div>
                     <button type="button" onclick="abonarDeuda(${d.id})" class="bg-emerald-600 text-white px-3 py-1.5 rounded-lg text-xs font-semibold shrink-0">Abonar</button>
                 </div>
@@ -2755,15 +3107,23 @@
                 cont.innerHTML = `<p class="text-xs text-slate-400 text-center py-2">Sin ventas registradas.</p>`;
                 return;
             }
-            cont.innerHTML = neg.ventas.slice(0, 15).map(v => `
-                <div class="bg-slate-50 dark:bg-slate-800/70 p-3 rounded-xl border border-slate-200/70 dark:border-slate-700/70 flex justify-between items-center gap-2">
-                    <div class="min-w-0">
-                        <h3 class="text-xs font-semibold text-slate-800 dark:text-white truncate">${v.nombre} (x${v.cantidad})</h3>
-                        <p class="text-[11px] text-slate-500 dark:text-slate-400">${v.tipo} · Ganancia: <span class="text-emerald-600 dark:text-emerald-400 font-semibold">+$${v.ganancia.toFixed(2)}</span></p>
+            const esEmpleado = rolActual === 'empleado';
+            cont.innerHTML = neg.ventas.slice(0, 15).map(v => {
+                const metodoTxt = v.metodoPago ? ` · ${escaparHTML(v.metodoPago)}` : '';
+                const refTxt = v.referencia ? ` (${escaparHTML(v.referencia)})` : '';
+                const ganHtml = esEmpleado
+                    ? ''
+                    : ` · Ganancia: <span class="text-emerald-600 dark:text-emerald-400 font-semibold">+$${Number(v.ganancia || 0).toFixed(2)}</span>`;
+                return `
+                    <div class="bg-slate-50 dark:bg-slate-800/70 p-3 rounded-xl border border-slate-200/70 dark:border-slate-700/70 flex justify-between items-center gap-2">
+                        <div class="min-w-0">
+                            <h3 class="text-xs font-semibold text-slate-800 dark:text-white truncate">${escaparHTML(v.nombre)} (x${v.cantidad})</h3>
+                            <p class="text-[11px] text-slate-500 dark:text-slate-400 truncate">${escaparHTML(v.tipo)}${metodoTxt}${refTxt}${ganHtml}</p>
+                        </div>
+                        <span class="text-xs font-bold text-slate-900 dark:text-white shrink-0">$${Number(v.total || 0).toFixed(2)}</span>
                     </div>
-                    <span class="text-xs font-bold text-slate-900 dark:text-white shrink-0">$${v.total.toFixed(2)}</span>
-                </div>
-            `).join('');
+                `;
+            }).join('');
         }
 
         function toggleCategoriaGasto(t) {
@@ -2776,6 +3136,7 @@
 
         document.getElementById('form-transaccion-capital').addEventListener('submit', (e) => {
             e.preventDefault();
+            if (rolActual === 'empleado') return mostrarToast('Solo disponible para el Dueño o Socio.', 'error');
             const neg = obtenerNegocio();
             const tipo = document.getElementById('cap-tipo').value;
             const monto = parseFloat(document.getElementById('cap-monto').value);
@@ -2816,10 +3177,10 @@
             cont.innerHTML = movs.slice(0, 25).map(f => `
                 <div class="bg-slate-50 dark:bg-slate-800/70 p-3 rounded-xl border border-slate-200/70 dark:border-slate-700/70 flex justify-between items-center gap-2">
                     <div class="min-w-0">
-                        <h3 class="text-xs font-semibold text-slate-800 dark:text-white truncate">${f.desc}</h3>
-                        <p class="text-[11px] text-slate-500 dark:text-slate-400">${f.categoria || f.tipo} · ${f.fecha || ''}</p>
+                        <h3 class="text-xs font-semibold text-slate-800 dark:text-white truncate">${escaparHTML(f.desc)}</h3>
+                        <p class="text-[11px] text-slate-500 dark:text-slate-400">${escaparHTML(f.categoria || f.tipo)} · ${escaparHTML(f.fecha || '')}</p>
                     </div>
-                    <span class="text-xs font-bold shrink-0 ${f.tipo === 'ingreso' ? 'text-blue-600 dark:text-blue-400' : 'text-rose-600 dark:text-rose-400'}">${f.tipo === 'ingreso' ? '+' : '-'}$${f.monto.toFixed(2)}</span>
+                    <span class="text-xs font-bold shrink-0 ${f.tipo === 'ingreso' ? 'text-blue-600 dark:text-blue-400' : 'text-rose-600 dark:text-rose-400'}">${f.tipo === 'ingreso' ? '+' : '-'}$${Number(f.monto || 0).toFixed(2)}</span>
                 </div>
             `).join('');
         }
@@ -2828,7 +3189,8 @@
             const ctx = document.getElementById('grafico-resumen');
             if (!ctx) return;
             const neg = obtenerNegocio();
-            const tipo = document.getElementById('select-tipo-grafico')?.value || 'ventas';
+            let tipo = document.getElementById('select-tipo-grafico')?.value || 'ventas';
+            if (rolActual === 'empleado' && tipo === 'gastos') tipo = 'ventas';
             const esOsc = document.documentElement.classList.contains('dark');
             const txt = esOsc ? '#cbd5e1' : '#475569';
             if (chartInstance) chartInstance.destroy();
@@ -2880,56 +3242,211 @@
         }
 
         function generarReportePDF() {
+            if (rolActual === 'empleado') return mostrarToast('Solo disponible para el Dueño o Socio.', 'error');
             if (!esProActivo()) return requierePro(null, 'Exportar Reporte en PDF');
             if (typeof window.jspdf === 'undefined') {
                 return mostrarToast('No se cargó la librería PDF.', 'error');
             }
 
-            mostrarToast('Generando reporte PDF...', 'info');
+            mostrarToast('Generando reporte PDF ejecutivo...', 'info');
             const { jsPDF } = window.jspdf;
             const doc = new jsPDF();
             const neg = obtenerNegocio();
 
-            doc.setFont("helvetica", "bold");
-            doc.setFontSize(16);
-            doc.text(neg.nombre.toUpperCase(), 15, 20);
+            const cap = neg.capitalInicial || 0;
+            const inversionTotal = (neg.inventario || []).reduce((a, p) => a + (Number(p.inversionTotal) || 0), 0);
+            const ventasTotales = (neg.ventas || []).reduce((a, b) => a + (Number(b.total) || 0), 0);
+            const gananciaTotal = (neg.ventas || []).reduce((a, b) => a + (Number(b.ganancia) || 0), 0);
+            const deudasTotal = (neg.deudas || []).reduce((a, d) => a + (Number(d.pendiente) || 0), 0);
+            const ent = (neg.finanzas || []).filter(f => f.tipo === 'ingreso').reduce((a, f) => a + (Number(f.monto) || 0), 0);
+            const sal = (neg.finanzas || []).filter(f => f.tipo !== 'ingreso').reduce((a, f) => a + (Number(f.monto) || 0), 0);
+            const efectivoCaja = cap + ent - sal;
 
-            doc.setFontSize(11);
+            // Encabezado ejecutivo
+            doc.setFillColor(29, 78, 216);
+            doc.rect(14, 12, 182, 22, 'F');
+            doc.setTextColor(255, 255, 255);
+            doc.setFont("helvetica", "bold");
+            doc.setFontSize(14);
+            doc.text((neg.nombre || 'NEGOCIO').toUpperCase(), 18, 21);
             doc.setFont("helvetica", "normal");
-            doc.text(`Reporte de Gestión · Fecha: ${new Date().toLocaleDateString()}`, 15, 28);
-            doc.line(15, 32, 195, 32);
+            doc.setFontSize(9);
+            const subInfo = [
+                neg.rif ? `RIF/C.I.: ${neg.rif}` : null,
+                neg.duenoNombre ? `Dueño: ${neg.duenoNombre}` : null,
+                `Fecha: ${new Date().toLocaleString()}`
+            ].filter(Boolean).join('  ·  ');
+            doc.text(subInfo, 18, 29);
 
+            doc.setTextColor(30, 41, 59);
             let y = 42;
+
+            // Cuadrícula de KPIs (2 filas x 3 columnas)
             doc.setFont("helvetica", "bold");
-            doc.text("Resumen Financiero:", 15, y);
+            doc.setFontSize(11);
+            doc.text("RESUMEN FINANCIERO Y OPERATIVO", 14, y);
+            y += 4;
+
+            const kpis = [
+                { titulo: "Capital Inicial", valor: `$${cap.toFixed(2)}` },
+                { titulo: "Invertido en Stock", valor: `$${inversionTotal.toFixed(2)}` },
+                { titulo: "Ventas Totales", valor: `$${ventasTotales.toFixed(2)}` },
+                { titulo: "Ganancia Neta", valor: `$${gananciaTotal.toFixed(2)}` },
+                { titulo: "Fiados por Cobrar", valor: `$${deudasTotal.toFixed(2)}` },
+                { titulo: "Efectivo en Caja", valor: `$${efectivoCaja.toFixed(2)}` }
+            ];
+
+            const boxW = 58;
+            const boxH = 14;
+            const gapX = 4;
+            kpis.forEach((k, idx) => {
+                const col = idx % 3;
+                const fila = Math.floor(idx / 3);
+                const x = 14 + col * (boxW + gapX);
+                const by = y + fila * (boxH + 3);
+                doc.setDrawColor(203, 213, 225);
+                doc.setFillColor(248, 250, 252);
+                doc.roundedRect(x, by, boxW, boxH, 2, 2, 'FD');
+                doc.setFont("helvetica", "normal");
+                doc.setFontSize(8);
+                doc.setTextColor(100, 116, 139);
+                doc.text(k.titulo, x + 3, by + 5);
+                doc.setFont("helvetica", "bold");
+                doc.setFontSize(10);
+                doc.setTextColor(15, 23, 42);
+                doc.text(k.valor, x + 3, by + 11.5);
+            });
+            y += 36;
+
+            // Desglose por método de pago
+            doc.setFont("helvetica", "bold");
+            doc.setFontSize(11);
+            doc.setTextColor(29, 78, 216);
+            doc.text("DESGLOSE DE VENTAS POR MÉTODO DE PAGO", 14, y);
+            y += 5;
+
+            const totalesMetodo = {};
+            (neg.ventas || []).forEach(v => {
+                const metodo = v.metodoPago || (v.tipo === 'Fiado' ? 'Fiado' : 'Efectivo ($)');
+                totalesMetodo[metodo] = (totalesMetodo[metodo] || 0) + (Number(v.total) || 0);
+            });
+            const entradasMetodo = Object.entries(totalesMetodo);
+
+            doc.setFillColor(239, 246, 255);
+            doc.rect(14, y, 182, 7, 'F');
+            doc.setFontSize(9);
+            doc.setTextColor(30, 41, 59);
+            doc.text("Método de Pago", 17, y + 4.8);
+            doc.text("Total Registrado", 160, y + 4.8);
+            y += 7;
+
+            doc.setFont("helvetica", "normal");
+            if (entradasMetodo.length === 0) {
+                doc.text("Sin ventas registradas en el período.", 17, y + 5);
+                y += 8;
+            } else {
+                entradasMetodo.forEach(([metodo, monto]) => {
+                    if (y > 268) { doc.addPage(); y = 20; }
+                    doc.text(metodo, 17, y + 4.8);
+                    doc.text(`$${Number(monto).toFixed(2)}`, 160, y + 4.8);
+                    doc.setDrawColor(226, 232, 240);
+                    doc.line(14, y + 6.5, 196, y + 6.5);
+                    y += 7;
+                });
+            }
+            y += 5;
+
+            // Tabla de Inventario (con foto si está habilitada)
+            if (y > 245) { doc.addPage(); y = 20; }
+            doc.setFont("helvetica", "bold");
+            doc.setFontSize(11);
+            doc.setTextColor(29, 78, 216);
+            doc.text("INVENTARIO DE PRODUCTOS", 14, y);
+            y += 5;
+
+            doc.setFillColor(239, 246, 255);
+            doc.rect(14, y, 182, 7, 'F');
+            doc.setFontSize(8.5);
+            doc.setTextColor(30, 41, 59);
+            doc.text("Foto", 16, y + 4.8);
+            doc.text("Producto", 29, y + 4.8);
+            doc.text("Compra", 104, y + 4.8);
+            doc.text("Venta", 128, y + 4.8);
+            doc.text("Stock", 150, y + 4.8);
+            doc.text("Valor Venta", 170, y + 4.8);
             y += 8;
 
             doc.setFont("helvetica", "normal");
-            const ventasTotales = (neg.ventas || []).reduce((a, b) => a + b.total, 0);
-            const gananciaTotal = (neg.ventas || []).reduce((a, b) => a + b.ganancia, 0);
-            const inversionTotal = (neg.inventario || []).reduce((a, p) => a + p.inversionTotal, 0);
+            const productosPdf = (neg.inventario || []).slice(0, 35);
+            if (productosPdf.length === 0) {
+                doc.text("Sin productos en inventario.", 16, y + 4);
+                y += 8;
+            } else {
+                productosPdf.forEach(p => {
+                    const tieneFotoActiva = !!(p.foto && p.mostrarFotoPdf !== false);
+                    const altoFila = tieneFotoActiva ? 13 : 7;
+                    if (y + altoFila > 272) {
+                        doc.addPage();
+                        y = 20;
+                    }
 
-            doc.text(`• Capital inicial: $${(neg.capitalInicial || 0).toFixed(2)}`, 20, y); y += 6;
-            doc.text(`• Invertido en stock: $${inversionTotal.toFixed(2)}`, 20, y); y += 6;
-            doc.text(`• Ventas totales: $${ventasTotales.toFixed(2)}`, 20, y); y += 6;
-            doc.text(`• Ganancia neta: $${gananciaTotal.toFixed(2)}`, 20, y); y += 12;
+                    if (tieneFotoActiva) {
+                        try {
+                            doc.addImage(p.foto, 'JPEG', 16, y, 10, 10);
+                        } catch (e) {}
+                    } else {
+                        doc.text("—", 18, y + 5);
+                    }
 
+                    const textoY = tieneFotoActiva ? y + 6.5 : y + 4.5;
+                    const valorVenta = (Number(p.venta) || 0) * (Number(p.stock) || 0);
+                    doc.text(String(p.nombre || '').slice(0, 34), 29, textoY);
+                    doc.text(`$${Number(p.compra || 0).toFixed(2)}`, 104, textoY);
+                    doc.text(`$${Number(p.venta || 0).toFixed(2)}`, 128, textoY);
+                    doc.text(String(p.stock ?? 0), 152, textoY);
+                    doc.text(`$${valorVenta.toFixed(2)}`, 170, textoY);
+
+                    doc.setDrawColor(226, 232, 240);
+                    doc.line(14, y + altoFila, 196, y + altoFila);
+                    y += altoFila + 1;
+                });
+            }
+            y += 5;
+
+            // Movimientos recientes
+            if (y > 245) { doc.addPage(); y = 20; }
             doc.setFont("helvetica", "bold");
-            doc.text("Inventario:", 15, y); y += 8;
+            doc.setFontSize(11);
+            doc.setTextColor(29, 78, 216);
+            doc.text("MOVIMIENTOS RECIENTES", 14, y);
+            y += 5;
+
             doc.setFont("helvetica", "normal");
+            doc.setFontSize(8.5);
+            doc.setTextColor(30, 41, 59);
+            const movsPdf = (neg.finanzas || []).slice(0, 15);
+            if (movsPdf.length === 0) {
+                doc.text("Sin movimientos registrados.", 16, y + 4);
+            } else {
+                movsPdf.forEach(m => {
+                    if (y > 272) { doc.addPage(); y = 20; }
+                    const signo = m.tipo === 'ingreso' ? '+' : '-';
+                    doc.text(`${m.fecha || ''} · ${String(m.desc || '').slice(0, 48)} · ${signo}$${Number(m.monto || 0).toFixed(2)}`, 16, y + 4.5);
+                    y += 6;
+                });
+            }
 
-            (neg.inventario || []).slice(0, 20).forEach((p, idx) => {
-                if (y > 270) { doc.addPage(); y = 20; }
-                doc.text(`${idx + 1}. ${p.nombre} · Stock: ${p.stock} · Venta: $${p.venta.toFixed(2)}`, 20, y);
-                y += 6;
-            });
+            // Pie de página en todas las páginas
+            const totalPaginas = doc.internal.getNumberOfPages();
+            for (let i = 1; i <= totalPaginas; i++) {
+                doc.setPage(i);
+                doc.setFontSize(8.5);
+                doc.setTextColor(120, 130, 145);
+                doc.text(`© 2026 Gestor Pro · Joelbi José Salazar Vargas (C.I. 30.022.434) · Pág. ${i}/${totalPaginas}`, 14, 287);
+            }
 
-            doc.setFontSize(9);
-            doc.setTextColor(150);
-            doc.text("© 2026 Gestor Pro · Joelbi José Salazar Vargas (C.I. 30.022.434)", 15, 285);
-
-            doc.save(`Reporte_${neg.nombre.replace(/\s+/g, '_')}_${Date.now()}.pdf`);
-            mostrarToast('PDF descargado.', 'success');
+            doc.save(`Reporte_Ejecutivo_${neg.nombre.replace(/\s+/g, '_')}_${Date.now()}.pdf`);
+            mostrarToast('Reporte PDF ejecutivo descargado.', 'success');
         }
 
         function renderizarTodo() {
@@ -2953,4 +3470,3 @@
     </script>
 </body>
 </html>
-

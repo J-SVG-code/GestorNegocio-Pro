@@ -85,7 +85,7 @@
                     <span class="flex items-center gap-2.5"><span>🌐</span><span>Catálogo Web</span></span>
                     <span class="pro-tag text-[9px] font-bold bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300 px-1.5 py-0.5 rounded-full">PRO</span>
                 </button>
-                <button type="button" onclick="cerrarMenuLateral(); abrirAsistenteInicial()" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition text-left">
+                <button type="button" onclick="cerrarMenuLateral(); abrirAsistenteInicial('registro')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition text-left">
                     <span>📘</span><span>Registro / Vincular cuenta</span>
                 </button>
             </div>
@@ -97,69 +97,133 @@
         </div>
     </aside>
 
-    <!-- Modal de Inicio: Registro de Nuevo Negocio (Dueño) o Vincular (Empleado / Socio) -->
+    <!-- Modal de Bienvenida en 3 Etapas: 1) Qué saber -> 2) Términos -> 3) Registro / Vincular -->
     <div id="modal-onboarding" class="fixed inset-0 bg-slate-950/80 backdrop-blur-xs z-50 flex items-center justify-center p-4 hidden overflow-y-auto">
         <div class="bg-white dark:bg-slate-900 rounded-2xl max-w-sm w-full p-5 space-y-4 shadow-2xl border border-slate-200 dark:border-slate-800 my-auto relative">
-            <button type="button" id="btn-cerrar-onboarding" onclick="cerrarModalOnboarding()" aria-label="Cerrar ventana de registro o vinculación" class="hidden absolute top-3.5 right-3.5 w-7 h-7 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-500 hover:text-rose-600 dark:text-slate-300 dark:hover:text-rose-400 flex items-center justify-center text-xs font-bold transition">✕</button>
+            <button type="button" id="btn-cerrar-onboarding" onclick="cerrarModalOnboarding()" aria-label="Cerrar ventana" class="hidden absolute top-3.5 right-3.5 w-7 h-7 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-500 hover:text-rose-600 dark:text-slate-300 dark:hover:text-rose-400 flex items-center justify-center text-xs font-bold transition">✕</button>
 
-            <div class="text-center space-y-1 pt-1">
-                <h2 class="text-base font-bold text-slate-900 dark:text-white">Bienvenido a Gestor Pro</h2>
-                <p class="text-xs text-slate-500 dark:text-slate-400">Registra tu negocio como dueño o vincula un teléfono a una cuenta existente.</p>
+            <!-- Indicador de pasos -->
+            <div class="space-y-1.5 pt-1">
+                <div class="flex items-center justify-between text-[10px] font-bold uppercase tracking-wider text-slate-400">
+                    <span id="onb-paso-texto">Paso 1 de 3 · Lo esencial</span>
+                    <span id="onb-paso-porcentaje" class="text-blue-600 dark:text-blue-400">33%</span>
+                </div>
+                <div class="w-full h-1.5 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
+                    <div id="onb-barra-progreso" class="h-full bg-blue-600 transition-all duration-200 w-1/3"></div>
+                </div>
             </div>
 
-            <div class="grid grid-cols-2 gap-1.5 bg-slate-100 dark:bg-slate-800 p-1 rounded-xl text-xs font-semibold">
-                <button type="button" id="btn-modo-registro-dueno" onclick="alternarModoInicio('registro')" class="py-2 rounded-lg bg-blue-600 text-white transition">Nuevo Negocio</button>
-                <button type="button" id="btn-modo-vincular-equipo" onclick="alternarModoInicio('vincular')" class="py-2 rounded-lg text-slate-600 dark:text-slate-300 transition">Vincular Equipo</button>
+            <!-- Paso 1: Lo necesario sobre la aplicación -->
+            <div id="onb-paso-1" class="space-y-3">
+                <div class="space-y-1">
+                    <h2 class="text-base font-bold text-slate-900 dark:text-white">Lo que debes saber de Gestor Pro</h2>
+                    <p class="text-xs text-slate-500 dark:text-slate-400">Una herramienta práctica para llevar el control diario de tu negocio desde el teléfono.</p>
+                </div>
+
+                <div class="bg-slate-50 dark:bg-slate-800/70 p-3.5 rounded-xl border border-slate-200/70 dark:border-slate-700/70 space-y-2 text-xs text-slate-700 dark:text-slate-200">
+                    <p>• <b>Inventario y precios:</b> registra productos, escanea códigos de barras, adjunta fotos y controla existencias con alertas de stock bajo.</p>
+                    <p>• <b>Ventas, fiados y caja:</b> registra ventas al contado por método de pago, lleva fiados con abonos, calcula vuelto en divisas/Bs y consulta tu caja.</p>
+                    <p>• <b>Roles, catálogo y Pro:</b> opera como Dueño, Socio o Empleado, comparte tu catálogo por WhatsApp y activa funciones Pro o respaldos JSON cuando lo necesites.</p>
+                </div>
+
+                <button type="button" onclick="irPasoOnboarding(2)" class="w-full bg-blue-600 text-white font-semibold py-2.5 rounded-xl text-xs hover:bg-blue-700 transition">
+                    Continuar a Términos y Condiciones
+                </button>
             </div>
 
-            <!-- Flujo 1: Nuevo Negocio (Dueño) -->
-            <form id="form-registro-dueno" onsubmit="completarRegistroDueno(event)" class="space-y-2.5 text-xs">
-                <div>
-                    <label class="block font-medium text-slate-600 dark:text-slate-300 mb-1">Tu nombre (Dueño)</label>
-                    <input type="text" id="onb-dueno-nombre" required class="w-full p-2.5 border border-slate-200 dark:border-slate-700 dark:bg-slate-800 rounded-xl outline-none" placeholder="Ej. Joelbi Salazar">
+            <!-- Paso 2: Términos y condiciones -->
+            <div id="onb-paso-2" class="space-y-3 hidden">
+                <div class="space-y-1">
+                    <h2 class="text-base font-bold text-slate-900 dark:text-white">Términos y Condiciones</h2>
+                    <p class="text-xs text-slate-500 dark:text-slate-400">Revisa y acepta estas condiciones básicas antes de configurar tu acceso.</p>
                 </div>
-                <div>
-                    <label class="block font-medium text-slate-600 dark:text-slate-300 mb-1">Nombre del negocio</label>
-                    <input type="text" id="onb-negocio-nombre" required class="w-full p-2.5 border border-slate-200 dark:border-slate-700 dark:bg-slate-800 rounded-xl outline-none" placeholder="Ej. Bodega y Catálogo Central">
-                </div>
-                <div>
-                    <label class="block font-medium text-slate-600 dark:text-slate-300 mb-1">RIF / Cédula fiscal (opcional para PDF)</label>
-                    <input type="text" id="onb-negocio-rif" class="w-full p-2.5 border border-slate-200 dark:border-slate-700 dark:bg-slate-800 rounded-xl outline-none" placeholder="Ej. J-12345678-9 o V-30022434">
-                </div>
-                <div>
-                    <label class="block font-medium text-slate-600 dark:text-slate-300 mb-1">WhatsApp del negocio (para el catálogo)</label>
-                    <input type="tel" id="onb-negocio-whatsapp" required class="w-full p-2.5 border border-slate-200 dark:border-slate-700 dark:bg-slate-800 rounded-xl outline-none" placeholder="Ej. 04121234567 o 584121234567">
-                </div>
-                <div class="grid grid-cols-2 gap-2">
-                    <div>
-                        <label class="block font-medium text-slate-600 dark:text-slate-300 mb-1">Capital inicial ($)</label>
-                        <input type="number" step="0.01" id="onb-capital-inicial" class="w-full p-2.5 border border-slate-200 dark:border-slate-700 dark:bg-slate-800 rounded-xl outline-none" placeholder="0.00">
-                    </div>
-                    <div>
-                        <label class="block font-medium text-slate-600 dark:text-slate-300 mb-1">PIN Dueño (4 dígitos)</label>
-                        <input type="password" id="onb-pin-dueno" maxlength="4" minlength="4" required class="w-full p-2.5 border border-slate-200 dark:border-slate-700 dark:bg-slate-800 rounded-xl outline-none font-mono" placeholder="1234">
-                    </div>
-                </div>
-                <button type="submit" class="w-full bg-blue-600 text-white font-semibold py-2.5 rounded-xl text-xs hover:bg-blue-700 transition mt-1">Guardar y entrar al negocio</button>
-            </form>
 
-            <!-- Flujo 2: Vincular como Empleado o Socio -->
-            <div id="panel-vincular-equipo" class="space-y-3 text-xs hidden">
-                <div>
-                    <label class="block font-medium text-slate-600 dark:text-slate-300 mb-1">Conectar como</label>
-                    <select id="onb-rol-vinculo" class="w-full p-2.5 border border-slate-200 dark:border-slate-700 dark:bg-slate-800 rounded-xl outline-none">
-                        <option value="empleado">Empleado (operación diaria en ventas y stock)</option>
-                        <option value="socio">Socio (acceso amplio y gestión compartida)</option>
-                    </select>
+                <div class="bg-slate-50 dark:bg-slate-800/70 p-3.5 rounded-xl border border-slate-200/70 dark:border-slate-700/70 max-h-48 overflow-y-auto space-y-2 text-[11px] leading-relaxed text-slate-600 dark:text-slate-300">
+                    <p><b>1. Almacenamiento y respaldo:</b> los datos operativos se guardan localmente en este navegador/dispositivo (y se sincronizan en la nube cuando la función Pro está activa). Se recomienda exportar respaldos JSON periódicos.</p>
+                    <p><b>2. Responsabilidad operativa:</b> el usuario o administrador del negocio es responsable de la veracidad de los precios, inventarios, cobros, fiados y cierres registrados.</p>
+                    <p><b>3. Permisos y PIN:</b> el PIN de dueño protege el acceso administrativo; evita compartirlo si no deseas otorgar control total del negocio.</p>
+                    <p><b>4. Propiedad intelectual:</b> Gestor Pro y su estructura son obra de <b>Joelbi José Salazar Vargas (C.I. 30.022.434)</b> · © 2026.</p>
                 </div>
-                <div>
-                    <label class="block font-medium text-slate-600 dark:text-slate-300 mb-1">Código de vinculación</label>
-                    <div class="flex gap-2">
-                        <input type="text" id="onb-codigo-vinculo" class="flex-1 p-2.5 border border-slate-200 dark:border-slate-700 dark:bg-slate-800 rounded-xl outline-none font-mono" placeholder="Ej. EMP-xxxxxx o SOC-xxxxxx">
-                        <button type="button" onclick="escanearVinculoInicial()" class="bg-indigo-600 text-white px-3 rounded-xl font-semibold">QR</button>
+
+                <label class="flex items-start gap-2.5 text-xs text-slate-700 dark:text-slate-200 cursor-pointer select-none pt-0.5">
+                    <input type="checkbox" id="onb-acepto-terminos" class="mt-0.5 w-4 h-4 accent-blue-600 rounded shrink-0">
+                    <span>He leído y acepto los Términos y Condiciones de uso de Gestor Pro.</span>
+                </label>
+
+                <div class="grid grid-cols-2 gap-2 pt-1">
+                    <button type="button" onclick="irPasoOnboarding(1)" class="bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 font-semibold py-2.5 rounded-xl text-xs hover:bg-slate-200 dark:hover:bg-slate-700 transition">
+                        Atrás
+                    </button>
+                    <button type="button" onclick="aceptarTerminosYContinuar()" class="bg-blue-600 text-white font-semibold py-2.5 rounded-xl text-xs hover:bg-blue-700 transition">
+                        Aceptar y continuar
+                    </button>
+                </div>
+            </div>
+
+            <!-- Paso 3: Registro de Nuevo Negocio (Dueño) o Vincular (Empleado / Socio) -->
+            <div id="onb-paso-3" class="space-y-3 hidden">
+                <div class="flex items-center justify-between gap-2">
+                    <div>
+                        <h2 class="text-base font-bold text-slate-900 dark:text-white">Configura tu acceso</h2>
+                        <p class="text-xs text-slate-500 dark:text-slate-400">Crea tu negocio como dueño o vincula un equipo.</p>
                     </div>
+                    <button type="button" onclick="irPasoOnboarding(2)" class="text-[11px] text-blue-600 dark:text-blue-400 font-semibold hover:underline shrink-0">Términos</button>
                 </div>
-                <button type="button" onclick="confirmarVinculoInicial()" class="w-full bg-emerald-600 text-white font-semibold py-2.5 rounded-xl text-xs hover:bg-emerald-700 transition">Vincular a cuenta existente</button>
+
+                <div class="grid grid-cols-2 gap-1.5 bg-slate-100 dark:bg-slate-800 p-1 rounded-xl text-xs font-semibold">
+                    <button type="button" id="btn-modo-registro-dueno" onclick="alternarModoInicio('registro')" class="py-2 rounded-lg bg-blue-600 text-white transition">Nuevo Negocio</button>
+                    <button type="button" id="btn-modo-vincular-equipo" onclick="alternarModoInicio('vincular')" class="py-2 rounded-lg text-slate-600 dark:text-slate-300 transition">Vincular Equipo</button>
+                </div>
+
+                <!-- Flujo 1: Nuevo Negocio (Dueño) -->
+                <form id="form-registro-dueno" onsubmit="completarRegistroDueno(event)" class="space-y-2.5 text-xs">
+                    <div>
+                        <label class="block font-medium text-slate-600 dark:text-slate-300 mb-1">Tu nombre (Dueño)</label>
+                        <input type="text" id="onb-dueno-nombre" required class="w-full p-2.5 border border-slate-200 dark:border-slate-700 dark:bg-slate-800 rounded-xl outline-none" placeholder="Ej. Joelbi Salazar">
+                    </div>
+                    <div>
+                        <label class="block font-medium text-slate-600 dark:text-slate-300 mb-1">Nombre del negocio</label>
+                        <input type="text" id="onb-negocio-nombre" required class="w-full p-2.5 border border-slate-200 dark:border-slate-700 dark:bg-slate-800 rounded-xl outline-none" placeholder="Ej. Bodega y Catálogo Central">
+                    </div>
+                    <div>
+                        <label class="block font-medium text-slate-600 dark:text-slate-300 mb-1">RIF / Cédula fiscal (opcional para PDF)</label>
+                        <input type="text" id="onb-negocio-rif" class="w-full p-2.5 border border-slate-200 dark:border-slate-700 dark:bg-slate-800 rounded-xl outline-none" placeholder="Ej. J-12345678-9 o V-30022434">
+                    </div>
+                    <div>
+                        <label class="block font-medium text-slate-600 dark:text-slate-300 mb-1">WhatsApp del negocio (para el catálogo)</label>
+                        <input type="tel" id="onb-negocio-whatsapp" required class="w-full p-2.5 border border-slate-200 dark:border-slate-700 dark:bg-slate-800 rounded-xl outline-none" placeholder="Ej. 04121234567 o 584121234567">
+                    </div>
+                    <div class="grid grid-cols-2 gap-2">
+                        <div>
+                            <label class="block font-medium text-slate-600 dark:text-slate-300 mb-1">Capital inicial ($)</label>
+                            <input type="number" step="0.01" id="onb-capital-inicial" class="w-full p-2.5 border border-slate-200 dark:border-slate-700 dark:bg-slate-800 rounded-xl outline-none" placeholder="0.00">
+                        </div>
+                        <div>
+                            <label class="block font-medium text-slate-600 dark:text-slate-300 mb-1">PIN Dueño (4 dígitos)</label>
+                            <input type="password" id="onb-pin-dueno" maxlength="4" minlength="4" required class="w-full p-2.5 border border-slate-200 dark:border-slate-700 dark:bg-slate-800 rounded-xl outline-none font-mono" placeholder="1234">
+                        </div>
+                    </div>
+                    <button type="submit" class="w-full bg-blue-600 text-white font-semibold py-2.5 rounded-xl text-xs hover:bg-blue-700 transition mt-1">Guardar y entrar al negocio</button>
+                </form>
+
+                <!-- Flujo 2: Vincular como Empleado o Socio -->
+                <div id="panel-vincular-equipo" class="space-y-3 text-xs hidden">
+                    <div>
+                        <label class="block font-medium text-slate-600 dark:text-slate-300 mb-1">Conectar como</label>
+                        <select id="onb-rol-vinculo" class="w-full p-2.5 border border-slate-200 dark:border-slate-700 dark:bg-slate-800 rounded-xl outline-none">
+                            <option value="empleado">Empleado (operación diaria en ventas y stock)</option>
+                            <option value="socio">Socio (acceso amplio y gestión compartida)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block font-medium text-slate-600 dark:text-slate-300 mb-1">Código de vinculación</label>
+                        <div class="flex gap-2">
+                            <input type="text" id="onb-codigo-vinculo" class="flex-1 p-2.5 border border-slate-200 dark:border-slate-700 dark:bg-slate-800 rounded-xl outline-none font-mono" placeholder="Ej. EMP-xxxxxx o SOC-xxxxxx">
+                            <button type="button" onclick="escanearVinculoInicial()" class="bg-indigo-600 text-white px-3 rounded-xl font-semibold">QR</button>
+                        </div>
+                    </div>
+                    <button type="button" onclick="confirmarVinculoInicial()" class="w-full bg-emerald-600 text-white font-semibold py-2.5 rounded-xl text-xs hover:bg-emerald-700 transition">Vincular a cuenta existente</button>
+                </div>
             </div>
         </div>
     </div>
@@ -404,7 +468,6 @@
                         <input type="text" id="prod-nombre" required class="w-full p-2.5 text-xs border border-slate-200 dark:border-slate-700 dark:bg-slate-800 rounded-xl outline-none" placeholder="Ej. Harina Pan">
                     </div>
 
-                    <!-- Foto del producto con cámara / galería y opción para PDF -->
                     <div class="bg-slate-50 dark:bg-slate-800/60 p-3 rounded-xl border border-slate-200/80 dark:border-slate-700/70 space-y-2">
                         <div class="flex items-center justify-between gap-2">
                             <label class="text-xs font-medium text-slate-700 dark:text-slate-300">Foto del producto (opcional)</label>
@@ -487,7 +550,6 @@
                 <div id="lista-proveedores" class="space-y-2 pt-1"></div>
             </div>
 
-            <!-- Factura / Comprobante -->
             <div data-oculto-empleado="true" class="bg-white dark:bg-slate-900 p-4 rounded-2xl shadow-xs border border-slate-200/80 dark:border-slate-800 space-y-2">
                 <div class="flex items-center justify-between">
                     <p class="text-xs font-bold text-slate-700 dark:text-slate-200">Adjuntar foto de factura</p>
@@ -554,7 +616,6 @@
                         </div>
                     </div>
 
-                    <!-- Método de pago y referencia para ventas de contado -->
                     <div id="bloque-metodo-pago-venta" class="grid grid-cols-2 gap-2.5 bg-slate-50 dark:bg-slate-800/60 p-3 rounded-xl border border-slate-200/70 dark:border-slate-700/70">
                         <div>
                             <label class="block text-xs font-medium text-slate-600 dark:text-slate-400 mb-1">Método de pago</label>
@@ -603,7 +664,7 @@
             </div>
         </section>
 
-        <!-- Sección 4: Finanzas y Caja (Solo Dueño / Socio) -->
+        <!-- Sección 4: Finanzas y Caja (Sección propia; oculta en Modo Empleado) -->
         <section id="tab-finanzas" data-oculto-empleado="true" class="space-y-4 hidden">
             <div class="grid grid-cols-2 gap-2.5">
                 <div class="bg-white dark:bg-slate-900 p-3.5 rounded-2xl shadow-xs border border-slate-200/80 dark:border-slate-800">
@@ -793,7 +854,7 @@
             </div>
         </section>
 
-        <!-- Sección 7: Modo Pro -->
+        <!-- Sección 7: Modo Pro (Únicamente planes, beneficios y bono de anuncios) -->
         <section id="tab-pro" class="space-y-4 hidden">
             <div id="seccion-modo-pro" class="bg-white dark:bg-slate-900 p-4 rounded-2xl shadow-xs border border-amber-300/80 dark:border-amber-700/60 space-y-3">
                 <div class="flex justify-between items-center">
@@ -831,7 +892,7 @@
                     </div>
                 </div>
 
-                <!-- Bono 12h por anuncio (visible para todos, y única opción en Modo Empleado) -->
+                <!-- Bono 12h por anuncio -->
                 <div class="space-y-1.5">
                     <p id="aviso-bono-empleado" class="hidden text-[11px] text-slate-500 dark:text-slate-400">
                         La suscripción del negocio la gestiona el dueño. Como empleado puedes ver un anuncio para activar el bono de 12 horas.
@@ -868,7 +929,6 @@
                 <button type="button" onclick="guardarDatosNegocio()" class="w-full bg-blue-600 text-white font-semibold py-2.5 rounded-xl text-xs hover:bg-blue-700 transition">Guardar datos del negocio</button>
             </div>
 
-            <!-- Permisos de empleados -->
             <div class="bg-white dark:bg-slate-900 p-4 rounded-2xl shadow-xs border border-slate-200/80 dark:border-slate-800 space-y-3 admin-only">
                 <h2 class="text-sm font-bold text-slate-800 dark:text-white">Permisos de empleados</h2>
                 <div class="flex items-center justify-between gap-3 bg-slate-50 dark:bg-slate-800/70 p-3 rounded-xl border border-slate-200/70 dark:border-slate-700 text-xs">
@@ -1058,7 +1118,7 @@
             navigator.serviceWorker.getRegistrations().then((registrations) => {
                 registrations.forEach((reg) => reg.update());
             });
-            navigator.serviceWorker.register('./sw.js?v=20261118l').catch((err) => console.log('SW error:', err));
+            navigator.serviceWorker.register('./sw.js?v=20261119a').catch((err) => console.log('SW error:', err));
         }
 
         const SECCIONES_VALIDAS = ['resumen', 'inventario', 'ventas', 'finanzas', 'audios', 'qr-empleado', 'pro', 'ajustes'];
@@ -1466,7 +1526,6 @@
                 }
             }
 
-            // Ocultar por completo secciones, botones del menú y datos reservados al dueño en Modo Empleado
             document.querySelectorAll('[data-oculto-empleado="true"]').forEach(el => {
                 el.classList.toggle('hidden', esEmpleado);
             });
@@ -1474,14 +1533,12 @@
                 el.classList.toggle('hidden', esEmpleado);
             });
 
-            // Ajustar cuadrícula de precios del producto (sin columna Compra en Modo Empleado)
             const gridPrecios = document.getElementById('grid-precios-producto');
             if (gridPrecios) {
                 gridPrecios.classList.toggle('grid-cols-3', !esEmpleado);
                 gridPrecios.classList.toggle('grid-cols-2', esEmpleado);
             }
 
-            // Ocultar opción de gráfico "Gastos" en Modo Empleado
             const opGastos = document.getElementById('opcion-grafico-gastos');
             const selGrafico = document.getElementById('select-tipo-grafico');
             if (opGastos) {
@@ -1492,13 +1549,11 @@
                 }
             }
 
-            // Modo Pro: empleado solo ve el bono de 12h por anuncio y no ve planes de pago
             const planesDueno = document.getElementById('pro-planes-dueno');
             const avisoBonoEmp = document.getElementById('aviso-bono-empleado');
             if (planesDueno) planesDueno.classList.toggle('hidden', esEmpleado);
             if (avisoBonoEmp) avisoBonoEmp.classList.toggle('hidden', !esEmpleado);
 
-            // Proveedores: bloqueado para empleado salvo permiso del dueño
             const puedeProv = empleadoPuedeGestionarProveedores();
             const avisoProv = document.getElementById('aviso-proveedores-bloqueados');
             if (avisoProv) avisoProv.classList.toggle('hidden', !esEmpleado || puedeProv);
@@ -1507,7 +1562,6 @@
                 el.disabled = esEmpleado && !puedeProv;
             });
 
-            // Si el empleado estaba en una sección restringida (finanzas o ajustes), redirigir a resumen
             if (esEmpleado) {
                 const tabFin = document.getElementById('tab-finanzas');
                 const tabAj = document.getElementById('tab-ajustes');
@@ -1679,6 +1733,43 @@
             document.getElementById('modal-onboarding')?.classList.add('hidden');
         }
 
+        function irPasoOnboarding(paso) {
+            const p1 = document.getElementById('onb-paso-1');
+            const p2 = document.getElementById('onb-paso-2');
+            const p3 = document.getElementById('onb-paso-3');
+            const txtPaso = document.getElementById('onb-paso-texto');
+            const pctPaso = document.getElementById('onb-paso-porcentaje');
+            const barra = document.getElementById('onb-barra-progreso');
+
+            p1?.classList.toggle('hidden', paso !== 1);
+            p2?.classList.toggle('hidden', paso !== 2);
+            p3?.classList.toggle('hidden', paso !== 3);
+
+            if (paso === 1) {
+                if (txtPaso) txtPaso.innerText = 'Paso 1 de 3 · Lo esencial';
+                if (pctPaso) pctPaso.innerText = '33%';
+                if (barra) barra.style.width = '33.33%';
+            } else if (paso === 2) {
+                if (txtPaso) txtPaso.innerText = 'Paso 2 de 3 · Términos y Condiciones';
+                if (pctPaso) pctPaso.innerText = '66%';
+                if (barra) barra.style.width = '66.66%';
+            } else {
+                if (txtPaso) txtPaso.innerText = 'Paso 3 de 3 · Registro o Vinculación';
+                if (pctPaso) pctPaso.innerText = '100%';
+                if (barra) barra.style.width = '100%';
+            }
+            actualizarBotonCerrarOnboarding();
+        }
+
+        function aceptarTerminosYContinuar() {
+            const chk = document.getElementById('onb-acepto-terminos');
+            if (!chk?.checked) {
+                return mostrarToast('Marca la casilla de aceptación para continuar.', 'error');
+            }
+            localStorage.setItem('gestorpro_terminos_aceptados', 'true');
+            irPasoOnboarding(3);
+        }
+
         function alternarModoInicio(modo) {
             const formDueno = document.getElementById('form-registro-dueno');
             const panelVincular = document.getElementById('panel-vincular-equipo');
@@ -1699,20 +1790,25 @@
             actualizarBotonCerrarOnboarding();
         }
 
-        function abrirAsistenteInicial() {
+        function abrirAsistenteInicial(pasoInicial = 1) {
             const neg = obtenerNegocio();
             const dInput = document.getElementById('onb-dueno-nombre');
             const nInput = document.getElementById('onb-negocio-nombre');
             const rInput = document.getElementById('onb-negocio-rif');
             const wInput = document.getElementById('onb-negocio-whatsapp');
             const cInput = document.getElementById('onb-capital-inicial');
+            const chkTerm = document.getElementById('onb-acepto-terminos');
+
             if (dInput) dInput.value = neg.duenoNombre || '';
             if (nInput) nInput.value = neg.nombre || '';
             if (rInput) rInput.value = neg.rif || '';
             if (wInput) wInput.value = neg.whatsapp || '';
             if (cInput) cInput.value = neg.capitalInicial || '';
+            if (chkTerm) chkTerm.checked = localStorage.getItem('gestorpro_terminos_aceptados') === 'true' || existeCuentaRegistrada();
+
             alternarModoInicio('registro');
-            actualizarBotonCerrarOnboarding();
+            const destino = (pasoInicial === 'registro' || pasoInicial === 3) ? 3 : pasoInicial;
+            irPasoOnboarding(destino);
             document.getElementById('modal-onboarding')?.classList.remove('hidden');
         }
 
@@ -1746,6 +1842,7 @@
             localStorage.setItem('gestorpro_pin', pin);
             rolActual = 'dueño';
             localStorage.setItem('gestorpro_rol', 'dueño');
+            localStorage.setItem('gestorpro_terminos_aceptados', 'true');
             localStorage.setItem('onboardingVisto', 'true');
             document.getElementById('modal-onboarding')?.classList.add('hidden');
 
@@ -1790,6 +1887,7 @@
 
             rolActual = rolElegido;
             localStorage.setItem('gestorpro_rol', rolElegido);
+            localStorage.setItem('gestorpro_terminos_aceptados', 'true');
             localStorage.setItem('onboardingVisto', 'true');
             document.getElementById('modal-onboarding')?.classList.add('hidden');
 
@@ -1802,7 +1900,7 @@
 
         if (!existeCuentaRegistrada()) {
             alternarModoInicio('registro');
-            actualizarBotonCerrarOnboarding();
+            irPasoOnboarding(1);
             document.getElementById('modal-onboarding')?.classList.remove('hidden');
         }
 
@@ -2339,7 +2437,7 @@
 
         function exportarRespaldoJSON() {
             if (!esProActivo()) return requierePro(null, 'Exportar respaldo JSON');
-            const datos = { version: 'GestorPro_v5', fecha: new Date().toISOString(), negocios };
+            const datos = { version: 'GestorPro_v6', fecha: new Date().toISOString(), negocios };
             const blob = new Blob([JSON.stringify(datos, null, 2)], { type: 'application/json' });
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
@@ -2716,7 +2814,6 @@
             }
         }
 
-        // Foto del producto con compresión en canvas
         function aplicarFotoPreview(dataUrl) {
             fotoProductoActualBase64 = dataUrl || '';
             const img = document.getElementById('prod-foto-preview');
@@ -3262,7 +3359,6 @@
             const sal = (neg.finanzas || []).filter(f => f.tipo !== 'ingreso').reduce((a, f) => a + (Number(f.monto) || 0), 0);
             const efectivoCaja = cap + ent - sal;
 
-            // Encabezado ejecutivo
             doc.setFillColor(29, 78, 216);
             doc.rect(14, 12, 182, 22, 'F');
             doc.setTextColor(255, 255, 255);
@@ -3281,7 +3377,6 @@
             doc.setTextColor(30, 41, 59);
             let y = 42;
 
-            // Cuadrícula de KPIs (2 filas x 3 columnas)
             doc.setFont("helvetica", "bold");
             doc.setFontSize(11);
             doc.text("RESUMEN FINANCIERO Y OPERATIVO", 14, y);
@@ -3318,7 +3413,6 @@
             });
             y += 36;
 
-            // Desglose por método de pago
             doc.setFont("helvetica", "bold");
             doc.setFontSize(11);
             doc.setTextColor(29, 78, 216);
@@ -3356,7 +3450,6 @@
             }
             y += 5;
 
-            // Tabla de Inventario (con foto si está habilitada)
             if (y > 245) { doc.addPage(); y = 20; }
             doc.setFont("helvetica", "bold");
             doc.setFontSize(11);
@@ -3413,7 +3506,6 @@
             }
             y += 5;
 
-            // Movimientos recientes
             if (y > 245) { doc.addPage(); y = 20; }
             doc.setFont("helvetica", "bold");
             doc.setFontSize(11);
@@ -3436,7 +3528,6 @@
                 });
             }
 
-            // Pie de página en todas las páginas
             const totalPaginas = doc.internal.getNumberOfPages();
             for (let i = 1; i <= totalPaginas; i++) {
                 doc.setPage(i);

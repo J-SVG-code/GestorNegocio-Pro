@@ -67,12 +67,16 @@
                 </button>
             </div>
 
-            <!-- Audios, Modo Pro y Configuración -->
+            <!-- Secciones Separadas -->
             <div class="space-y-1 pt-2 border-t border-slate-100 dark:border-slate-800">
                 <p class="text-[10px] font-bold uppercase tracking-wider text-slate-400 px-2.5 pb-1">Secciones especiales</p>
                 <button type="button" onclick="navegarDesdeMenu('audios')" id="drawer-btn-audios" class="w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition text-left">
                     <span class="flex items-center gap-2.5"><span>🔊</span><span>Audios</span></span>
                     <span id="drawer-audio-status" class="text-[10px] text-slate-400">ON</span>
+                </button>
+                <button type="button" onclick="navegarDesdeMenu('qr-empleado')" id="drawer-btn-qr-empleado" class="w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition text-left">
+                    <span class="flex items-center gap-2.5"><span>📱</span><span>QR Empleado</span></span>
+                    <span class="pro-tag text-[9px] font-bold bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300 px-1.5 py-0.5 rounded-full">PRO</span>
                 </button>
                 <button type="button" onclick="navegarDesdeMenu('pro')" id="drawer-btn-pro" class="w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-medium text-amber-800 dark:text-amber-300 bg-amber-50/70 dark:bg-amber-950/30 hover:bg-amber-100/80 dark:hover:bg-amber-950/50 transition text-left">
                     <span class="flex items-center gap-2.5"><span>⭐</span><span>Modo Pro</span></span>
@@ -118,10 +122,8 @@
                 <p class="text-xs text-slate-500 dark:text-slate-400">Inventario, ventas, caja y control multi-sucursal en un solo lugar.</p>
             </div>
             <div class="space-y-2 text-xs text-slate-600 dark:text-slate-300 bg-slate-50 dark:bg-slate-800/70 p-3.5 rounded-xl border border-slate-200/80 dark:border-slate-700/80">
-                <p>• <b>Gratis:</b> Inventario, proveedores, ventas contado/fiados, vuelto y caja básica.</p>
-                <p>• <b>Audios:</b> Alertas de sonido para ventas, abonos y stock bajo.</p>
-                <p>• <b>Modo Pro:</b> Arqueo Z, catálogo web, OCR, cobro QR, PDF y nube.</p>
-                <p>• <b>Menú lateral (☰):</b> Cambia de sección fácilmente con una mano.</p>
+                <p>• <b>Gratis:</b> Inventario, proveedores, ventas contado/fiados, vuelto, caja básica y tonos de audio.</p>
+                <p>• <b>Modo Pro:</b> QR Empleado y vinculación, multi-sucursal, Cierre Z, Catálogo Web, PDF, OCR, Cobro QR, impresión Bluetooth, respaldo JSON y audio personalizado.</p>
             </div>
             <button type="button" onclick="cerrarOnboarding()" class="w-full bg-blue-600 text-white font-semibold py-2.5 rounded-xl text-xs hover:bg-blue-700 transition">Comenzar</button>
         </div>
@@ -223,7 +225,10 @@
             </div>
             <div id="ticket-contenido-visual" class="bg-amber-50/70 text-slate-900 p-3 rounded-xl font-mono text-[11px] leading-relaxed border border-dashed border-slate-300 space-y-1"></div>
             <div class="space-y-1.5 pt-1">
-                <button type="button" onclick="imprimirTicketBluetoothNativo()" class="w-full bg-indigo-600 text-white font-semibold py-2 rounded-xl text-xs hover:bg-indigo-700 transition">Imprimir Bluetooth</button>
+                <button type="button" onclick="requierePro(imprimirTicketBluetoothNativo, 'Impresión Bluetooth')" class="w-full bg-indigo-600 text-white font-semibold py-2 rounded-xl text-xs hover:bg-indigo-700 transition flex items-center justify-center gap-1.5">
+                    <span>Imprimir Bluetooth</span>
+                    <span class="pro-tag text-[9px] font-bold bg-black/20 text-white px-1.5 py-0.5 rounded-full">PRO</span>
+                </button>
                 <div class="grid grid-cols-2 gap-2">
                     <button type="button" onclick="imprimirTicketTermico()" class="bg-slate-800 dark:bg-slate-700 text-white font-semibold py-2 rounded-xl text-xs hover:bg-slate-900 transition">Imprimir</button>
                     <button type="button" onclick="descargarTicketImagen()" class="bg-blue-600 text-white font-semibold py-2 rounded-xl text-xs hover:bg-blue-700 transition">Guardar PNG</button>
@@ -262,13 +267,11 @@
         
         <!-- Sección 1: Resumen -->
         <section id="tab-resumen" class="space-y-4">
-            <!-- Tarjeta de Alertas BI -->
             <div id="alerta-bi-container" class="bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-800/70 text-amber-900 dark:text-amber-200 p-3.5 rounded-2xl text-xs space-y-1 hidden">
                 <p class="font-semibold">Alerta de inventario bajo</p>
                 <p id="texto-alerta-bi" class="text-[11px] leading-relaxed"></p>
             </div>
 
-            <!-- Resumen Principal -->
             <div class="bg-white dark:bg-slate-900 p-4 rounded-2xl shadow-xs border border-slate-200/80 dark:border-slate-800 space-y-3">
                 <div class="flex items-center justify-between">
                     <h2 class="text-sm font-bold text-slate-800 dark:text-white">Resumen de sucursal</h2>
@@ -352,7 +355,6 @@
                 </div>
             </div>
 
-            <!-- Formulario Principal de Producto -->
             <div class="bg-white dark:bg-slate-900 p-4 rounded-2xl shadow-xs border border-slate-200/80 dark:border-slate-800 space-y-3">
                 <div class="flex justify-between items-center gap-2">
                     <h2 class="text-sm font-bold text-slate-800 dark:text-white">Producto</h2>
@@ -402,14 +404,12 @@
                 </form>
             </div>
 
-            <!-- Listado de Inventario -->
             <div class="bg-white dark:bg-slate-900 p-4 rounded-2xl shadow-xs border border-slate-200/80 dark:border-slate-800 space-y-3">
                 <h2 class="text-sm font-bold text-slate-800 dark:text-white">Existencias</h2>
                 <input type="text" id="buscar-inventario" oninput="filtrarInventario(this.value)" class="w-full p-2.5 text-xs border border-slate-200 dark:border-slate-700 rounded-xl bg-slate-50 dark:bg-slate-800 outline-none" placeholder="Buscar por nombre o código...">
                 <div id="lista-inventario" class="space-y-2"></div>
             </div>
 
-            <!-- Proveedores (Visible directamente en Stock) -->
             <div id="seccion-proveedores" class="bg-white dark:bg-slate-900 p-4 rounded-2xl shadow-xs border border-slate-200/80 dark:border-slate-800 space-y-3">
                 <div class="flex justify-between items-center">
                     <h2 class="text-sm font-bold text-slate-800 dark:text-white">Proveedores</h2>
@@ -447,7 +447,6 @@
 
         <!-- Sección 3: Ventas, Multidivisa y Fiados -->
         <section id="tab-ventas" class="space-y-4 hidden">
-            <!-- Calculadora Multidivisa y Vuelto -->
             <div class="bg-white dark:bg-slate-900 p-4 rounded-2xl shadow-xs border border-slate-200/80 dark:border-slate-800 space-y-3">
                 <div class="flex justify-between items-center gap-2">
                     <h2 class="text-sm font-bold text-slate-800 dark:text-white">Calculadora de vuelto</h2>
@@ -476,7 +475,6 @@
                 </div>
             </div>
 
-            <!-- Registro de Venta o Fiado -->
             <div class="bg-white dark:bg-slate-900 p-4 rounded-2xl shadow-xs border border-slate-200/80 dark:border-slate-800 space-y-3">
                 <div class="flex justify-between items-center gap-2">
                     <h2 class="text-sm font-bold text-slate-800 dark:text-white">Nueva venta o fiado</h2>
@@ -524,13 +522,11 @@
                 </form>
             </div>
 
-            <!-- Fiados Pendientes -->
             <div class="bg-white dark:bg-slate-900 p-4 rounded-2xl shadow-xs border border-slate-200/80 dark:border-slate-800 space-y-2.5">
                 <h2 class="text-sm font-bold text-slate-800 dark:text-white">Fiados pendientes</h2>
                 <div id="lista-deudas" class="space-y-2"></div>
             </div>
 
-            <!-- Ventas Recientes -->
             <div class="bg-white dark:bg-slate-900 p-4 rounded-2xl shadow-xs border border-slate-200/80 dark:border-slate-800 space-y-2.5">
                 <h2 class="text-sm font-bold text-slate-800 dark:text-white">Ventas recientes</h2>
                 <div id="lista-ventas" class="space-y-2"></div>
@@ -603,7 +599,7 @@
             </div>
         </section>
 
-        <!-- Sección 5: Audios y Avisos Sonoros (Separada) -->
+        <!-- Sección 5: Audios y Avisos Sonoros -->
         <section id="tab-audios" class="space-y-4 hidden">
             <div class="bg-white dark:bg-slate-900 p-4 rounded-2xl shadow-xs border border-slate-200/80 dark:border-slate-800 space-y-3">
                 <div class="flex justify-between items-center">
@@ -647,30 +643,97 @@
                 </div>
             </div>
 
-            <!-- Pistas / Audios Personalizados de Respaldo -->
+            <!-- Audio Personalizado (Función Pro) -->
             <div class="bg-white dark:bg-slate-900 p-4 rounded-2xl shadow-xs border border-slate-200/80 dark:border-slate-800 space-y-2.5">
-                <h3 class="text-sm font-bold text-slate-800 dark:text-white">Audio personalizado de notificación</h3>
-                <p class="text-[11px] text-slate-500 dark:text-slate-400">Si no eliges un archivo, se usa el tono integrado del teléfono/navegador.</p>
+                <div class="flex items-center justify-between gap-2">
+                    <h3 class="text-sm font-bold text-slate-800 dark:text-white">Audio personalizado de notificación</h3>
+                    <span class="pro-tag text-[9px] font-bold bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300 px-1.5 py-0.5 rounded-full">PRO</span>
+                </div>
+                <p class="text-[11px] text-slate-500 dark:text-slate-400">El tono integrado es gratis; subir archivo propio requiere Modo Pro.</p>
                 <div class="flex items-center justify-between gap-2 bg-slate-50 dark:bg-slate-800/70 p-3 rounded-xl border border-slate-100 dark:border-slate-800 text-xs">
                     <span id="audio-archivo-nombre" class="truncate text-slate-600 dark:text-slate-300">Tono integrado predeterminado</span>
                     <button type="button" onclick="limpiarAudioPersonalizado()" class="text-rose-600 dark:text-rose-400 text-[11px] font-semibold shrink-0">Restablecer</button>
                 </div>
-                <label class="block w-full bg-slate-800 dark:bg-slate-700 text-white font-semibold py-2.5 rounded-xl text-xs hover:bg-slate-900 transition text-center cursor-pointer">
+                <label onclick="return interceptarAudioPro(event)" class="block w-full bg-slate-800 dark:bg-slate-700 text-white font-semibold py-2.5 rounded-xl text-xs hover:bg-slate-900 transition text-center cursor-pointer">
                     Elegir archivo de audio (MP3 / WAV / OGG)
                     <input type="file" id="input-audio-archivo" accept="audio/*" onchange="cargarAudioPersonalizado(event)" class="hidden">
                 </label>
             </div>
         </section>
 
-        <!-- Sección 6: Modo Pro (Dividida en bloques independientes) -->
+        <!-- Sección 6: Código QR Empleado y Vinculación (Sección Independiente · Exclusiva Pro) -->
+        <section id="tab-qr-empleado" class="space-y-4 hidden">
+            <div id="aviso-bloqueo-qr-pro" class="bg-amber-50 dark:bg-amber-950/40 border border-amber-300 dark:border-amber-800 text-amber-900 dark:text-amber-200 p-3.5 rounded-2xl text-xs space-y-2 hidden">
+                <p class="font-bold">Sección exclusiva de Modo Pro</p>
+                <p class="text-[11px]">Activa el Modo Pro para generar QR de empleado, vincular/desvincular teléfonos y controlar permisos.</p>
+                <button type="button" onclick="cambiarTab('pro')" class="bg-amber-600 text-white font-semibold px-3 py-1.5 rounded-xl text-xs hover:bg-amber-700 transition">Ir a Modo Pro</button>
+            </div>
+
+            <div id="contenido-qr-empleado-pro" class="space-y-4">
+                <div class="bg-white dark:bg-slate-900 p-4 rounded-2xl shadow-xs border border-slate-200/80 dark:border-slate-800 space-y-3">
+                    <div class="flex items-center justify-between gap-2">
+                        <div>
+                            <h2 class="text-sm font-bold text-slate-800 dark:text-white">Código QR y vinculación</h2>
+                            <p id="sync-perfil-activo" class="text-[11px] text-slate-500 dark:text-slate-400">Conectar teléfono de: Empleado</p>
+                        </div>
+                        <span class="pro-tag text-[9px] font-bold bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300 px-1.5 py-0.5 rounded-full">PRO</span>
+                    </div>
+
+                    <div class="bg-slate-50 dark:bg-slate-800/80 p-3 rounded-xl border border-slate-200/70 dark:border-slate-700 flex items-center justify-between gap-3">
+                        <div class="min-w-0">
+                            <p class="text-xs font-semibold text-slate-700 dark:text-slate-200">QR de empleado por empleado</p>
+                            <p id="estado-permiso-qr-empleado" class="text-[11px] text-slate-500 dark:text-slate-400">Decisión del Socio: Bloqueado para empleados</p>
+                        </div>
+                        <label class="inline-flex items-center gap-1.5 text-xs font-semibold cursor-pointer shrink-0">
+                            <input type="checkbox" id="chk-socio-permite-qr-empleado" onchange="togglePermisoQrEmpleado()" class="w-4 h-4 accent-blue-600 rounded">
+                            <span>Permitir</span>
+                        </label>
+                    </div>
+
+                    <div id="contenedor-tipo-conexion-sync" class="space-y-1">
+                        <label class="block text-[11px] font-medium text-slate-600 dark:text-slate-400">Seleccionar perfil para vincular o mostrar QR</label>
+                        <select id="select-tipo-conexion-sync" onchange="actualizarEtiquetaTipoConexion()" class="w-full p-2 text-xs border border-slate-200 dark:border-slate-700 rounded-xl bg-slate-50 dark:bg-slate-800 outline-none">
+                            <option value="empleado">Empleado (asociar teléfono de empleado)</option>
+                            <option value="socio" id="opcion-sync-socio">Socio (asociar teléfono de socio)</option>
+                        </select>
+                    </div>
+
+                    <button type="button" onclick="requierePro(mostrarCodigoQR, 'QR de empleado')" class="w-full bg-blue-600 text-white font-semibold py-2.5 rounded-xl text-xs hover:bg-blue-700 transition">Mostrar código QR</button>
+                    <div id="qr-display-container" class="hidden bg-slate-50 dark:bg-slate-800 p-3 rounded-xl text-center space-y-2 border border-slate-200 dark:border-slate-700">
+                        <div id="qr-image-box" class="flex justify-center"></div>
+                        <p id="qr-text-code" class="text-[11px] font-mono text-slate-600 dark:text-slate-300 select-all bg-white dark:bg-slate-900 p-1.5 rounded-lg"></p>
+                    </div>
+                    <div class="flex gap-2">
+                        <input type="text" id="token-socio" class="flex-1 p-2 text-xs rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 outline-none" placeholder="Código para vincular teléfono">
+                        <button type="button" onclick="requierePro(conectarSocio, 'Vincular teléfono')" class="bg-slate-800 text-white px-3 py-2 rounded-xl text-xs font-semibold hover:bg-slate-900 transition whitespace-nowrap">Vincular</button>
+                    </div>
+                    <button type="button" onclick="requierePro(abrirEscanerQR, 'Escanear QR')" class="w-full bg-indigo-600 text-white font-semibold py-2 rounded-xl text-xs hover:bg-indigo-700 transition">Escanear QR</button>
+                </div>
+
+                <div class="bg-white dark:bg-slate-900 p-4 rounded-2xl shadow-xs border border-slate-200/80 dark:border-slate-800 space-y-3">
+                    <div class="flex items-center justify-between gap-2">
+                        <div>
+                            <p class="text-sm font-bold text-slate-800 dark:text-white">Teléfonos vinculados</p>
+                            <p class="text-[11px] text-slate-500 dark:text-slate-400">Administra quiénes están conectados o sácalos de la cuenta.</p>
+                        </div>
+                        <span id="contador-dispositivos-vinculados" class="text-[11px] text-slate-400">0 equipos</span>
+                    </div>
+
+                    <div id="lista-dispositivos-vinculados" class="space-y-2"></div>
+
+                    <button type="button" onclick="requierePro(desvincularTodosDispositivos, 'Desvincular teléfonos')" class="w-full bg-rose-600 text-white font-semibold py-2 rounded-xl text-xs hover:bg-rose-700 transition">Desvincular todos los teléfonos</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sección 7: Modo Pro (Ver Anuncios, Pagar y Apagar Anuncios) -->
         <section id="tab-pro" class="space-y-4 hidden">
-            <!-- Bloque A: Planes y Activación Pro (apaga anuncios al activar) -->
             <div id="seccion-modo-pro" class="bg-white dark:bg-slate-900 p-4 rounded-2xl shadow-xs border border-amber-300/80 dark:border-amber-700/60 space-y-3">
                 <div class="flex justify-between items-center">
-                    <h2 class="text-sm font-bold text-slate-800 dark:text-white">Activar Modo Pro (Sin anuncios)</h2>
+                    <h2 class="text-sm font-bold text-slate-800 dark:text-white">Modo Pro · Planes y Anuncios</h2>
                     <span id="badge-pro-estado" class="bg-rose-100 text-rose-700 dark:bg-rose-950 dark:text-rose-300 text-[11px] px-2.5 py-0.5 rounded-full font-semibold">Inactivo</span>
                 </div>
-                <p id="texto-pro-estado" class="text-xs text-slate-500 dark:text-slate-400">Al activar Modo Pro se apagan los anuncios y se desbloquean Cierre Z, Catálogo Web, OCR, Cobro QR, PDF y nube.</p>
+                <p id="texto-pro-estado" class="text-xs text-slate-500 dark:text-slate-400">Sin Modo Pro las funciones Pro quedan bloqueadas y se muestran anuncios. Al activar Modo Pro se apagan los anuncios y se habilitan todas las funciones Pro.</p>
                 
                 <div class="bg-slate-50 dark:bg-slate-800/70 p-3 rounded-xl text-xs space-y-1 border border-slate-100 dark:border-slate-800">
                     <p class="font-semibold text-slate-700 dark:text-slate-200">Planes disponibles</p>
@@ -679,74 +742,15 @@
                 </div>
 
                 <div class="space-y-2">
-                    <button type="button" onclick="abrirModalPasarelaSuscripcion('mensual')" class="w-full bg-emerald-600 text-white font-semibold py-2.5 rounded-xl text-xs hover:bg-emerald-700 transition">Plan Mensual ($5)</button>
-                    <button type="button" onclick="abrirModalPasarelaSuscripcion('anual')" class="w-full bg-blue-600 text-white font-semibold py-2.5 rounded-xl text-xs hover:bg-blue-700 transition">Plan Anual ($45)</button>
-                    <button type="button" onclick="verAnuncioBonificadoPro()" class="w-full bg-amber-600 text-white font-semibold py-2 rounded-xl text-xs hover:bg-amber-700 transition">Activar 12h con anuncio (apaga anuncios)</button>
+                    <button type="button" onclick="abrirModalPasarelaSuscripcion('mensual')" class="w-full bg-emerald-600 text-white font-semibold py-2.5 rounded-xl text-xs hover:bg-emerald-700 transition">Pagar Plan Mensual ($5)</button>
+                    <button type="button" onclick="abrirModalPasarelaSuscripcion('anual')" class="w-full bg-blue-600 text-white font-semibold py-2.5 rounded-xl text-xs hover:bg-blue-700 transition">Pagar Plan Anual ($45)</button>
+                    <button type="button" onclick="verAnuncioBonificadoPro()" class="w-full bg-amber-600 text-white font-semibold py-2 rounded-xl text-xs hover:bg-amber-700 transition">Ver anuncio · Activar 12h (apaga anuncios)</button>
                 </div>
-            </div>
-
-            <!-- Bloque B: Códigos QR y Vinculación (Empleado o Socio) -->
-            <div class="bg-white dark:bg-slate-900 p-4 rounded-2xl shadow-xs border border-slate-200/80 dark:border-slate-800 space-y-3">
-                <div class="flex items-center justify-between gap-2">
-                    <div>
-                        <p class="text-sm font-bold text-slate-800 dark:text-white">QR y vinculación (Empleado / Socio)</p>
-                        <p id="sync-perfil-activo" class="text-[11px] text-slate-500 dark:text-slate-400">Conectar teléfono de: Empleado</p>
-                    </div>
-                    <span class="pro-tag text-[9px] font-bold bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300 px-1.5 py-0.5 rounded-full">PRO</span>
-                </div>
-
-                <!-- Control de permiso del Socio para que el Empleado comparta QR -->
-                <div class="bg-slate-50 dark:bg-slate-800/80 p-3 rounded-xl border border-slate-200/70 dark:border-slate-700 flex items-center justify-between gap-3">
-                    <div class="min-w-0">
-                        <p class="text-xs font-semibold text-slate-700 dark:text-slate-200">QR de empleado por empleado</p>
-                        <p id="estado-permiso-qr-empleado" class="text-[11px] text-slate-500 dark:text-slate-400">Decisión del Socio: Bloqueado para empleados</p>
-                    </div>
-                    <label class="inline-flex items-center gap-1.5 text-xs font-semibold cursor-pointer shrink-0">
-                        <input type="checkbox" id="chk-socio-permite-qr-empleado" onchange="togglePermisoQrEmpleado()" class="w-4 h-4 accent-blue-600 rounded">
-                        <span>Permitir</span>
-                    </label>
-                </div>
-
-                <!-- Selector de conexión: Empleado o Socio -->
-                <div id="contenedor-tipo-conexion-sync" class="space-y-1">
-                    <label class="block text-[11px] font-medium text-slate-600 dark:text-slate-400">Seleccionar perfil para vincular o mostrar QR</label>
-                    <select id="select-tipo-conexion-sync" onchange="actualizarEtiquetaTipoConexion()" class="w-full p-2 text-xs border border-slate-200 dark:border-slate-700 rounded-xl bg-slate-50 dark:bg-slate-800 outline-none">
-                        <option value="empleado">Empleado (asociar teléfono de empleado)</option>
-                        <option value="socio" id="opcion-sync-socio">Socio (asociar teléfono de socio)</option>
-                    </select>
-                </div>
-
-                <button type="button" onclick="requierePro(mostrarCodigoQR, 'QR de sincronización')" class="w-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 font-semibold py-2 rounded-xl text-xs hover:bg-slate-200 dark:hover:bg-slate-700 transition">Mostrar código QR</button>
-                <div id="qr-display-container" class="hidden bg-slate-50 dark:bg-slate-800 p-3 rounded-xl text-center space-y-2 border border-slate-200 dark:border-slate-700">
-                    <div id="qr-image-box" class="flex justify-center"></div>
-                    <p id="qr-text-code" class="text-[11px] font-mono text-slate-600 dark:text-slate-300 select-all bg-white dark:bg-slate-900 p-1.5 rounded-lg"></p>
-                </div>
-                <div class="flex gap-2">
-                    <input type="text" id="token-socio" class="flex-1 p-2 text-xs rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 outline-none" placeholder="Código para vincular teléfono">
-                    <button type="button" onclick="requierePro(conectarSocio, 'Vincular teléfono')" class="bg-slate-800 text-white px-3 py-2 rounded-xl text-xs font-semibold hover:bg-slate-900 transition whitespace-nowrap">Vincular</button>
-                </div>
-                <button type="button" onclick="requierePro(abrirEscanerQR, 'Escanear QR de sincronización')" class="w-full bg-indigo-600 text-white font-semibold py-2 rounded-xl text-xs hover:bg-indigo-700 transition">Escanear QR</button>
-            </div>
-
-            <!-- Bloque C: Teléfonos Vinculados y Desvinculación -->
-            <div class="bg-white dark:bg-slate-900 p-4 rounded-2xl shadow-xs border border-slate-200/80 dark:border-slate-800 space-y-3">
-                <div class="flex items-center justify-between gap-2">
-                    <div>
-                        <p class="text-sm font-bold text-slate-800 dark:text-white">Teléfonos vinculados</p>
-                        <p class="text-[11px] text-slate-500 dark:text-slate-400">Administra quiénes están conectados o sácalos de la cuenta.</p>
-                    </div>
-                    <span id="contador-dispositivos-vinculados" class="text-[11px] text-slate-400">0 equipos</span>
-                </div>
-
-                <div id="lista-dispositivos-vinculados" class="space-y-2"></div>
-
-                <button type="button" onclick="desvincularTodosDispositivos()" class="w-full bg-rose-600 text-white font-semibold py-2 rounded-xl text-xs hover:bg-rose-700 transition">Desvincular todos los teléfonos</button>
             </div>
         </section>
 
-        <!-- Sección 7: Ajustes Generales -->
+        <!-- Sección 8: Ajustes Generales -->
         <section id="tab-ajustes" class="space-y-4 hidden">
-            <!-- Sucursales (Función Pro) -->
             <div class="bg-white dark:bg-slate-900 p-4 rounded-2xl shadow-xs border border-slate-200/80 dark:border-slate-800 space-y-3 admin-only">
                 <div class="flex items-center justify-between">
                     <h2 class="text-sm font-bold text-slate-800 dark:text-white">Multi-sucursal</h2>
@@ -764,7 +768,6 @@
                 <div id="lista-negocios-admin" class="space-y-2"></div>
             </div>
 
-            <!-- Tasa y Seguridad -->
             <div class="bg-white dark:bg-slate-900 p-4 rounded-2xl shadow-xs border border-slate-200/80 dark:border-slate-800 space-y-3">
                 <h2 class="text-sm font-bold text-slate-800 dark:text-white">Tasa de cambio y seguridad</h2>
                 <div class="space-y-1.5">
@@ -783,19 +786,21 @@
                 </div>
             </div>
 
-            <!-- Respaldos -->
+            <!-- Respaldos JSON (Función Pro) -->
             <div class="bg-white dark:bg-slate-900 p-4 rounded-2xl shadow-xs border border-slate-200/80 dark:border-slate-800 space-y-2.5">
-                <h2 class="text-sm font-bold text-slate-800 dark:text-white">Respaldo de datos (JSON)</h2>
+                <div class="flex items-center justify-between gap-2">
+                    <h2 class="text-sm font-bold text-slate-800 dark:text-white">Respaldo de datos (JSON)</h2>
+                    <span class="pro-tag text-[9px] font-bold bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300 px-1.5 py-0.5 rounded-full">PRO</span>
+                </div>
                 <div class="grid grid-cols-2 gap-2.5">
-                    <button type="button" onclick="exportarRespaldoJSON()" class="bg-emerald-600 text-white font-semibold py-2.5 rounded-xl text-xs hover:bg-emerald-700 transition">Exportar</button>
-                    <label class="bg-slate-800 dark:bg-slate-700 text-white font-semibold py-2.5 rounded-xl text-xs hover:bg-slate-900 transition text-center cursor-pointer">
+                    <button type="button" onclick="requierePro(exportarRespaldoJSON, 'Exportar respaldo JSON')" class="bg-emerald-600 text-white font-semibold py-2.5 rounded-xl text-xs hover:bg-emerald-700 transition">Exportar</button>
+                    <label onclick="return interceptarImportarPro(event)" class="bg-slate-800 dark:bg-slate-700 text-white font-semibold py-2.5 rounded-xl text-xs hover:bg-slate-900 transition text-center cursor-pointer">
                         Importar
                         <input type="file" id="input-importar-json" accept=".json" onchange="importarRespaldoJSON(event)" class="hidden">
                     </label>
                 </div>
             </div>
 
-            <!-- Autoría -->
             <div class="text-center py-2 space-y-0.5 text-[11px] text-slate-400">
                 <p class="font-semibold text-slate-500 dark:text-slate-300">Gestor Pro · © 2026</p>
                 <p>Joelbi José Salazar Vargas · C.I. 30.022.434</p>
@@ -815,7 +820,7 @@
         </script>
     </div>
 
-    <!-- Script de Firebase Firestore con Control de Concurrencia y Sincronización Segura -->
+    <!-- Script de Firebase Firestore con Control de Concurrencia y Sincronización Segura (Solo Pro) -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/13.3.0/firebase-app.js";
         import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/13.3.0/firebase-firestore.js";
@@ -844,7 +849,12 @@
         window.configurarSincronizacionNube = function(code) {
             currentSyncCode = code;
             localStorage.setItem('gestorpro_sync_code', code);
-            iniciarListener(code);
+            if (typeof window.esProActivo === 'function' && window.esProActivo()) {
+                iniciarListener(code);
+            } else if (typeof unsubscribe === 'function') {
+                unsubscribe();
+                unsubscribe = null;
+            }
         };
 
         function iniciarListener(code) {
@@ -852,10 +862,12 @@
                 unsubscribe();
                 unsubscribe = null;
             }
-            
+            if (typeof window.esProActivo !== 'function' || !window.esProActivo()) return;
+
             const docRef = doc(db, "negocios", code);
 
             unsubscribe = onSnapshot(docRef, (snap) => {
+                if (typeof window.esProActivo !== 'function' || !window.esProActivo()) return;
                 if (snap.exists() && snap.data().data) {
                     try {
                         const nubeRemotaStr = snap.data().data;
@@ -882,7 +894,8 @@
 
         window.sincronizarNube = async function(datosJsonWrapper) {
             if (isRemoteUpdate) return;
-            if (typeof window.esProActivo === 'function' && !window.esProActivo()) return;
+            if (typeof window.esProActivo !== 'function' || !window.esProActivo()) return;
+            if (!unsubscribe) iniciarListener(currentSyncCode);
             try {
                 const docRef = doc(db, "negocios", currentSyncCode);
                 await setDoc(docRef, { data: datosJsonWrapper, actualizado: Date.now() });
@@ -909,7 +922,9 @@
         window.addEventListener('online', () => actualizarEstadoConexionOffline(true));
         window.addEventListener('offline', () => actualizarEstadoConexionOffline(false));
 
-        iniciarListener(currentSyncCode);
+        if (typeof window.esProActivo === 'function' && window.esProActivo()) {
+            iniciarListener(currentSyncCode);
+        }
     </script>
 
     <script>
@@ -919,16 +934,17 @@
                     registration.update();
                 }
             });
-            navigator.serviceWorker.register('./sw.js?v=20261118g').catch(err => console.log('SW error:', err));
+            navigator.serviceWorker.register('./sw.js?v=20261118i').catch(err => console.log('SW error:', err));
         }
 
-        const SECCIONES_VALIDAS = ['resumen', 'inventario', 'ventas', 'finanzas', 'audios', 'pro', 'ajustes'];
+        const SECCIONES_VALIDAS = ['resumen', 'inventario', 'ventas', 'finanzas', 'audios', 'qr-empleado', 'pro', 'ajustes'];
         const NOMBRES_SECCION = {
             resumen: 'Resumen',
             inventario: 'Stock',
             ventas: 'Ventas',
             finanzas: 'Caja',
             audios: 'Audios',
+            'qr-empleado': 'QR Empleado',
             pro: 'Modo Pro',
             ajustes: 'Ajustes'
         };
@@ -953,13 +969,14 @@
             const nom = document.getElementById('audio-archivo-nombre');
             const drawerStatus = document.getElementById('drawer-audio-status');
 
+            const tieneAudioPro = esProActivo() && !!audioPersonalizadoDataUrl;
             if (hab) hab.checked = !!audioConfig.habilitado;
             if (vta) vta.checked = !!audioConfig.venta;
             if (abn) abn.checked = !!audioConfig.abono;
             if (alt) alt.checked = !!audioConfig.alerta;
             if (vol) vol.value = audioConfig.volumen ?? 70;
             if (lbl) lbl.innerText = `${audioConfig.volumen ?? 70}%`;
-            if (nom) nom.innerText = audioConfig.customNombre || 'Tono integrado predeterminado';
+            if (nom) nom.innerText = tieneAudioPro ? (audioConfig.customNombre || 'Audio personalizado') : 'Tono integrado predeterminado';
             if (drawerStatus) drawerStatus.innerText = audioConfig.habilitado ? 'ON' : 'OFF';
         }
 
@@ -982,7 +999,20 @@
             sincronizarControlesAudio();
         }
 
+        function interceptarAudioPro(event) {
+            if (!esProActivo()) {
+                event.preventDefault();
+                requierePro(null, 'El audio personalizado de notificación');
+                return false;
+            }
+            return true;
+        }
+
         function cargarAudioPersonalizado(event) {
+            if (!esProActivo()) {
+                event.target.value = '';
+                return requierePro(null, 'El audio personalizado de notificación');
+            }
             const archivo = event.target.files[0];
             if (!archivo) return;
             if (archivo.size > 1500000) {
@@ -1004,6 +1034,7 @@
         }
 
         function limpiarAudioPersonalizado() {
+            if (!esProActivo()) return requierePro(null, 'El audio personalizado de notificación');
             audioPersonalizadoDataUrl = '';
             audioConfig.customNombre = '';
             localStorage.removeItem('gestorpro_audio_custom_src');
@@ -1021,7 +1052,7 @@
             const ganancia = Math.max(0, Math.min(1, (audioConfig.volumen ?? 70) / 100));
             if (ganancia === 0) return;
 
-            if (audioPersonalizadoDataUrl) {
+            if (esProActivo() && audioPersonalizadoDataUrl) {
                 const audioEl = new Audio(audioPersonalizadoDataUrl);
                 audioEl.volume = ganancia;
                 audioEl.play().catch(() => {});
@@ -1130,7 +1161,7 @@
 
         function esProActivo() {
             const expira = localStorage.getItem('proExpira');
-            return expira && Date.now() < parseInt(expira);
+            return !!(expira && Date.now() < parseInt(expira, 10));
         }
         window.esProActivo = esProActivo;
 
@@ -1139,7 +1170,7 @@
                 if (typeof accion === 'function') accion();
                 return true;
             }
-            mostrarToast(`${nombreFuncion} forma parte del Modo Pro.`, 'error');
+            mostrarToast(`${nombreFuncion} solo está habilitada en Modo Pro.`, 'error');
             cambiarTab('pro');
             return false;
         }
@@ -1153,6 +1184,15 @@
             return true;
         }
 
+        function interceptarImportarPro(event) {
+            if (!esProActivo()) {
+                event.preventDefault();
+                requierePro(null, 'Importar respaldo JSON');
+                return false;
+            }
+            return true;
+        }
+
         let rolActual = localStorage.getItem('gestorpro_rol') || 'dueño';
 
         function obtenerTipoConexionSeleccionado() {
@@ -1161,6 +1201,11 @@
         }
 
         function togglePermisoQrEmpleado() {
+            if (!esProActivo()) {
+                const chk = document.getElementById('chk-socio-permite-qr-empleado');
+                if (chk) chk.checked = false;
+                return requierePro(null, 'Permiso QR de empleado');
+            }
             const neg = obtenerNegocio();
             const chk = document.getElementById('chk-socio-permite-qr-empleado');
             neg.socioPermiteQrEmpleado = !!chk?.checked;
@@ -1175,18 +1220,27 @@
 
         function sincronizarControlesSincronizacion() {
             const neg = obtenerNegocio();
+            const proOk = esProActivo();
+            const avisoBloqueo = document.getElementById('aviso-bloqueo-qr-pro');
+            const contenidoPro = document.getElementById('contenido-qr-empleado-pro');
             const chk = document.getElementById('chk-socio-permite-qr-empleado');
             const estadoPermiso = document.getElementById('estado-permiso-qr-empleado');
-            const permitido = !!neg.socioPermiteQrEmpleado;
+            const permitido = !!(proOk && neg.socioPermiteQrEmpleado);
+
+            if (avisoBloqueo) avisoBloqueo.classList.toggle('hidden', proOk);
+            if (contenidoPro) {
+                contenidoPro.classList.toggle('opacity-45', !proOk);
+                contenidoPro.classList.toggle('pointer-events-none', !proOk);
+            }
 
             if (chk) {
                 chk.checked = permitido;
-                chk.disabled = (rolActual === 'empleado');
+                chk.disabled = !proOk || (rolActual === 'empleado');
             }
             if (estadoPermiso) {
-                estadoPermiso.innerText = permitido
-                    ? 'Decisión del Socio: Permitido para empleados'
-                    : 'Decisión del Socio: Bloqueado para empleados';
+                estadoPermiso.innerText = !proOk
+                    ? 'Bloqueado (requiere Modo Pro)'
+                    : (permitido ? 'Decisión del Socio: Permitido para empleados' : 'Decisión del Socio: Bloqueado para empleados');
             }
 
             actualizarEtiquetaTipoConexion();
@@ -1354,6 +1408,11 @@
         });
 
         let negocioActualId = parseInt(localStorage.getItem('negocioActualId')) || negocios[0].id;
+        if (!esProActivo()) {
+            negocioActualId = negocios[0].id;
+            localStorage.setItem('negocioActualId', negocioActualId);
+        }
+
         let onboardingVisto = localStorage.getItem('onboardingVisto') === 'true';
         let editandoProductoId = null;
         let ticketActualData = null;
@@ -1364,6 +1423,7 @@
         }
 
         window.recargarDatosApp = function() {
+            if (!esProActivo()) return;
             negocios = JSON.parse(localStorage.getItem('multinegocios')) || negocios;
             negocioActualId = parseInt(localStorage.getItem('negocioActualId')) || negocios[0].id;
             renderizarTodo();
@@ -1373,8 +1433,9 @@
         function cerrarOnboarding() { localStorage.setItem('onboardingVisto', 'true'); document.getElementById('modal-onboarding').classList.add('hidden'); }
 
         function obtenerNegocio() {
-            let neg = negocios.find(n => n.id === negocioActualId);
-            if (!neg) { negocioActualId = negocios[0].id; neg = negocios[0]; }
+            const idObjetivo = esProActivo() ? negocioActualId : negocios[0].id;
+            let neg = negocios.find(n => n.id === idObjetivo);
+            if (!neg) { neg = negocios[0]; }
             if (neg.capitalInicial === undefined) neg.capitalInicial = 0;
             if (neg.tasaCambio === undefined) neg.tasaCambio = 36.50;
             if (!neg.deudas) neg.deudas = [];
@@ -1407,6 +1468,9 @@
         let modoEscaneoActual = 'inventario';
 
         function iniciarEscanerCamara(modo, titulo) {
+            if (modo === 'qr' && !esProActivo()) {
+                return requierePro(null, 'Escanear QR de vinculación');
+            }
             modoEscaneoActual = modo;
             document.getElementById('titulo-escaner').innerText = titulo;
             document.getElementById('modal-escaner').classList.remove('hidden');
@@ -1452,6 +1516,7 @@
         }
 
         function abrirEscanerQR() {
+            if (!esProActivo()) return requierePro(null, 'Escanear QR');
             const tipo = obtenerTipoConexionSeleccionado();
             iniciarEscanerCamara('qr', tipo === 'socio' ? 'Escanear QR para Socio' : 'Escanear QR para Empleado');
         }
@@ -1477,6 +1542,7 @@
                     mostrarToast(`Producto no encontrado: ${codigo}`, 'error');
                 }
             } else if (modoEscaneoActual === 'qr') {
+                if (!esProActivo()) return requierePro(null, 'Vincular teléfono por QR');
                 document.getElementById('token-socio').value = codigo;
                 conectarSocio();
             }
@@ -1491,6 +1557,7 @@
             if(!archivo) return;
             mostrarToast('Cargando producto desde factura...', 'info');
             setTimeout(() => {
+                if (!esProActivo()) return requierePro(null, 'La carga de factura por OCR');
                 const neg = obtenerNegocio();
                 const nombreProdAuto = 'Producto Factura ' + Math.floor(Math.random() * 900 + 100);
                 neg.inventario.push({
@@ -1543,6 +1610,7 @@
         }
 
         function abrirModalPasarela() {
+            if (!esProActivo()) return requierePro(null, 'Cobrar con QR');
             abrirModalPasarelaSuscripcion('mensual');
         }
 
@@ -1553,6 +1621,7 @@
                 const tiempoExpiracion = Date.now() + (diasExtra * 24 * 60 * 60 * 1000);
                 localStorage.setItem('proExpira', tiempoExpiracion);
                 verificarEstadoPro();
+                persistir();
                 mostrarToast(`Suscripción ${window.planSeleccionadoActual} activada.`, 'success');
                 window.planSeleccionadoActual = null;
             }
@@ -1560,7 +1629,7 @@
 
         document.getElementById('select-metodo-pago')?.addEventListener('change', () => {
             if(window.planSeleccionadoActual) abrirModalPasarelaSuscripcion(window.planSeleccionadoActual);
-            else abrirModalPasarela();
+            else if (esProActivo()) abrirModalPasarela();
         });
 
         function calcularVueltoMultidivisa() {
@@ -1628,6 +1697,7 @@
         }
 
         function abrirModalCierreZ() {
+            if (!esProActivo()) return requierePro(null, 'Cierre de Caja (Arqueo Z)');
             const neg = obtenerNegocio();
             const capitalInicial = neg.capitalInicial || 0;
             const entradas = (neg.finanzas || []).filter(f => f.tipo === 'ingreso').reduce((a, b) => a + b.monto, 0);
@@ -1661,6 +1731,7 @@
         }
 
         function calcularDiferenciaCaja() {
+            if (!esProActivo()) return;
             const contado = parseFloat(document.getElementById('input-efectivo-contado').value) || 0;
             const diferencia = contado - window.cajaTeoricaGlobal;
             const resEl = document.getElementById('resultado-diferencia-caja');
@@ -1674,6 +1745,7 @@
         }
 
         function guardarCierreZDefinitivo() {
+            if (!esProActivo()) return requierePro(null, 'Registrar Cierre Z');
             const contado = parseFloat(document.getElementById('input-efectivo-contado').value);
             if (isNaN(contado)) return mostrarToast('Ingresa el efectivo contado.', 'error');
             const diff = contado - window.cajaTeoricaGlobal;
@@ -1693,6 +1765,7 @@
         }
 
         function abrirModalCatalogoWeb() {
+            if (!esProActivo()) return requierePro(null, 'Catálogo Digital');
             const baseUrl = window.location.href.split('?')[0].replace(/index\.html$/i, '');
             const enlaceCatalogo = `${baseUrl.endsWith('/') ? baseUrl : baseUrl + '/'}catalogo.html`;
             document.getElementById('input-enlace-catalogo').value = enlaceCatalogo;
@@ -1704,6 +1777,7 @@
         }
 
         function copiarEnlaceCatalogo() {
+            if (!esProActivo()) return requierePro(null, 'Catálogo Digital');
             const input = document.getElementById('input-enlace-catalogo');
             input.select();
             navigator.clipboard?.writeText(input.value).catch(() => {});
@@ -1711,6 +1785,7 @@
         }
 
         function compartirWhatsAppCatalogo() {
+            if (!esProActivo()) return requierePro(null, 'Catálogo Digital');
             const neg = obtenerNegocio();
             const enlace = document.getElementById('input-enlace-catalogo').value;
             const mensaje = `Catálogo de *${neg.nombre}*:\n${enlace}`;
@@ -1718,6 +1793,7 @@
         }
 
         async function imprimirTicketBluetoothNativo() {
+            if (!esProActivo()) return requierePro(null, 'Impresión Bluetooth');
             if (!ticketActualData) return;
             if (!navigator.bluetooth) {
                 mostrarToast('Web Bluetooth no disponible en este navegador.', 'error');
@@ -1749,6 +1825,15 @@
             const drawerPill = document.getElementById('drawer-pro-pill');
             const activo = esProActivo();
 
+            if (!activo && negocioActualId !== negocios[0].id) {
+                negocioActualId = negocios[0].id;
+                localStorage.setItem('negocioActualId', negocioActualId);
+            }
+
+            if (typeof window.configurarSincronizacionNube === 'function') {
+                window.configurarSincronizacionNube(obtenerNegocio().syncCode);
+            }
+
             proTags.forEach(tag => {
                 if (activo) tag.classList.add('hidden');
                 else tag.classList.remove('hidden');
@@ -1762,7 +1847,7 @@
             }
 
             if (activo) {
-                const expira = parseInt(localStorage.getItem('proExpira'));
+                const expira = parseInt(localStorage.getItem('proExpira'), 10);
                 const horasRestantes = Math.ceil((expira - Date.now()) / (1000 * 60 * 60));
                 const diasRestantes = Math.ceil(horasRestantes / 24);
                 
@@ -1771,9 +1856,12 @@
                 if(bannerAd) bannerAd.classList.add('hidden');
             } else {
                 if(badge) { badge.innerText = "Inactivo"; badge.className = "bg-rose-100 text-rose-700 dark:bg-rose-950 dark:text-rose-300 text-[11px] px-2.5 py-0.5 rounded-full font-semibold"; }
-                if(texto) { texto.innerText = "Al activar Modo Pro se apagan los anuncios y se desbloquean Cierre Z, Catálogo Web, OCR, Cobro QR, PDF y nube."; }
+                if(texto) { texto.innerText = "Sin Modo Pro las funciones Pro quedan bloqueadas y se muestran anuncios. Al activar Modo Pro se apagan los anuncios y se habilitan todas las funciones Pro."; }
                 if(bannerAd) bannerAd.classList.remove('hidden');
             }
+
+            sincronizarControlesSincronizacion();
+            sincronizarControlesAudio();
         }
 
         function verAnuncioBonificadoPro() {
@@ -1781,6 +1869,7 @@
             const tiempoExpiracion = Date.now() + (12 * 60 * 60 * 1000);
             localStorage.setItem('proExpira', tiempoExpiracion);
             verificarEstadoPro();
+            persistir();
             mostrarToast('Modo Pro activo por 12 horas. Anuncios apagados.', 'success');
         }
 
@@ -1795,6 +1884,7 @@
         }
 
         function exportarRespaldoJSON() {
+            if (!esProActivo()) return requierePro(null, 'Exportar respaldo JSON');
             const datos = { version: 'GestorPro_v4_Consolidado', fecha: new Date().toISOString(), negocios };
             const blob = new Blob([JSON.stringify(datos, null, 2)], { type: 'application/json' });
             const url = URL.createObjectURL(blob);
@@ -1809,6 +1899,10 @@
         }
 
         function importarRespaldoJSON(event) {
+            if (!esProActivo()) {
+                event.target.value = '';
+                return requierePro(null, 'Importar respaldo JSON');
+            }
             if (rolActual === 'empleado') return mostrarToast('Solo disponible para el Dueño.', 'error');
             const archivo = event.target.files[0];
             if (!archivo) return;
@@ -1885,6 +1979,7 @@
         }
 
         function mostrarCodigoQR() {
+            if (!esProActivo()) return requierePro(null, 'QR de empleado');
             const neg = obtenerNegocio();
             const tipo = obtenerTipoConexionSeleccionado();
 
@@ -1904,6 +1999,7 @@
         }
 
         function conectarSocio() {
+            if (!esProActivo()) return requierePro(null, 'Vincular teléfono');
             const tipo = obtenerTipoConexionSeleccionado();
             let codigo = document.getElementById('token-socio').value.trim();
             if(!codigo) return mostrarToast('Ingresa un código.', 'error');
@@ -1935,6 +2031,7 @@
         }
 
         function desvincularDispositivoPorId(id) {
+            if (!esProActivo()) return requierePro(null, 'Desvincular teléfonos');
             if (rolActual === 'empleado') {
                 return mostrarToast('Solo el Dueño o Socio puede desvincular teléfonos del negocio.', 'error');
             }
@@ -1955,6 +2052,7 @@
         }
 
         function desvincularTodosDispositivos() {
+            if (!esProActivo()) return requierePro(null, 'Desvincular teléfonos');
             if (rolActual === 'empleado') {
                 return mostrarToast('Solo el Dueño o Socio puede desvincular todos los teléfonos.', 'error');
             }
@@ -1975,7 +2073,7 @@
             const badgeCount = document.getElementById('contador-dispositivos-vinculados');
             if (!cont) return;
 
-            const lista = neg.dispositivosVinculados || [];
+            const lista = esProActivo() ? (neg.dispositivosVinculados || []) : [];
             if (badgeCount) {
                 badgeCount.innerText = `${lista.length} ${lista.length === 1 ? 'equipo' : 'equipos'}`;
             }
@@ -2014,14 +2112,19 @@
         }
 
         function actualizarSelectNegocios() {
+            const proOk = esProActivo();
+            const negociosDisponibles = proOk ? negocios : [negocios[0]];
             const selectHeader = document.getElementById('select-negocio-activo');
-            if(selectHeader) selectHeader.innerHTML = negocios.map(n => `<option value="${n.id}" ${n.id === negocioActualId ? 'selected' : ''}>${n.nombre}</option>`).join('');
+            if(selectHeader) {
+                selectHeader.innerHTML = negociosDisponibles.map(n => `<option value="${n.id}" ${n.id === obtenerNegocio().id ? 'selected' : ''}>${n.nombre}</option>`).join('');
+                selectHeader.disabled = !proOk;
+            }
             const drawerNombre = document.getElementById('drawer-negocio-nombre');
             if(drawerNombre) drawerNombre.innerText = obtenerNegocio().nombre;
             
             let totalVentasGlobal = 0;
             let totalGananciasGlobal = 0;
-            negocios.forEach(n => {
+            negociosDisponibles.forEach(n => {
                 if(n.ventas) {
                     totalVentasGlobal += n.ventas.reduce((a,b)=>a+b.total, 0);
                     totalGananciasGlobal += n.ventas.reduce((a,b)=>a+b.ganancia, 0);
@@ -2036,20 +2139,27 @@
             const admin = document.getElementById('lista-negocios-admin');
             if(admin) admin.innerHTML = negocios.map(n => `
                 <div class="flex justify-between items-center bg-slate-50 dark:bg-slate-800/80 px-3 py-2 rounded-xl border border-slate-200/70 dark:border-slate-700">
-                    <span class="text-xs font-semibold">${n.nombre} ${n.id === negocioActualId ? '<span class="text-[10px] text-blue-600 dark:text-blue-400">· Activa</span>' : ''}</span>
+                    <span class="text-xs font-semibold">${n.nombre} ${n.id === obtenerNegocio().id ? '<span class="text-[10px] text-blue-600 dark:text-blue-400">· Activa</span>' : ''}</span>
                     ${negocios.length > 1 ? `<button type="button" onclick="eliminarNegocio(${n.id})" class="text-rose-600 text-xs font-medium px-2 py-0.5 rounded-lg">Eliminar</button>` : ''}
                 </div>
             `).join('');
         }
 
         function cambiarNegocioActivo(id) {
-            negocioActualId = parseInt(id);
+            if (!esProActivo()) {
+                negocioActualId = negocios[0].id;
+                localStorage.setItem('negocioActualId', negocioActualId);
+                actualizarSelectNegocios();
+                return requierePro(null, 'Cambiar de sucursal');
+            }
+            negocioActualId = parseInt(id, 10);
             const neg = obtenerNegocio();
             if (typeof window.configurarSincronizacionNube === 'function') window.configurarSincronizacionNube(neg.syncCode);
             persistir();
         }
 
         function crearNegocio() {
+            if (!esProActivo()) return requierePro(null, 'Crear nueva sucursal');
             const input = document.getElementById('nuevo-negocio-nombre');
             const nombre = input.value.trim();
             if(!nombre) return mostrarToast('Escribe un nombre.', 'error');
@@ -2059,6 +2169,7 @@
         }
 
         function eliminarNegocio(id) {
+            if (!esProActivo()) return requierePro(null, 'Eliminar sucursal');
             if(negocios.length <= 1) return mostrarToast('Debe existir al menos una sucursal.', 'error');
             negocios = negocios.filter(n => n.id !== id);
             negocioActualId = negocios[0].id; persistir();
@@ -2077,7 +2188,8 @@
             if(targetTab === 'ventas') { actualizarSelectVentas(); renderVentas(); renderDeudas(); }
             if(targetTab === 'finanzas') renderFinanzas();
             if(targetTab === 'audios') sincronizarControlesAudio();
-            if(targetTab === 'pro') { verificarEstadoPro(); sincronizarControlesSincronizacion(); }
+            if(targetTab === 'qr-empleado') { sincronizarControlesSincronizacion(); }
+            if(targetTab === 'pro') { verificarEstadoPro(); }
             if(targetTab === 'ajustes') { actualizarSelectNegocios(); document.getElementById('input-tasa-cambio').value = obtenerNegocio().tasaCambio || 36.50; }
         }
 
@@ -2240,8 +2352,8 @@
         document.getElementById('form-venta').addEventListener('submit', (e) => {
             e.preventDefault();
             const neg = obtenerNegocio();
-            const prodId = parseInt(document.getElementById('venta-producto').value);
-            const cantidad = parseInt(document.getElementById('venta-cantidad').value);
+            const prodId = parseInt(document.getElementById('venta-producto').value, 10);
+            const cantidad = parseInt(document.getElementById('venta-cantidad').value, 10);
             const tipo = document.getElementById('venta-tipo').value;
             const producto = neg.inventario.find(p => p.id === prodId);
             if(!producto) return;
@@ -2441,6 +2553,7 @@
         }
 
         function generarReportePDF() {
+            if (!esProActivo()) return requierePro(null, 'Exportar Reporte en PDF');
             if (typeof window.jspdf === 'undefined') {
                 return mostrarToast('No se cargó la librería PDF.', 'error');
             }

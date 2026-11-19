@@ -41,52 +41,52 @@
             </div>
 
             <div class="space-y-1">
-                <p class="text-[10px] font-bold uppercase tracking-wider text-slate-400 px-2.5 pb-1">Operación</p>
+                <p class="text-[10px] font-bold uppercase tracking-wider text-slate-400 px-2.5 pb-1" data-i18n="nav_operation">Operación</p>
                 <button type="button" onclick="navegarDesdeMenu('resumen')" id="drawer-btn-resumen" class="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-xs font-semibold bg-blue-50 text-blue-700 dark:bg-blue-950/70 dark:text-blue-300 transition text-left">
-                    <span>📊</span><span>Resumen</span>
+                    <span>📊</span><span data-i18n="tab_resumen">Resumen</span>
                 </button>
                 <button type="button" onclick="navegarDesdeMenu('inventario')" id="drawer-btn-inventario" class="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-xs font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition text-left">
-                    <span>📦</span><span>Stock y proveedores</span>
+                    <span>📦</span><span data-i18n="tab_inventario">Stock y proveedores</span>
                 </button>
                 <button type="button" onclick="navegarDesdeMenu('ventas')" id="drawer-btn-ventas" class="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-xs font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition text-left">
-                    <span>🛒</span><span>Ventas y fiados</span>
+                    <span>🛒</span><span data-i18n="tab_ventas">Ventas y fiados</span>
                 </button>
                 <button type="button" onclick="navegarDesdeMenu('finanzas')" id="drawer-btn-finanzas" data-oculto-empleado="true" class="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-xs font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition text-left">
-                    <span>💵</span><span>Caja y movimientos</span>
+                    <span>💵</span><span data-i18n="tab_finanzas">Caja y movimientos</span>
                 </button>
             </div>
 
             <div class="space-y-1 pt-2 border-t border-slate-100 dark:border-slate-800">
-                <p class="text-[10px] font-bold uppercase tracking-wider text-slate-400 px-2.5 pb-1">Secciones especiales</p>
+                <p class="text-[10px] font-bold uppercase tracking-wider text-slate-400 px-2.5 pb-1" data-i18n="nav_sections">Secciones</p>
                 <button type="button" onclick="navegarDesdeMenu('audios')" id="drawer-btn-audios" class="w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition text-left">
-                    <span class="flex items-center gap-2.5"><span>🔊</span><span>Audios</span></span>
+                    <span class="flex items-center gap-2.5"><span>🔊</span><span data-i18n="tab_audios">Audios</span></span>
                     <span id="drawer-audio-status" class="text-[10px] text-slate-400">ON</span>
                 </button>
                 <button type="button" onclick="navegarDesdeMenu('qr-empleado')" id="drawer-btn-qr-empleado" class="w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition text-left">
-                    <span class="flex items-center gap-2.5"><span>📱</span><span>QR Empleado / Socio</span></span>
+                    <span class="flex items-center gap-2.5"><span>📱</span><span data-i18n="tab_qr">QR Empleado / Socio</span></span>
                     <span class="pro-tag text-[9px] font-bold bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300 px-1.5 py-0.5 rounded-full">PRO</span>
                 </button>
                 <button type="button" onclick="navegarDesdeMenu('pro')" id="drawer-btn-pro" class="w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-medium text-amber-800 dark:text-amber-300 bg-amber-50/70 dark:bg-amber-950/30 hover:bg-amber-100/80 dark:hover:bg-amber-950/50 transition text-left">
-                    <span class="flex items-center gap-2.5"><span>⭐</span><span>Modo Pro</span></span>
+                    <span class="flex items-center gap-2.5"><span>⭐</span><span data-i18n="tab_pro">Modo Pro</span></span>
                     <span class="pro-tag text-[9px] font-bold bg-amber-200/80 text-amber-900 dark:bg-amber-900 dark:text-amber-200 px-1.5 py-0.5 rounded-full">PRO</span>
                 </button>
                 <button type="button" onclick="navegarDesdeMenu('ajustes')" id="drawer-btn-ajustes" data-oculto-empleado="true" class="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-xs font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition text-left">
-                    <span>⚙️</span><span>Ajustes</span>
+                    <span>⚙️</span><span data-i18n="tab_ajustes">Ajustes</span>
                 </button>
             </div>
 
             <div class="space-y-1 pt-2 border-t border-slate-100 dark:border-slate-800">
-                <p class="text-[10px] font-bold uppercase tracking-wider text-slate-400 px-2.5 pb-1">Herramientas</p>
+                <p class="text-[10px] font-bold uppercase tracking-wider text-slate-400 px-2.5 pb-1" data-i18n="nav_tools">Herramientas</p>
                 <button type="button" onclick="cerrarMenuLateral(); requierePro(abrirModalCierreZ, 'Cierre de Caja (Arqueo Z)')" data-oculto-empleado="true" class="w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition text-left">
-                    <span class="flex items-center gap-2.5"><span>🧾</span><span>Cierre de Caja (Z)</span></span>
+                    <span class="flex items-center gap-2.5"><span>🧾</span><span data-i18n="tool_cierre_z">Cierre de Caja (Z)</span></span>
                     <span class="pro-tag text-[9px] font-bold bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300 px-1.5 py-0.5 rounded-full">PRO</span>
                 </button>
                 <button type="button" onclick="cerrarMenuLateral(); requierePro(abrirModalCatalogoWeb, 'Catálogo Digital')" class="w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition text-left">
-                    <span class="flex items-center gap-2.5"><span>🌐</span><span>Catálogo Web</span></span>
+                    <span class="flex items-center gap-2.5"><span>🌐</span><span data-i18n="tool_catalogo">Catálogo Web</span></span>
                     <span class="pro-tag text-[9px] font-bold bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300 px-1.5 py-0.5 rounded-full">PRO</span>
                 </button>
                 <button type="button" onclick="cerrarMenuLateral(); abrirAsistenteInicial('registro')" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition text-left">
-                    <span>📘</span><span>Registro / Vincular cuenta</span>
+                    <span>📘</span><span data-i18n="tool_registro">Registro / Vincular cuenta</span>
                 </button>
             </div>
         </div>
@@ -97,15 +97,14 @@
         </div>
     </aside>
 
-    <!-- Modal de Bienvenida en 3 Etapas: 1) Qué saber -> 2) Términos -> 3) Registro / Vincular -->
+    <!-- Modal de Bienvenida en 3 Etapas -->
     <div id="modal-onboarding" class="fixed inset-0 bg-slate-950/80 backdrop-blur-xs z-50 flex items-center justify-center p-4 hidden overflow-y-auto">
         <div class="bg-white dark:bg-slate-900 rounded-2xl max-w-sm w-full p-5 space-y-4 shadow-2xl border border-slate-200 dark:border-slate-800 my-auto relative">
             <button type="button" id="btn-cerrar-onboarding" onclick="cerrarModalOnboarding()" aria-label="Cerrar ventana" class="hidden absolute top-3.5 right-3.5 w-7 h-7 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-500 hover:text-rose-600 dark:text-slate-300 dark:hover:text-rose-400 flex items-center justify-center text-xs font-bold transition">✕</button>
 
-            <!-- Indicador de pasos -->
             <div class="space-y-1.5 pt-1">
                 <div class="flex items-center justify-between text-[10px] font-bold uppercase tracking-wider text-slate-400">
-                    <span id="onb-paso-texto">Paso 1 de 3 · Lo esencial</span>
+                    <span id="onb-paso-texto">Paso 1 de 3</span>
                     <span id="onb-paso-porcentaje" class="text-blue-600 dark:text-blue-400">33%</span>
                 </div>
                 <div class="w-full h-1.5 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
@@ -113,69 +112,56 @@
                 </div>
             </div>
 
-            <!-- Paso 1: Lo necesario sobre la aplicación -->
             <div id="onb-paso-1" class="space-y-3">
                 <div class="space-y-1">
-                    <h2 class="text-base font-bold text-slate-900 dark:text-white">Lo que debes saber de Gestor Pro</h2>
-                    <p class="text-xs text-slate-500 dark:text-slate-400">Una herramienta práctica para llevar el control diario de tu negocio desde el teléfono.</p>
+                    <h2 class="text-base font-bold text-slate-900 dark:text-white" data-i18n="onb_title_1">Lo que debes saber de Gestor Pro</h2>
+                    <p class="text-xs text-slate-500 dark:text-slate-400" data-i18n="onb_sub_1">Control diario de inventario, ventas, fiados y caja desde tu móvil.</p>
                 </div>
-
                 <div class="bg-slate-50 dark:bg-slate-800/70 p-3.5 rounded-xl border border-slate-200/70 dark:border-slate-700/70 space-y-2 text-xs text-slate-700 dark:text-slate-200">
-                    <p>• <b>Inventario y precios:</b> registra productos, escanea códigos de barras, adjunta fotos y controla existencias con alertas de stock bajo.</p>
-                    <p>• <b>Ventas, fiados y caja:</b> registra ventas al contado por método de pago, lleva fiados con abonos, calcula vuelto en divisas/Bs y consulta tu caja.</p>
-                    <p>• <b>Roles, catálogo y Pro:</b> opera como Dueño, Socio o Empleado, comparte tu catálogo por WhatsApp y activa funciones Pro o respaldos JSON cuando lo necesites.</p>
+                    <p>• <b data-i18n="onb_b1_t">Inventario:</b> <span data-i18n="onb_b1_d">códigos de barras, fotos, stock y alertas.</span></p>
+                    <p>• <b data-i18n="onb_b2_t">Ventas y fiados:</b> <span data-i18n="onb_b2_d">contado, créditos con abonos, vuelto y caja.</span></p>
+                    <p>• <b data-i18n="onb_b3_t">Roles y Pro:</b> <span data-i18n="onb_b3_d">dueño, socio o empleado, catálogo y suscripción Google Play.</span></p>
                 </div>
-
-                <button type="button" onclick="irPasoOnboarding(2)" class="w-full bg-blue-600 text-white font-semibold py-2.5 rounded-xl text-xs hover:bg-blue-700 transition">
+                <button type="button" onclick="irPasoOnboarding(2)" class="w-full bg-blue-600 text-white font-semibold py-2.5 rounded-xl text-xs hover:bg-blue-700 transition" data-i18n="onb_next_terms">
                     Continuar a Términos y Condiciones
                 </button>
             </div>
 
-            <!-- Paso 2: Términos y condiciones -->
             <div id="onb-paso-2" class="space-y-3 hidden">
                 <div class="space-y-1">
-                    <h2 class="text-base font-bold text-slate-900 dark:text-white">Términos y Condiciones</h2>
-                    <p class="text-xs text-slate-500 dark:text-slate-400">Revisa y acepta estas condiciones básicas antes de configurar tu acceso.</p>
+                    <h2 class="text-base font-bold text-slate-900 dark:text-white" data-i18n="onb_terms_title">Términos y Condiciones</h2>
+                    <p class="text-xs text-slate-500 dark:text-slate-400" data-i18n="onb_terms_sub">Acepta estas condiciones antes de configurar tu acceso.</p>
                 </div>
-
                 <div class="bg-slate-50 dark:bg-slate-800/70 p-3.5 rounded-xl border border-slate-200/70 dark:border-slate-700/70 max-h-48 overflow-y-auto space-y-2 text-[11px] leading-relaxed text-slate-600 dark:text-slate-300">
-                    <p><b>1. Almacenamiento y respaldo:</b> los datos operativos se guardan localmente en este navegador/dispositivo (y se sincronizan en la nube cuando la función Pro está activa). Se recomienda exportar respaldos JSON periódicos.</p>
-                    <p><b>2. Responsabilidad operativa:</b> el usuario o administrador del negocio es responsable de la veracidad de los precios, inventarios, cobros, fiados y cierres registrados.</p>
-                    <p><b>3. Permisos y PIN:</b> el PIN de dueño protege el acceso administrativo; evita compartirlo si no deseas otorgar control total del negocio.</p>
-                    <p><b>4. Propiedad intelectual:</b> Gestor Pro y su estructura son obra de <b>Joelvy José Salazar Vargas (C.I. 30.022.434)</b> · © 2026.</p>
+                    <p><b>1. Datos y respaldos:</b> los datos se almacenan localmente en el dispositivo y pueden sincronizarse en la nube en Modo Pro. Exporta respaldos JSON periódicos.</p>
+                    <p><b>2. Responsabilidad operativa:</b> el usuario o administrador es responsable de sus precios, existencias, cobros, fiados y cierres.</p>
+                    <p><b>3. Suscripciones:</b> las suscripciones de Modo Pro se gestionan mediante Google Play Billing según el país de la cuenta de Google Play del usuario.</p>
+                    <p><b>4. Propiedad intelectual:</b> Gestor Pro es obra de <b>Joelvy José Salazar Vargas (C.I. 30.022.434)</b> · © 2026.</p>
                 </div>
-
                 <label class="flex items-start gap-2.5 text-xs text-slate-700 dark:text-slate-200 cursor-pointer select-none pt-0.5">
                     <input type="checkbox" id="onb-acepto-terminos" class="mt-0.5 w-4 h-4 accent-blue-600 rounded shrink-0">
-                    <span>He leído y acepto los Términos y Condiciones de uso de Gestor Pro.</span>
+                    <span data-i18n="onb_accept_chk">He leído y acepto los Términos y Condiciones de uso.</span>
                 </label>
-
                 <div class="grid grid-cols-2 gap-2 pt-1">
-                    <button type="button" onclick="irPasoOnboarding(1)" class="bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 font-semibold py-2.5 rounded-xl text-xs hover:bg-slate-200 dark:hover:bg-slate-700 transition">
-                        Atrás
-                    </button>
-                    <button type="button" onclick="aceptarTerminosYContinuar()" class="bg-blue-600 text-white font-semibold py-2.5 rounded-xl text-xs hover:bg-blue-700 transition">
-                        Aceptar y continuar
-                    </button>
+                    <button type="button" onclick="irPasoOnboarding(1)" class="bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 font-semibold py-2.5 rounded-xl text-xs" data-i18n="btn_back">Atrás</button>
+                    <button type="button" onclick="aceptarTerminosYContinuar()" class="bg-blue-600 text-white font-semibold py-2.5 rounded-xl text-xs hover:bg-blue-700 transition" data-i18n="btn_accept_continue">Aceptar y continuar</button>
                 </div>
             </div>
 
-            <!-- Paso 3: Registro de Nuevo Negocio (Dueño) o Vincular (Empleado / Socio) -->
             <div id="onb-paso-3" class="space-y-3 hidden">
                 <div class="flex items-center justify-between gap-2">
                     <div>
-                        <h2 class="text-base font-bold text-slate-900 dark:text-white">Configura tu acceso</h2>
-                        <p class="text-xs text-slate-500 dark:text-slate-400">Crea tu negocio como dueño o vincula un equipo.</p>
+                        <h2 class="text-base font-bold text-slate-900 dark:text-white" data-i18n="onb_access_title">Configura tu acceso</h2>
+                        <p class="text-xs text-slate-500 dark:text-slate-400" data-i18n="onb_access_sub">Crea tu negocio como dueño o vincula un equipo.</p>
                     </div>
-                    <button type="button" onclick="irPasoOnboarding(2)" class="text-[11px] text-blue-600 dark:text-blue-400 font-semibold hover:underline shrink-0">Términos</button>
+                    <button type="button" onclick="irPasoOnboarding(2)" class="text-[11px] text-blue-600 dark:text-blue-400 font-semibold hover:underline shrink-0" data-i18n="terms_short">Términos</button>
                 </div>
 
                 <div class="grid grid-cols-2 gap-1.5 bg-slate-100 dark:bg-slate-800 p-1 rounded-xl text-xs font-semibold">
-                    <button type="button" id="btn-modo-registro-dueno" onclick="alternarModoInicio('registro')" class="py-2 rounded-lg bg-blue-600 text-white transition">Nuevo Negocio</button>
-                    <button type="button" id="btn-modo-vincular-equipo" onclick="alternarModoInicio('vincular')" class="py-2 rounded-lg text-slate-600 dark:text-slate-300 transition">Vincular Equipo</button>
+                    <button type="button" id="btn-modo-registro-dueno" onclick="alternarModoInicio('registro')" class="py-2 rounded-lg bg-blue-600 text-white transition" data-i18n="mode_new_biz">Nuevo Negocio</button>
+                    <button type="button" id="btn-modo-vincular-equipo" onclick="alternarModoInicio('vincular')" class="py-2 rounded-lg text-slate-600 dark:text-slate-300 transition" data-i18n="mode_link_team">Vincular Equipo</button>
                 </div>
 
-                <!-- Flujo 1: Nuevo Negocio (Dueño) -->
                 <form id="form-registro-dueno" onsubmit="completarRegistroDueno(event)" class="space-y-2.5 text-xs">
                     <div>
                         <label class="block font-medium text-slate-600 dark:text-slate-300 mb-1">Tu nombre (Dueño)</label>
@@ -183,15 +169,15 @@
                     </div>
                     <div>
                         <label class="block font-medium text-slate-600 dark:text-slate-300 mb-1">Nombre del negocio</label>
-                        <input type="text" id="onb-negocio-nombre" required class="w-full p-2.5 border border-slate-200 dark:border-slate-700 dark:bg-slate-800 rounded-xl outline-none" placeholder="Ej. Bodega y Catálogo Central">
+                        <input type="text" id="onb-negocio-nombre" required class="w-full p-2.5 border border-slate-200 dark:border-slate-700 dark:bg-slate-800 rounded-xl outline-none" placeholder="Ej. Bodega Central">
                     </div>
                     <div>
-                        <label class="block font-medium text-slate-600 dark:text-slate-300 mb-1">RIF / Cédula fiscal (opcional para PDF)</label>
-                        <input type="text" id="onb-negocio-rif" class="w-full p-2.5 border border-slate-200 dark:border-slate-700 dark:bg-slate-800 rounded-xl outline-none" placeholder="Ej. J-12345678-9 o V-30022434">
+                        <label class="block font-medium text-slate-600 dark:text-slate-300 mb-1">RIF / Cédula fiscal (opcional)</label>
+                        <input type="text" id="onb-negocio-rif" class="w-full p-2.5 border border-slate-200 dark:border-slate-700 dark:bg-slate-800 rounded-xl outline-none" placeholder="Ej. V-30022434">
                     </div>
                     <div>
-                        <label class="block font-medium text-slate-600 dark:text-slate-300 mb-1">WhatsApp del negocio (para el catálogo)</label>
-                        <input type="tel" id="onb-negocio-whatsapp" required class="w-full p-2.5 border border-slate-200 dark:border-slate-700 dark:bg-slate-800 rounded-xl outline-none" placeholder="Ej. 04121234567 o 584121234567">
+                        <label class="block font-medium text-slate-600 dark:text-slate-300 mb-1">WhatsApp del negocio</label>
+                        <input type="tel" id="onb-negocio-whatsapp" required class="w-full p-2.5 border border-slate-200 dark:border-slate-700 dark:bg-slate-800 rounded-xl outline-none" placeholder="Ej. 04121234567">
                     </div>
                     <div class="grid grid-cols-2 gap-2">
                         <div>
@@ -206,19 +192,18 @@
                     <button type="submit" class="w-full bg-blue-600 text-white font-semibold py-2.5 rounded-xl text-xs hover:bg-blue-700 transition mt-1">Guardar y entrar al negocio</button>
                 </form>
 
-                <!-- Flujo 2: Vincular como Empleado o Socio -->
                 <div id="panel-vincular-equipo" class="space-y-3 text-xs hidden">
                     <div>
                         <label class="block font-medium text-slate-600 dark:text-slate-300 mb-1">Conectar como</label>
                         <select id="onb-rol-vinculo" class="w-full p-2.5 border border-slate-200 dark:border-slate-700 dark:bg-slate-800 rounded-xl outline-none">
-                            <option value="empleado">Empleado (operación diaria en ventas y stock)</option>
-                            <option value="socio">Socio (acceso amplio y gestión compartida)</option>
+                            <option value="empleado">Empleado</option>
+                            <option value="socio">Socio</option>
                         </select>
                     </div>
                     <div>
                         <label class="block font-medium text-slate-600 dark:text-slate-300 mb-1">Código de vinculación</label>
                         <div class="flex gap-2">
-                            <input type="text" id="onb-codigo-vinculo" class="flex-1 p-2.5 border border-slate-200 dark:border-slate-700 dark:bg-slate-800 rounded-xl outline-none font-mono" placeholder="Ej. EMP-xxxxxx o SOC-xxxxxx">
+                            <input type="text" id="onb-codigo-vinculo" class="flex-1 p-2.5 border border-slate-200 dark:border-slate-700 dark:bg-slate-800 rounded-xl outline-none font-mono" placeholder="EMP-xxxxxx o SOC-xxxxxx">
                             <button type="button" onclick="escanearVinculoInicial()" class="bg-indigo-600 text-white px-3 rounded-xl font-semibold">QR</button>
                         </div>
                     </div>
@@ -256,33 +241,6 @@
             </div>
             <div id="reader" class="w-full rounded-xl overflow-hidden bg-slate-100 dark:bg-slate-800"></div>
             <p class="text-[11px] text-slate-500 dark:text-slate-400 text-center">Centra el código de barras o QR frente a la cámara.</p>
-        </div>
-    </div>
-
-    <!-- Modal de Pasarela de Pagos -->
-    <div id="modal-pasarela-pago" class="fixed inset-0 bg-slate-950/75 z-50 flex items-center justify-center p-4 hidden">
-        <div class="bg-white dark:bg-slate-900 rounded-2xl max-w-sm w-full p-4 space-y-3.5 shadow-xl border border-slate-200 dark:border-slate-800">
-            <div class="flex justify-between items-center border-b border-slate-100 dark:border-slate-800 pb-2.5">
-                <h3 class="text-sm font-bold text-slate-800 dark:text-white">Cobro y Suscripción</h3>
-                <button type="button" onclick="cerrarModalPasarela()" class="text-xs font-semibold text-slate-500 hover:text-rose-500 px-2 py-1">✕</button>
-            </div>
-            <div class="space-y-2.5 text-xs">
-                <label class="block font-medium text-slate-600 dark:text-slate-400">Método de pago</label>
-                <select id="select-metodo-pago" class="w-full p-2.5 border border-slate-200 dark:border-slate-700 rounded-xl bg-slate-50 dark:bg-slate-800 outline-none">
-                    <option value="paypal">PayPal ($5 Mensual / $45 Anual)</option>
-                    <option value="pagomovil">Pago Móvil (Tasa configurada)</option>
-                    <option value="zelle">Zelle (USD)</option>
-                    <option value="binance">Binance Pay (USDT)</option>
-                </select>
-                <div class="bg-slate-50 dark:bg-slate-800/80 border border-slate-200/70 dark:border-slate-700/70 p-3 rounded-xl text-center space-y-2">
-                    <p id="instrucciones-pago-titulo" class="text-xs font-semibold text-slate-700 dark:text-slate-200">Detalles de pago</p>
-                    <div id="qr-pago-container" class="flex justify-center">
-                        <img id="img-qr-pago" src="" class="w-32 h-32 rounded-xl border border-slate-200 bg-white p-1.5" alt="QR de pago">
-                    </div>
-                    <p id="detalles-pago-texto" class="text-[11px] font-mono text-slate-600 dark:text-slate-300 leading-relaxed"></p>
-                </div>
-            </div>
-            <button type="button" onclick="cerrarModalPasarela()" class="w-full bg-blue-600 text-white font-semibold py-2.5 rounded-xl text-xs hover:bg-blue-700 transition">Confirmar y Cerrar</button>
         </div>
     </div>
 
@@ -364,8 +322,8 @@
                     <div class="flex items-center gap-1.5 flex-wrap">
                         <h1 class="text-sm font-bold tracking-tight truncate">Gestor Pro</h1>
                         <span id="header-seccion-actual" class="text-[10px] bg-black/15 text-white/95 font-medium px-2 py-0.5 rounded-full whitespace-nowrap">Resumen</span>
-                        <span id="badge-rol-actual" onclick="clicBadgeRol()" class="text-[10px] bg-white/15 hover:bg-white/25 text-white font-medium px-2 py-0.5 rounded-full cursor-pointer whitespace-nowrap shrink-0 transition" title="Toca para cambiar rol">Dueño</span>
-                        <span id="badge-offline-status" class="text-[10px] bg-emerald-500/25 text-emerald-100 px-1.5 py-0.5 rounded-full font-medium whitespace-nowrap shrink-0" title="Estado de conexión">Online</span>
+                        <span id="badge-rol-actual" onclick="clicBadgeRol()" class="text-[10px] bg-white/15 hover:bg-white/25 text-white font-medium px-2 py-0.5 rounded-full cursor-pointer whitespace-nowrap shrink-0 transition">Dueño</span>
+                        <span id="badge-offline-status" class="text-[10px] bg-emerald-500/25 text-emerald-100 px-1.5 py-0.5 rounded-full font-medium whitespace-nowrap shrink-0">Online</span>
                     </div>
                     <select id="select-negocio-activo" onchange="cambiarNegocioActivo(this.value)" class="mt-1 max-w-full text-xs bg-blue-700/80 dark:bg-slate-800 text-white font-medium px-2.5 py-1 rounded-lg outline-none border border-blue-400/30 dark:border-slate-700 truncate"></select>
                 </div>
@@ -388,7 +346,7 @@
 
             <div class="bg-white dark:bg-slate-900 p-4 rounded-2xl shadow-xs border border-slate-200/80 dark:border-slate-800 space-y-3">
                 <div class="flex items-center justify-between">
-                    <h2 class="text-sm font-bold text-slate-800 dark:text-white">Resumen de sucursal</h2>
+                    <h2 class="text-sm font-bold text-slate-800 dark:text-white" data-i18n="branch_summary">Resumen de sucursal</h2>
                     <span class="text-[11px] text-slate-400">USD ($)</span>
                 </div>
                 <div class="grid grid-cols-2 gap-2.5 text-xs">
@@ -555,7 +513,7 @@
                     <p class="text-xs font-bold text-slate-700 dark:text-slate-200">Adjuntar foto de factura</p>
                     <span class="pro-tag text-[9px] font-bold bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300 px-1.5 py-0.5 rounded-full">PRO</span>
                 </div>
-                <p class="text-[11px] text-slate-500 dark:text-slate-400">Sin motor OCR externo instalado, la lectura automática no está disponible; al elegir una imagen se enfoca el formulario para cargarlo manualmente.</p>
+                <p class="text-[11px] text-slate-500 dark:text-slate-400">Al elegir una imagen se enfoca el formulario de producto para cargarlo manualmente.</p>
                 <input type="file" id="input-ocr-factura" accept="image/*" onclick="return interceptarInputOCR(event)" onchange="procesarFacturaOCR(event)" class="w-full text-xs text-slate-500 file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 cursor-pointer">
             </div>
         </section>
@@ -565,10 +523,6 @@
             <div class="bg-white dark:bg-slate-900 p-4 rounded-2xl shadow-xs border border-slate-200/80 dark:border-slate-800 space-y-3">
                 <div class="flex justify-between items-center gap-2">
                     <h2 class="text-sm font-bold text-slate-800 dark:text-white">Calculadora de vuelto</h2>
-                    <button type="button" onclick="requierePro(abrirModalPasarela, 'Cobrar con QR')" class="bg-indigo-600 text-white text-xs px-3 py-1.5 rounded-xl font-semibold hover:bg-indigo-700 transition whitespace-nowrap shrink-0 flex items-center gap-1">
-                        <span>Cobrar QR</span>
-                        <span class="pro-tag text-[9px] font-bold bg-black/20 text-white px-1 py-0.5 rounded-full">PRO</span>
-                    </button>
                 </div>
                 <div class="grid grid-cols-2 gap-2.5 text-xs">
                     <div>
@@ -664,7 +618,7 @@
             </div>
         </section>
 
-        <!-- Sección 4: Finanzas y Caja (Sección propia; oculta en Modo Empleado) -->
+        <!-- Sección 4: Finanzas y Caja -->
         <section id="tab-finanzas" data-oculto-empleado="true" class="space-y-4 hidden">
             <div class="grid grid-cols-2 gap-2.5">
                 <div class="bg-white dark:bg-slate-900 p-3.5 rounded-2xl shadow-xs border border-slate-200/80 dark:border-slate-800">
@@ -812,7 +766,7 @@
                     <div class="bg-slate-50 dark:bg-slate-800/80 p-3 rounded-xl border border-slate-200/70 dark:border-slate-700 flex items-center justify-between gap-3">
                         <div class="min-w-0">
                             <p class="text-xs font-semibold text-slate-700 dark:text-slate-200">QR de empleado por empleado</p>
-                            <p id="estado-permiso-qr-empleado" class="text-[11px] text-slate-500 dark:text-slate-400">Decisión del Dueño/Socio: Bloqueado para empleados</p>
+                            <p id="estado-permiso-qr-empleado" class="text-[11px] text-slate-500 dark:text-slate-400">Bloqueado para empleados</p>
                         </div>
                         <label class="inline-flex items-center gap-1.5 text-xs font-semibold cursor-pointer shrink-0">
                             <input type="checkbox" id="chk-socio-permite-qr-empleado" onchange="togglePermisoQrEmpleado()" class="w-4 h-4 accent-blue-600 rounded">
@@ -823,8 +777,8 @@
                     <div id="contenedor-tipo-conexion-sync" class="space-y-1">
                         <label class="block text-[11px] font-medium text-slate-600 dark:text-slate-400">Seleccionar perfil para vincular o mostrar QR</label>
                         <select id="select-tipo-conexion-sync" onchange="actualizarEtiquetaTipoConexion()" class="w-full p-2 text-xs border border-slate-200 dark:border-slate-700 rounded-xl bg-slate-50 dark:bg-slate-800 outline-none">
-                            <option value="empleado">Empleado (asociar teléfono de empleado)</option>
-                            <option value="socio" id="opcion-sync-socio">Socio (asociar teléfono de socio)</option>
+                            <option value="empleado">Empleado</option>
+                            <option value="socio" id="opcion-sync-socio">Socio</option>
                         </select>
                     </div>
 
@@ -844,7 +798,7 @@
                     <div class="flex items-center justify-between gap-2">
                         <div>
                             <p class="text-sm font-bold text-slate-800 dark:text-white">Teléfonos vinculados</p>
-                            <p class="text-[11px] text-slate-500 dark:text-slate-400">Administra quiénes están conectados o sácalos de la cuenta.</p>
+                            <p class="text-[11px] text-slate-500 dark:text-slate-400">Administra los equipos conectados al negocio.</p>
                         </div>
                         <span id="contador-dispositivos-vinculados" class="text-[11px] text-slate-400">0 equipos</span>
                     </div>
@@ -854,45 +808,49 @@
             </div>
         </section>
 
-        <!-- Sección 7: Modo Pro (Únicamente planes, beneficios y bono de anuncios) -->
+        <!-- Sección 7: Modo Pro (Suscripción Google Play Billing + Bono 12h) -->
         <section id="tab-pro" class="space-y-4 hidden">
             <div id="seccion-modo-pro" class="bg-white dark:bg-slate-900 p-4 rounded-2xl shadow-xs border border-amber-300/80 dark:border-amber-700/60 space-y-3">
                 <div class="flex justify-between items-center">
-                    <h2 class="text-sm font-bold text-slate-800 dark:text-white">Modo Pro · Planes y Anuncios</h2>
+                    <h2 class="text-sm font-bold text-slate-800 dark:text-white">Modo Pro · Google Play Billing</h2>
                     <span id="badge-pro-estado" class="bg-rose-100 text-rose-700 dark:bg-rose-950 dark:text-rose-300 text-[11px] px-2.5 py-0.5 rounded-full font-semibold">Inactivo</span>
                 </div>
-                <p id="texto-pro-estado" class="text-xs text-slate-500 dark:text-slate-400">Sin Modo Pro las funciones Pro quedan bloqueadas y se muestran anuncios. Al activar Modo Pro se apagan los anuncios y se habilitan todas las funciones Pro.</p>
+                <p id="texto-pro-estado" class="text-xs text-slate-500 dark:text-slate-400">Las suscripciones se cobran en la moneda y cuenta de Google Play de cada país mediante Google Play Billing.</p>
 
-                <!-- Menú desplegable de beneficios del Modo Pro -->
                 <div class="border border-amber-200/80 dark:border-amber-800/60 rounded-xl overflow-hidden bg-amber-50/50 dark:bg-amber-950/20">
                     <button type="button" onclick="toggleBeneficiosPro()" class="w-full px-3 py-2.5 flex items-center justify-between text-xs font-bold text-amber-900 dark:text-amber-200 text-left hover:bg-amber-100/60 dark:hover:bg-amber-950/40 transition">
                         <span>Beneficios de activar el Modo Pro</span>
                         <span id="icono-beneficios-pro" class="text-[11px] font-mono">▼</span>
                     </button>
                     <div id="panel-beneficios-pro" class="hidden px-3 pb-3 pt-1 text-xs text-slate-700 dark:text-slate-300 space-y-1.5 border-t border-amber-200/60 dark:border-amber-800/40">
-                        <p>• Eliminación total de anuncios publicitarios en la aplicación.</p>
-                        <p>• Exportación de Reporte PDF Ejecutivo con fotos de producto, desglose por método de pago y movimientos.</p>
-                        <p>• Sincronización en tiempo real en la nube y gestión multi-sucursal.</p>
-                        <p>• Vinculación por QR para empleados y socios con control de permisos.</p>
-                        <p>• Cierre de caja (Arqueo Z), catálogo digital por WhatsApp, impresión Bluetooth y respaldos JSON.</p>
+                        <p>• Eliminación de anuncios publicitarios en la aplicación.</p>
+                        <p>• Exportación de Reporte PDF Ejecutivo con fotos y desglose de pagos.</p>
+                        <p>• Sincronización en la nube y gestión multi-sucursal.</p>
+                        <p>• Vinculación por QR para empleados y socios.</p>
+                        <p>• Cierre de caja (Arqueo Z), catálogo digital, impresión Bluetooth y respaldos JSON.</p>
                     </div>
                 </div>
 
-                <!-- Planes y suscripción (exclusivos para Dueño / Socio) -->
+                <!-- Planes vía Google Play Billing (Códigos vacíos para configurar en Google Play Console) -->
                 <div id="pro-planes-dueno" class="space-y-2.5">
                     <div class="bg-slate-50 dark:bg-slate-800/70 p-3 rounded-xl text-xs space-y-1 border border-slate-100 dark:border-slate-800">
-                        <p class="font-semibold text-slate-700 dark:text-slate-200">Planes disponibles</p>
-                        <p>• <b>Mensual:</b> $5 (promoción: 1er pago incluye 2do mes)</p>
-                        <p>• <b>Anual:</b> $45 (12 meses)</p>
+                        <p class="font-semibold text-slate-700 dark:text-slate-200">Suscripciones Google Play Billing</p>
+                        <p class="text-[11px] text-slate-500 dark:text-slate-400">El precio final y la moneda se muestran automáticamente según el país de la cuenta de Google Play del usuario.</p>
+                        <p class="font-mono text-[10px] text-slate-500 dark:text-slate-400 pt-1">
+                            ID Mensual: <span id="lbl-billing-monthly-id">(vacío)</span> · ID Anual: <span id="lbl-billing-annual-id">(vacío)</span>
+                        </p>
                     </div>
 
                     <div class="space-y-2">
-                        <button type="button" onclick="abrirModalPasarelaSuscripcion('mensual')" class="w-full bg-emerald-600 text-white font-semibold py-2.5 rounded-xl text-xs hover:bg-emerald-700 transition">Pagar Plan Mensual ($5)</button>
-                        <button type="button" onclick="abrirModalPasarelaSuscripcion('anual')" class="w-full bg-blue-600 text-white font-semibold py-2.5 rounded-xl text-xs hover:bg-blue-700 transition">Pagar Plan Anual ($45)</button>
+                        <button type="button" onclick="iniciarSuscripcionGooglePlay('monthly')" class="w-full bg-emerald-600 text-white font-semibold py-2.5 rounded-xl text-xs hover:bg-emerald-700 transition">
+                            Suscribirse · Plan Mensual (Google Play)
+                        </button>
+                        <button type="button" onclick="iniciarSuscripcionGooglePlay('annual')" class="w-full bg-blue-600 text-white font-semibold py-2.5 rounded-xl text-xs hover:bg-blue-700 transition">
+                            Suscribirse · Plan Anual (Google Play)
+                        </button>
                     </div>
                 </div>
 
-                <!-- Bono 12h por anuncio -->
                 <div class="space-y-1.5">
                     <p id="aviso-bono-empleado" class="hidden text-[11px] text-slate-500 dark:text-slate-400">
                         La suscripción del negocio la gestiona el dueño. Como empleado puedes ver un anuncio para activar el bono de 12 horas.
@@ -904,8 +862,23 @@
             </div>
         </section>
 
-        <!-- Sección 8: Ajustes Generales (Solo Dueño / Socio) -->
+        <!-- Sección 8: Ajustes Generales -->
         <section id="tab-ajustes" data-oculto-empleado="true" class="space-y-4 hidden">
+            <!-- Idioma de la aplicación -->
+            <div class="bg-white dark:bg-slate-900 p-4 rounded-2xl shadow-xs border border-slate-200/80 dark:border-slate-800 space-y-2.5">
+                <div class="flex items-center justify-between gap-2">
+                    <h2 class="text-sm font-bold text-slate-800 dark:text-white" data-i18n="lang_title">Idioma de la aplicación</h2>
+                    <span id="badge-idioma-detectado" class="text-[10px] text-slate-400">Auto</span>
+                </div>
+                <select id="select-idioma-app" onchange="cambiarIdiomaApp(this.value)" class="w-full p-2.5 text-xs border border-slate-200 dark:border-slate-700 rounded-xl bg-slate-50 dark:bg-slate-800 outline-none">
+                    <option value="es">Español (ES)</option>
+                    <option value="en">English (EN)</option>
+                    <option value="pt">Português (PT)</option>
+                    <option value="fr">Français (FR)</option>
+                </select>
+                <p id="texto-idioma-telefono" class="text-[11px] text-slate-500 dark:text-slate-400"></p>
+            </div>
+
             <div class="bg-white dark:bg-slate-900 p-4 rounded-2xl shadow-xs border border-slate-200/80 dark:border-slate-800 space-y-3 admin-only">
                 <h2 class="text-sm font-bold text-slate-800 dark:text-white">Datos del negocio y catálogo</h2>
                 <div class="grid grid-cols-1 gap-2.5 text-xs">
@@ -919,11 +892,11 @@
                     </div>
                     <div>
                         <label class="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-1">RIF / Cédula fiscal (opcional para PDF)</label>
-                        <input type="text" id="input-rif-negocio" class="w-full p-2.5 border border-slate-200 dark:border-slate-700 dark:bg-slate-800 rounded-xl outline-none" placeholder="Ej. J-12345678-9 o V-30022434">
+                        <input type="text" id="input-rif-negocio" class="w-full p-2.5 border border-slate-200 dark:border-slate-700 dark:bg-slate-800 rounded-xl outline-none" placeholder="Ej. V-30022434">
                     </div>
                     <div>
                         <label class="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-1">WhatsApp de pedidos del catálogo</label>
-                        <input type="tel" id="input-whatsapp-negocio" class="w-full p-2.5 border border-slate-200 dark:border-slate-700 dark:bg-slate-800 rounded-xl outline-none" placeholder="Ej. 04121234567 o 584121234567">
+                        <input type="tel" id="input-whatsapp-negocio" class="w-full p-2.5 border border-slate-200 dark:border-slate-700 dark:bg-slate-800 rounded-xl outline-none" placeholder="Ej. 04121234567">
                     </div>
                 </div>
                 <button type="button" onclick="guardarDatosNegocio()" class="w-full bg-blue-600 text-white font-semibold py-2.5 rounded-xl text-xs hover:bg-blue-700 transition">Guardar datos del negocio</button>
@@ -1114,11 +1087,287 @@
     </script>
 
     <script>
+        /* =====================================================================
+           CONFIGURACIÓN DE GOOGLE PLAY BILLING (DEJA ESTOS CÓDIGOS VACÍOS
+           HASTA TENER TUS IDs DE SUSCRIPCIÓN EN GOOGLE PLAY CONSOLE)
+           ===================================================================== */
+        const GOOGLE_BILLING_CONFIG = {
+            monthlyProductId: '', // Ej. al configurar en Play Console: 'gestorpro_pro_monthly'
+            annualProductId: ''   // Ej. al configurar en Play Console: 'gestorpro_pro_annual'
+        };
+
+        function activarSuscripcionDesdeGooglePlay(planType, purchaseToken = '') {
+            const diasExtra = planType === 'annual' ? 365 : 60;
+            const tiempoExpiracion = Date.now() + (diasExtra * 24 * 60 * 60 * 1000);
+            localStorage.setItem('proExpira', String(tiempoExpiracion));
+            if (purchaseToken) {
+                localStorage.setItem('gestorpro_gp_purchase_token', purchaseToken);
+            }
+            verificarEstadoPro();
+            persistir();
+            mostrarToast('Modo Pro activado mediante Google Play.', 'success');
+        }
+        window.activarSuscripcionDesdeGooglePlay = activarSuscripcionDesdeGooglePlay;
+
+        function iniciarSuscripcionGooglePlay(planType) {
+            if (rolActual === 'empleado') {
+                return mostrarToast('La suscripción del negocio corresponde al dueño.', 'error');
+            }
+            const productId = planType === 'annual'
+                ? GOOGLE_BILLING_CONFIG.annualProductId
+                : GOOGLE_BILLING_CONFIG.monthlyProductId;
+
+            if (!productId) {
+                return mostrarToast(
+                    'Código de Google Billing aún no configurado (ID vacío). Agrégalo en GOOGLE_BILLING_CONFIG.',
+                    'info'
+                );
+            }
+
+            // Puente nativo Android (WebView / TWA / Capacitor / Cordova) si está expuesto
+            if (window.AndroidBilling && typeof window.AndroidBilling.launchSubscription === 'function') {
+                window.AndroidBilling.launchSubscription(productId, planType);
+                return;
+            }
+
+            // Digital Goods API (navegadores/entornos compatibles con Google Play Billing)
+            if ('getDigitalGoodsService' in window) {
+                window.getDigitalGoodsService('https://play.google.com/billing')
+                    .then(service => service.getDetails([productId]))
+                    .then(details => {
+                        if (details && details.length > 0 && 'PaymentRequest' in window) {
+                            const req = new PaymentRequest(
+                                [{ supportedMethods: 'https://play.google.com/billing', data: { sku: productId } }],
+                                { total: { label: 'Gestor Pro', amount: details[0].price } }
+                            );
+                            return req.show().then(res => res.complete('success').then(() => activarSuscripcionDesdeGooglePlay(planType)));
+                        }
+                        mostrarToast('Iniciando compra en Google Play...', 'info');
+                    })
+                    .catch(() => {
+                        mostrarToast('Disponible en la app instalada desde Google Play.', 'info');
+                    });
+                return;
+            }
+
+            mostrarToast(`Listo para Google Play Billing (SKU: ${productId}).`, 'info');
+        }
+
+        function actualizarEtiquetasBilling() {
+            const mEl = document.getElementById('lbl-billing-monthly-id');
+            const aEl = document.getElementById('lbl-billing-annual-id');
+            if (mEl) mEl.innerText = GOOGLE_BILLING_CONFIG.monthlyProductId || '(vacío)';
+            if (aEl) aEl.innerText = GOOGLE_BILLING_CONFIG.annualProductId || '(vacío)';
+        }
+
+        /* =====================================================================
+           MULTI-IDIOMA (AUTO-DETECCIÓN DEL TELÉFONO + SELECTOR MANUAL)
+           ===================================================================== */
+        const IDIOMAS_SOPORTADOS = ['es', 'en', 'pt', 'fr'];
+        const TRADUCCIONES = {
+            es: {
+                nav_operation: 'Operación',
+                nav_sections: 'Secciones',
+                nav_tools: 'Herramientas',
+                tab_resumen: 'Resumen',
+                tab_inventario: 'Stock y proveedores',
+                tab_ventas: 'Ventas y fiados',
+                tab_finanzas: 'Caja y movimientos',
+                tab_audios: 'Audios',
+                tab_qr: 'QR Empleado / Socio',
+                tab_pro: 'Modo Pro',
+                tab_ajustes: 'Ajustes',
+                tool_cierre_z: 'Cierre de Caja (Z)',
+                tool_catalogo: 'Catálogo Web',
+                tool_registro: 'Registro / Vincular cuenta',
+                branch_summary: 'Resumen de sucursal',
+                lang_title: 'Idioma de la aplicación',
+                onb_title_1: 'Lo que debes saber de Gestor Pro',
+                onb_sub_1: 'Control diario de inventario, ventas, fiados y caja desde tu móvil.',
+                onb_b1_t: 'Inventario:',
+                onb_b1_d: 'códigos de barras, fotos, stock y alertas.',
+                onb_b2_t: 'Ventas y fiados:',
+                onb_b2_d: 'contado, créditos con abonos, vuelto y caja.',
+                onb_b3_t: 'Roles y Pro:',
+                onb_b3_d: 'dueño, socio o empleado, catálogo y suscripción Google Play.',
+                onb_next_terms: 'Continuar a Términos y Condiciones',
+                onb_terms_title: 'Términos y Condiciones',
+                onb_terms_sub: 'Acepta estas condiciones antes de configurar tu acceso.',
+                onb_accept_chk: 'He leído y acepto los Términos y Condiciones de uso.',
+                btn_back: 'Atrás',
+                btn_accept_continue: 'Aceptar y continuar',
+                onb_access_title: 'Configura tu acceso',
+                onb_access_sub: 'Crea tu negocio como dueño o vincula un equipo.',
+                terms_short: 'Términos',
+                mode_new_biz: 'Nuevo Negocio',
+                mode_link_team: 'Vincular Equipo'
+            },
+            en: {
+                nav_operation: 'Operations',
+                nav_sections: 'Sections',
+                nav_tools: 'Tools',
+                tab_resumen: 'Overview',
+                tab_inventario: 'Stock & suppliers',
+                tab_ventas: 'Sales & credit',
+                tab_finanzas: 'Cash & ledger',
+                tab_audios: 'Audio',
+                tab_qr: 'Staff / Partner QR',
+                tab_pro: 'Pro Mode',
+                tab_ajustes: 'Settings',
+                tool_cierre_z: 'Cash Close (Z)',
+                tool_catalogo: 'Web Catalog',
+                tool_registro: 'Register / Link account',
+                branch_summary: 'Branch summary',
+                lang_title: 'App language',
+                onb_title_1: 'What to know about Gestor Pro',
+                onb_sub_1: 'Daily control of inventory, sales, credit sales and cash on mobile.',
+                onb_b1_t: 'Inventory:',
+                onb_b1_d: 'barcodes, photos, stock and alerts.',
+                onb_b2_t: 'Sales & credit:',
+                onb_b2_d: 'cash sales, credit with payments, change and cash.',
+                onb_b3_t: 'Roles & Pro:',
+                onb_b3_d: 'owner, partner or staff, catalog and Google Play subscription.',
+                onb_next_terms: 'Continue to Terms & Conditions',
+                onb_terms_title: 'Terms & Conditions',
+                onb_terms_sub: 'Accept these terms before setting up access.',
+                onb_accept_chk: 'I have read and accept the Terms & Conditions.',
+                btn_back: 'Back',
+                btn_accept_continue: 'Accept and continue',
+                onb_access_title: 'Set up your access',
+                onb_access_sub: 'Create a business as owner or link a team.',
+                terms_short: 'Terms',
+                mode_new_biz: 'New Business',
+                mode_link_team: 'Link Team'
+            },
+            pt: {
+                nav_operation: 'Operação',
+                nav_sections: 'Seções',
+                nav_tools: 'Ferramentas',
+                tab_resumen: 'Resumo',
+                tab_inventario: 'Estoque e fornecedores',
+                tab_ventas: 'Vendas e fiado',
+                tab_finanzas: 'Caixa e lançamentos',
+                tab_audios: 'Áudios',
+                tab_qr: 'QR Equipe / Sócio',
+                tab_pro: 'Modo Pro',
+                tab_ajustes: 'Ajustes',
+                tool_cierre_z: 'Fechamento de Caixa (Z)',
+                tool_catalogo: 'Catálogo Web',
+                tool_registro: 'Registrar / Vincular conta',
+                branch_summary: 'Resumo da unidade',
+                lang_title: 'Idioma do aplicativo',
+                onb_title_1: 'O que saber sobre o Gestor Pro',
+                onb_sub_1: 'Controle diário de estoque, vendas, fiado e caixa no celular.',
+                onb_b1_t: 'Estoque:',
+                onb_b1_d: 'códigos de barras, fotos, saldo e alertas.',
+                onb_b2_t: 'Vendas e fiado:',
+                onb_b2_d: 'à vista, fiado com parcelas, troco e caixa.',
+                onb_b3_t: 'Perfis e Pro:',
+                onb_b3_d: 'dono, sócio ou funcionário, catálogo e assinatura Google Play.',
+                onb_next_terms: 'Continuar para Termos e Condições',
+                onb_terms_title: 'Termos e Condições',
+                onb_terms_sub: 'Aceite os termos antes de configurar o acesso.',
+                onb_accept_chk: 'Li e aceito os Termos e Condições de uso.',
+                btn_back: 'Voltar',
+                btn_accept_continue: 'Aceitar e continuar',
+                onb_access_title: 'Configure seu acesso',
+                onb_access_sub: 'Crie sua empresa como dono ou vincule equipe.',
+                terms_short: 'Termos',
+                mode_new_biz: 'Novo Negócio',
+                mode_link_team: 'Vincular Equipe'
+            },
+            fr: {
+                nav_operation: 'Opérations',
+                nav_sections: 'Sections',
+                nav_tools: 'Outils',
+                tab_resumen: 'Aperçu',
+                tab_inventario: 'Stock et fournisseurs',
+                tab_ventas: 'Ventes et crédit',
+                tab_finanzas: 'Caisse et mouvements',
+                tab_audios: 'Audios',
+                tab_qr: 'QR Équipe / Associé',
+                tab_pro: 'Mode Pro',
+                tab_ajustes: 'Paramètres',
+                tool_cierre_z: 'Clôture de Caisse (Z)',
+                tool_catalogo: 'Catalogue Web',
+                tool_registro: 'Inscription / Lier compte',
+                branch_summary: 'Résumé de la branche',
+                lang_title: "Langue de l'application",
+                onb_title_1: 'Essentiel sur Gestor Pro',
+                onb_sub_1: 'Suivi quotidien du stock, des ventes, du crédit et de la caisse.',
+                onb_b1_t: 'Stock :',
+                onb_b1_d: 'codes-barres, photos, quantités et alertes.',
+                onb_b2_t: 'Ventes et crédit :',
+                onb_b2_d: 'comptant, crédit avec paiements, monnaie et caisse.',
+                onb_b3_t: 'Rôles et Pro :',
+                onb_b3_d: 'propriétaire, associé ou employé, catalogue et Google Play.',
+                onb_next_terms: 'Continuer vers les Conditions',
+                onb_terms_title: 'Conditions Générales',
+                onb_terms_sub: 'Acceptez ces conditions avant de configurer l’accès.',
+                onb_accept_chk: "J'ai lu et j'accepte les Conditions d'utilisation.",
+                btn_back: 'Retour',
+                btn_accept_continue: 'Accepter et continuer',
+                onb_access_title: 'Configurer votre accès',
+                onb_access_sub: 'Créez une entreprise ou liez une équipe.',
+                terms_short: 'Conditions',
+                mode_new_biz: 'Nouvelle Entreprise',
+                mode_link_team: 'Lier Équipe'
+            }
+        };
+
+        function detectarIdiomaTelefono() {
+            const lista = Array.isArray(navigator.languages) && navigator.languages.length
+                ? navigator.languages
+                : [navigator.language || 'es'];
+            for (const loc of lista) {
+                const base = String(loc || '').toLowerCase().split('-')[0];
+                if (IDIOMAS_SOPORTADOS.includes(base)) return base;
+            }
+            return 'es';
+        }
+
+        const idiomaTelefonoDetectado = detectarIdiomaTelefono();
+        let idiomaActual = localStorage.getItem('gestorpro_lang');
+        if (!IDIOMAS_SOPORTADOS.includes(idiomaActual)) {
+            idiomaActual = idiomaTelefonoDetectado;
+            localStorage.setItem('gestorpro_lang', idiomaActual);
+        }
+
+        function aplicarIdioma(lang) {
+            const code = IDIOMAS_SOPORTADOS.includes(lang) ? lang : 'es';
+            idiomaActual = code;
+            document.documentElement.lang = code;
+
+            const dict = TRADUCCIONES[code] || TRADUCCIONES.es;
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (dict[key]) el.innerText = dict[key];
+            });
+
+            const sel = document.getElementById('select-idioma-app');
+            if (sel) sel.value = code;
+
+            const badgeDet = document.getElementById('badge-idioma-detectado');
+            if (badgeDet) badgeDet.innerText = `Tel: ${idiomaTelefonoDetectado.toUpperCase()}`;
+
+            const infoTel = document.getElementById('texto-idioma-telefono');
+            if (infoTel) {
+                infoTel.innerText = `Idioma detectado en el dispositivo: ${idiomaTelefonoDetectado.toUpperCase()}. Al instalar, se abre automáticamente en ese idioma.`;
+            }
+        }
+
+        function cambiarIdiomaApp(nuevoLang) {
+            if (!IDIOMAS_SOPORTADOS.includes(nuevoLang)) return;
+            localStorage.setItem('gestorpro_lang', nuevoLang);
+            aplicarIdioma(nuevoLang);
+            mostrarToast(`Idioma: ${nuevoLang.toUpperCase()}`, 'success');
+        }
+
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker.getRegistrations().then((registrations) => {
                 registrations.forEach((reg) => reg.update());
             });
-            navigator.serviceWorker.register('./sw.js?v=20261119a').catch((err) => console.log('SW error:', err));
+            navigator.serviceWorker.register('./sw.js?v=20261119b').catch((err) => console.log('SW error:', err));
         }
 
         const SECCIONES_VALIDAS = ['resumen', 'inventario', 'ventas', 'finanzas', 'audios', 'qr-empleado', 'pro', 'ajustes'];
@@ -1746,15 +1995,15 @@
             p3?.classList.toggle('hidden', paso !== 3);
 
             if (paso === 1) {
-                if (txtPaso) txtPaso.innerText = 'Paso 1 de 3 · Lo esencial';
+                if (txtPaso) txtPaso.innerText = '1 / 3';
                 if (pctPaso) pctPaso.innerText = '33%';
                 if (barra) barra.style.width = '33.33%';
             } else if (paso === 2) {
-                if (txtPaso) txtPaso.innerText = 'Paso 2 de 3 · Términos y Condiciones';
+                if (txtPaso) txtPaso.innerText = '2 / 3';
                 if (pctPaso) pctPaso.innerText = '66%';
                 if (barra) barra.style.width = '66.66%';
             } else {
-                if (txtPaso) txtPaso.innerText = 'Paso 3 de 3 · Registro o Vinculación';
+                if (txtPaso) txtPaso.innerText = '3 / 3';
                 if (pctPaso) pctPaso.innerText = '100%';
                 if (barra) barra.style.width = '100%';
             }
@@ -2063,67 +2312,10 @@
             }
             const archivo = event.target.files[0];
             if (!archivo) return;
-            mostrarToast('OCR automático no disponible sin motor externo: completa el nombre, compra, venta y stock del producto.', 'info');
+            mostrarToast('Completa los campos del producto manualmente.', 'info');
             document.getElementById('prod-nombre')?.focus();
             event.target.value = '';
         }
-
-        function abrirModalPasarelaSuscripcion(tipoPlan) {
-            if (rolActual === 'empleado') {
-                return mostrarToast('La suscripción del negocio corresponde al dueño.', 'error');
-            }
-            window.planSeleccionadoActual = tipoPlan;
-            const neg = obtenerNegocio();
-            const tasa = neg.tasaCambio || 36.50;
-            const montoUSD = tipoPlan === 'mensual' ? 5.00 : 45.00;
-            const montoBS = montoUSD * tasa;
-
-            const metodo = document.getElementById('select-metodo-pago').value;
-            const textoDetalle = document.getElementById('detalles-pago-texto');
-            const imgQr = document.getElementById('img-qr-pago');
-            const tituloModal = document.getElementById('instrucciones-pago-titulo');
-
-            tituloModal.innerText = `Plan ${tipoPlan === 'mensual' ? 'Mensual' : 'Anual'}: $${montoUSD.toFixed(2)}`;
-
-            if (metodo === 'paypal') {
-                textoDetalle.innerHTML = `Enlace: paypal.me/gestorproapp/$${montoUSD.toFixed(2)}`;
-                imgQr.src = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent('https://paypal.me/gestorproapp/' + montoUSD)}`;
-            } else if (metodo === 'pagomovil') {
-                textoDetalle.innerHTML = `Banesco · 0412-1234567 · C.I. 30.022.434<br><b>Bs. ${montoBS.toFixed(2)}</b>`;
-                imgQr.src = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent('PAGOMOVIL:04121234567:30022434:' + montoBS.toFixed(2))}`;
-            } else if (metodo === 'zelle') {
-                textoDetalle.innerHTML = `pagos@gestorpro.app · Joelvy Salazar<br><b>$${montoUSD.toFixed(2)}</b>`;
-                imgQr.src = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent('ZELLE:pagos@gestorpro.app:' + montoUSD)}`;
-            } else {
-                textoDetalle.innerHTML = `Binance Pay ID: 123456789 (USDT)<br><b>$${montoUSD.toFixed(2)} USDT</b>`;
-                imgQr.src = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent('BINANCE:123456789:' + montoUSD)}`;
-            }
-
-            document.getElementById('modal-pasarela-pago').classList.remove('hidden');
-        }
-
-        function abrirModalPasarela() {
-            if (!esProActivo()) return requierePro(null, 'Cobrar con QR');
-            abrirModalPasarelaSuscripcion('mensual');
-        }
-
-        function cerrarModalPasarela() {
-            document.getElementById('modal-pasarela-pago').classList.add('hidden');
-            if (window.planSeleccionadoActual) {
-                const diasExtra = window.planSeleccionadoActual === 'mensual' ? 60 : 365;
-                const tiempoExpiracion = Date.now() + (diasExtra * 24 * 60 * 60 * 1000);
-                localStorage.setItem('proExpira', String(tiempoExpiracion));
-                verificarEstadoPro();
-                persistir();
-                mostrarToast(`Suscripción ${window.planSeleccionadoActual} activada.`, 'success');
-                window.planSeleccionadoActual = null;
-            }
-        }
-
-        document.getElementById('select-metodo-pago')?.addEventListener('change', () => {
-            if (window.planSeleccionadoActual) abrirModalPasarelaSuscripcion(window.planSeleccionadoActual);
-            else if (esProActivo()) abrirModalPasarela();
-        });
 
         function calcularVueltoMultidivisa() {
             const totalUSD = parseFloat(document.getElementById('calc-total-usd').value) || 0;
@@ -2352,7 +2544,7 @@
                     mostrarToast(`Ticket enviado a ${device.name || 'impresora'}.`, 'success');
                     cerrarModalTicket();
                 } else {
-                    mostrarToast('El dispositivo conectado no expone característica de escritura ESC/POS.', 'error');
+                    mostrarToast('El dispositivo conectado no permite escritura ESC/POS.', 'error');
                 }
             } catch (error) {
                 console.error('Error Bluetooth:', error);
@@ -2367,6 +2559,8 @@
             const proTags = document.querySelectorAll('.pro-tag');
             const drawerPill = document.getElementById('drawer-pro-pill');
             const activo = esProActivo();
+
+            actualizarEtiquetasBilling();
 
             if (!activo && negocioActualId !== negocios[0].id) {
                 negocioActualId = negocios[0].id;
@@ -2395,7 +2589,7 @@
                 const diasRestantes = Math.ceil(horasRestantes / 24);
 
                 if (badge) {
-                    badge.innerText = "Activo · Anuncios apagados";
+                    badge.innerText = "Activo";
                     badge.className = "bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300 text-[10px] px-2.5 py-0.5 rounded-full font-semibold";
                 }
                 if (texto) {
@@ -2408,7 +2602,7 @@
                     badge.className = "bg-rose-100 text-rose-700 dark:bg-rose-950 dark:text-rose-300 text-[11px] px-2.5 py-0.5 rounded-full font-semibold";
                 }
                 if (texto) {
-                    texto.innerText = "Sin Modo Pro las funciones Pro quedan bloqueadas y se muestran anuncios. Al activar Modo Pro se apagan los anuncios y se habilitan todas las funciones Pro.";
+                    texto.innerText = "Las suscripciones se cobran en la moneda y cuenta de Google Play de cada país mediante Google Play Billing.";
                 }
                 if (bannerAd) bannerAd.classList.remove('hidden');
             }
@@ -2437,7 +2631,7 @@
 
         function exportarRespaldoJSON() {
             if (!esProActivo()) return requierePro(null, 'Exportar respaldo JSON');
-            const datos = { version: 'GestorPro_v6', fecha: new Date().toISOString(), negocios };
+            const datos = { version: 'GestorPro_v8', fecha: new Date().toISOString(), negocios };
             const blob = new Blob([JSON.stringify(datos, null, 2)], { type: 'application/json' });
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
@@ -2516,6 +2710,9 @@
         function imprimirTicketTermico() {
             if (!ticketActualData) return;
             const ventana = window.open('', '_blank', 'width=300,height=450');
+            if (!ventana) {
+                return mostrarToast('Permite ventanas emergentes para imprimir el ticket.', 'error');
+            }
             ventana.document.write(`<html><head><title>Ticket</title><style>body{font-family:monospace;width:58mm;margin:0 auto;padding:5px;font-size:12px;}</style></head><body><b>${escaparHTML(ticketActualData.negocio.toUpperCase())}</b><br><small>${escaparHTML(ticketActualData.fecha)}</small><hr>Tipo: ${escaparHTML(ticketActualData.tipo)}<br>${ticketActualData.metodoPago ? `Pago: ${escaparHTML(ticketActualData.metodoPago)}<br>` : ''}Prod: ${escaparHTML(ticketActualData.producto)}<br>Cant: ${ticketActualData.cantidad}<br><hr><b>TOTAL: $${Number(ticketActualData.total || 0).toFixed(2)}</b><br><hr><small>© 2026 Gestor Pro<br>Joelvy José Salazar Vargas (C.I. 30.022.434)</small><script>window.onload=function(){window.print();window.close();}<\/script></body></html>`);
             ventana.document.close();
         }
@@ -2796,7 +2993,7 @@
             if (targetTab === 'audios') sincronizarControlesAudio();
             if (targetTab === 'qr-empleado') { sincronizarControlesSincronizacion(); }
             if (targetTab === 'pro') { verificarEstadoPro(); actualizarInterfazRoles(); }
-            if (targetTab === 'ajustes') { actualizarSelectNegocios(); sincronizarFormularioAjustes(); }
+            if (targetTab === 'ajustes') { actualizarSelectNegocios(); sincronizarFormularioAjustes(); aplicarIdioma(idiomaActual); }
         }
 
         function verificarAlertaBI() {
@@ -3488,76 +3685,58 @@
                             doc.addImage(p.foto, 'JPEG', 16, y, 10, 10);
                         } catch (e) {}
                     } else {
-                        doc.text("—", 18, y + 5);
+                        doc.text("—", 18, y + (tieneFotoActiva ? 6 : 4));
                     }
 
-                    const textoY = tieneFotoActiva ? y + 6.5 : y + 4.5;
-                    const valorVenta = (Number(p.venta) || 0) * (Number(p.stock) || 0);
-                    doc.text(String(p.nombre || '').slice(0, 34), 29, textoY);
-                    doc.text(`$${Number(p.compra || 0).toFixed(2)}`, 104, textoY);
-                    doc.text(`$${Number(p.venta || 0).toFixed(2)}`, 128, textoY);
-                    doc.text(String(p.stock ?? 0), 152, textoY);
-                    doc.text(`$${valorVenta.toFixed(2)}`, 170, textoY);
+                    const offsetTexto = tieneFotoActiva ? 6.2 : 4;
+                    const nombreCorto = String(p.nombre || '').slice(0, 38);
+                    const valVenta = (Number(p.venta) || 0) * (Number(p.stock) || 0);
+
+                    doc.text(nombreCorto, 29, y + offsetTexto);
+                    doc.text(`$${Number(p.compra || 0).toFixed(2)}`, 104, y + offsetTexto);
+                    doc.text(`$${Number(p.venta || 0).toFixed(2)}`, 128, y + offsetTexto);
+                    doc.text(String(p.stock ?? 0), 150, y + offsetTexto);
+                    doc.text(`$${valVenta.toFixed(2)}`, 170, y + offsetTexto);
 
                     doc.setDrawColor(226, 232, 240);
                     doc.line(14, y + altoFila, 196, y + altoFila);
                     y += altoFila + 1;
                 });
             }
-            y += 5;
 
-            if (y > 245) { doc.addPage(); y = 20; }
-            doc.setFont("helvetica", "bold");
-            doc.setFontSize(11);
-            doc.setTextColor(29, 78, 216);
-            doc.text("MOVIMIENTOS RECIENTES", 14, y);
-            y += 5;
-
-            doc.setFont("helvetica", "normal");
-            doc.setFontSize(8.5);
-            doc.setTextColor(30, 41, 59);
-            const movsPdf = (neg.finanzas || []).slice(0, 15);
-            if (movsPdf.length === 0) {
-                doc.text("Sin movimientos registrados.", 16, y + 4);
-            } else {
-                movsPdf.forEach(m => {
-                    if (y > 272) { doc.addPage(); y = 20; }
-                    const signo = m.tipo === 'ingreso' ? '+' : '-';
-                    doc.text(`${m.fecha || ''} · ${String(m.desc || '').slice(0, 48)} · ${signo}$${Number(m.monto || 0).toFixed(2)}`, 16, y + 4.5);
-                    y += 6;
-                });
-            }
-
-            const totalPaginas = doc.internal.getNumberOfPages();
+            const totalPaginas = doc.getNumberOfPages();
             for (let i = 1; i <= totalPaginas; i++) {
                 doc.setPage(i);
-                doc.setFontSize(8.5);
-                doc.setTextColor(120, 130, 145);
-                doc.text(`© 2026 Gestor Pro · Joelvy José Salazar Vargas (C.I. 30.022.434) · Pág. ${i}/${totalPaginas}`, 14, 287);
+                doc.setFont("helvetica", "normal");
+                doc.setFontSize(8);
+                doc.setTextColor(100, 116, 139);
+                doc.text(`Gestor Pro · © 2026 Joelvy José Salazar Vargas (C.I. 30.022.434) — Pág. ${i}/${totalPaginas}`, 14, 287);
             }
 
-            doc.save(`Reporte_Ejecutivo_${neg.nombre.replace(/\s+/g, '_')}_${Date.now()}.pdf`);
-            mostrarToast('Reporte PDF ejecutivo descargado.', 'success');
+            doc.save(`Reporte_Ejecutivo_${(neg.nombre || 'Negocio').replace(/\s+/g, '_')}.pdf`);
+            mostrarToast('Reporte PDF descargado.', 'success');
         }
 
         function renderizarTodo() {
-            actualizarInterfazRoles();
+            aplicarIdioma(idiomaActual);
+            verificarEstadoPro();
             actualizarSelectNegocios();
             sincronizarFormularioAjustes();
-            renderInventario();
-            renderProveedores();
-            actualizarSelectVentas();
+            actualizarInterfazRoles();
             actualizarResumenGeneral();
             actualizarGraficos();
-            renderVentas();
-            renderDeudas();
-            renderFinanzas();
-            sincronizarControlesAudio();
-            verificarEstadoPro();
             verificarAlertaBI();
+            renderInventario();
+            renderProveedores();
+            renderDeudas();
+            renderVentas();
+            renderFinanzas();
+            actualizarSelectVentas();
+            sincronizarControlesAudio();
         }
 
         renderizarTodo();
+        cambiarTab('resumen');
     </script>
 </body>
 </html>

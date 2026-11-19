@@ -237,7 +237,7 @@
         </div>
     </div>
 
-    <!-- Encabezado Limpio y Compacto con Botón de Menú Lateral -->
+    <!-- Encabezado Limpio y Compacto con Botón de Menú Lateral (sin Guía duplicada) -->
     <header class="bg-blue-600 dark:bg-slate-900 text-white border-b border-blue-700/40 dark:border-slate-800 sticky top-0 z-30 transition-colors">
         <div class="max-w-md mx-auto px-3 py-2.5 flex items-center justify-between gap-2">
             <div class="flex items-start gap-2 min-w-0 flex-1">
@@ -257,7 +257,6 @@
             </div>
             <div class="flex items-center gap-1.5 shrink-0">
                 <button type="button" onclick="toggleDarkMode()" id="btn-dark-mode" title="Cambiar Tema" class="text-xs bg-white/15 hover:bg-white/25 px-2.5 py-1.5 rounded-lg transition whitespace-nowrap">🌙</button>
-                <button type="button" onclick="abrirOnboarding()" class="text-xs bg-white/15 hover:bg-white/25 px-2.5 py-1.5 rounded-lg font-medium transition whitespace-nowrap">Guía</button>
             </div>
         </div>
     </header>
@@ -265,7 +264,7 @@
     <!-- Contenedor Principal (sin barra inferior fija) -->
     <main class="flex-1 max-w-md w-full mx-auto px-4 pt-4 pb-24 space-y-4">
         
-        <!-- Sección 1: Resumen -->
+        <!-- Sección 1: Resumen (sin Cierre Z ni Catálogo Web, que viven en el menú lateral) -->
         <section id="tab-resumen" class="space-y-4">
             <div id="alerta-bi-container" class="bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-800/70 text-amber-900 dark:text-amber-200 p-3.5 rounded-2xl text-xs space-y-1 hidden">
                 <p class="font-semibold">Alerta de inventario bajo</p>
@@ -303,20 +302,6 @@
                         <p id="res-deudas" class="text-sm font-bold text-rose-600 dark:text-rose-400 mt-0.5">$0.00</p>
                     </div>
                 </div>
-            </div>
-
-            <!-- Accesos Rápidos (Funciones Pro) -->
-            <div class="grid grid-cols-2 gap-2.5">
-                <button type="button" onclick="requierePro(abrirModalCierreZ, 'Cierre de Caja (Arqueo Z)')" class="bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100 font-semibold p-3 rounded-2xl text-xs hover:bg-slate-50 dark:hover:bg-slate-800 transition border border-slate-200/80 dark:border-slate-800 shadow-2xs flex items-center justify-center gap-1.5 whitespace-nowrap">
-                    <span>📊</span>
-                    <span>Cierre Z</span>
-                    <span class="pro-tag text-[9px] font-bold bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300 px-1.5 py-0.5 rounded-full">PRO</span>
-                </button>
-                <button type="button" onclick="requierePro(abrirModalCatalogoWeb, 'Catálogo Digital')" class="bg-emerald-600 text-white font-semibold p-3 rounded-2xl text-xs hover:bg-emerald-700 transition shadow-2xs flex items-center justify-center gap-1.5 whitespace-nowrap">
-                    <span>🌐</span>
-                    <span>Catálogo Web</span>
-                    <span class="pro-tag text-[9px] font-bold bg-black/20 text-white px-1.5 py-0.5 rounded-full">PRO</span>
-                </button>
             </div>
 
             <!-- Gráficos Estadísticos -->
@@ -934,7 +919,7 @@
                     registration.update();
                 }
             });
-            navigator.serviceWorker.register('./sw.js?v=20261118i').catch(err => console.log('SW error:', err));
+            navigator.serviceWorker.register('./sw.js?v=20261118j').catch(err => console.log('SW error:', err));
         }
 
         const SECCIONES_VALIDAS = ['resumen', 'inventario', 'ventas', 'finanzas', 'audios', 'qr-empleado', 'pro', 'ajustes'];

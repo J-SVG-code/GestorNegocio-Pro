@@ -1,4 +1,4 @@
-const CACHE_NAME = 'gestorpro-v5-cache';
+const CACHE_NAME = 'gestorpro-v6-cache';
 const ASSETS_TO_CACHE = [
   './index.html',
   './catalogo.html',

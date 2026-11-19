@@ -13,28 +13,22 @@
             darkMode: 'class'
         }
     </script>
-    <!-- Librería para Escanear Códigos QR y Códigos de Barras -->
     <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
-    <!-- Chart.js CDN -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <!-- jsPDF CDN para Reportes Ejecutivos -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    
-    <!-- Google AdMob Script -->
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-app-pub-3645077961178424~5519013340" crossorigin="anonymous"></script>
 </head>
 <body class="bg-slate-100 dark:bg-slate-950 text-slate-800 dark:text-slate-100 min-h-screen flex flex-col transition-colors duration-200 antialiased">
 
-    <!-- Contenedor de Notificaciones Flotantes (Toasts) -->
+    <!-- Notificaciones Flotantes -->
     <div id="toast-container" class="fixed top-4 right-4 left-4 max-w-md mx-auto z-50 space-y-2 pointer-events-none"></div>
 
     <!-- Fondo Oscuro para Menú Lateral -->
     <div id="menu-lateral-backdrop" onclick="cerrarMenuLateral()" class="fixed inset-0 bg-slate-950/60 backdrop-blur-xs z-40 hidden transition-opacity duration-200"></div>
 
-    <!-- Menú Lateral Izquierdo Desplegable -->
+    <!-- Menú Lateral Izquierdo -->
     <aside id="menu-lateral" class="fixed top-0 left-0 bottom-0 w-72 max-w-[82vw] bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 z-50 -translate-x-full transition-transform duration-200 ease-out flex flex-col justify-between shadow-2xl">
         <div class="p-4 space-y-4 overflow-y-auto">
-            <!-- Cabecera del Menú Lateral -->
             <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3">
                 <div class="min-w-0">
                     <div class="flex items-center gap-2">
@@ -46,28 +40,22 @@
                 <button type="button" onclick="cerrarMenuLateral()" class="text-slate-400 hover:text-rose-500 text-sm font-bold px-2 py-1 rounded-lg">✕</button>
             </div>
 
-            <!-- Operación Diaria -->
             <div class="space-y-1">
                 <p class="text-[10px] font-bold uppercase tracking-wider text-slate-400 px-2.5 pb-1">Operación</p>
                 <button type="button" onclick="navegarDesdeMenu('resumen')" id="drawer-btn-resumen" class="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-xs font-semibold bg-blue-50 text-blue-700 dark:bg-blue-950/70 dark:text-blue-300 transition text-left">
-                    <span>📊</span>
-                    <span>Resumen</span>
+                    <span>📊</span><span>Resumen</span>
                 </button>
                 <button type="button" onclick="navegarDesdeMenu('inventario')" id="drawer-btn-inventario" class="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-xs font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition text-left">
-                    <span>📦</span>
-                    <span>Stock y proveedores</span>
+                    <span>📦</span><span>Stock y proveedores</span>
                 </button>
                 <button type="button" onclick="navegarDesdeMenu('ventas')" id="drawer-btn-ventas" class="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-xs font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition text-left">
-                    <span>🛒</span>
-                    <span>Ventas y fiados</span>
+                    <span>🛒</span><span>Ventas y fiados</span>
                 </button>
                 <button type="button" onclick="navegarDesdeMenu('finanzas')" id="drawer-btn-finanzas" class="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-xs font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition text-left">
-                    <span>💵</span>
-                    <span>Caja y movimientos</span>
+                    <span>💵</span><span>Caja y movimientos</span>
                 </button>
             </div>
 
-            <!-- Secciones Separadas -->
             <div class="space-y-1 pt-2 border-t border-slate-100 dark:border-slate-800">
                 <p class="text-[10px] font-bold uppercase tracking-wider text-slate-400 px-2.5 pb-1">Secciones especiales</p>
                 <button type="button" onclick="navegarDesdeMenu('audios')" id="drawer-btn-audios" class="w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition text-left">
@@ -75,7 +63,7 @@
                     <span id="drawer-audio-status" class="text-[10px] text-slate-400">ON</span>
                 </button>
                 <button type="button" onclick="navegarDesdeMenu('qr-empleado')" id="drawer-btn-qr-empleado" class="w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition text-left">
-                    <span class="flex items-center gap-2.5"><span>📱</span><span>QR Empleado</span></span>
+                    <span class="flex items-center gap-2.5"><span>📱</span><span>QR Empleado / Socio</span></span>
                     <span class="pro-tag text-[9px] font-bold bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300 px-1.5 py-0.5 rounded-full">PRO</span>
                 </button>
                 <button type="button" onclick="navegarDesdeMenu('pro')" id="drawer-btn-pro" class="w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-medium text-amber-800 dark:text-amber-300 bg-amber-50/70 dark:bg-amber-950/30 hover:bg-amber-100/80 dark:hover:bg-amber-950/50 transition text-left">
@@ -83,12 +71,10 @@
                     <span class="pro-tag text-[9px] font-bold bg-amber-200/80 text-amber-900 dark:bg-amber-900 dark:text-amber-200 px-1.5 py-0.5 rounded-full">PRO</span>
                 </button>
                 <button type="button" onclick="navegarDesdeMenu('ajustes')" id="drawer-btn-ajustes" class="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-xs font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition text-left">
-                    <span>⚙️</span>
-                    <span>Ajustes</span>
+                    <span>⚙️</span><span>Ajustes</span>
                 </button>
             </div>
 
-            <!-- Herramientas Rápidas -->
             <div class="space-y-1 pt-2 border-t border-slate-100 dark:border-slate-800">
                 <p class="text-[10px] font-bold uppercase tracking-wider text-slate-400 px-2.5 pb-1">Herramientas</p>
                 <button type="button" onclick="cerrarMenuLateral(); requierePro(abrirModalCierreZ, 'Cierre de Caja (Arqueo Z)')" class="w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition text-left">
@@ -99,33 +85,95 @@
                     <span class="flex items-center gap-2.5"><span>🌐</span><span>Catálogo Web</span></span>
                     <span class="pro-tag text-[9px] font-bold bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300 px-1.5 py-0.5 rounded-full">PRO</span>
                 </button>
-                <button type="button" onclick="cerrarMenuLateral(); abrirOnboarding()" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition text-left">
-                    <span>📘</span>
-                    <span>Guía rápida</span>
+                <button type="button" onclick="cerrarMenuLateral(); abrirAsistenteInicial()" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition text-left">
+                    <span>📘</span><span>Registro / Vincular cuenta</span>
                 </button>
             </div>
         </div>
 
-        <!-- Pie del Menú Lateral -->
         <div class="p-3.5 border-t border-slate-100 dark:border-slate-800 bg-slate-50/80 dark:bg-slate-800/40 text-[11px] text-slate-500 dark:text-slate-400 space-y-0.5">
             <p class="font-semibold text-slate-700 dark:text-slate-200">Gestor Pro · © 2026</p>
             <p class="truncate">Joelbi José Salazar Vargas</p>
         </div>
     </aside>
 
-    <!-- Pantalla de Bienvenida / Onboarding -->
-    <div id="modal-onboarding" class="fixed inset-0 bg-slate-950/75 backdrop-blur-xs z-50 flex items-center justify-center p-4 hidden">
-        <div class="bg-white dark:bg-slate-900 rounded-2xl max-w-sm w-full p-5 space-y-4 shadow-xl border border-slate-200 dark:border-slate-800">
+    <!-- Modal de Inicio: Registro de Nuevo Negocio (Dueño) o Vincular (Empleado / Socio) -->
+    <div id="modal-onboarding" class="fixed inset-0 bg-slate-950/80 backdrop-blur-xs z-50 flex items-center justify-center p-4 hidden overflow-y-auto">
+        <div class="bg-white dark:bg-slate-900 rounded-2xl max-w-sm w-full p-5 space-y-4 shadow-2xl border border-slate-200 dark:border-slate-800 my-auto">
             <div class="text-center space-y-1">
-                <span class="text-2xl">🚀</span>
-                <h2 class="text-base font-bold text-slate-900 dark:text-white">Gestor Pro</h2>
-                <p class="text-xs text-slate-500 dark:text-slate-400">Inventario, ventas, caja y control multi-sucursal en un solo lugar.</p>
+                <h2 class="text-base font-bold text-slate-900 dark:text-white">Bienvenido a Gestor Pro</h2>
+                <p class="text-xs text-slate-500 dark:text-slate-400">Registra tu negocio como dueño o vincula un teléfono a una cuenta existente.</p>
             </div>
-            <div class="space-y-2 text-xs text-slate-600 dark:text-slate-300 bg-slate-50 dark:bg-slate-800/70 p-3.5 rounded-xl border border-slate-200/80 dark:border-slate-700/80">
-                <p>• <b>Gratis:</b> Inventario, proveedores, ventas contado/fiados, vuelto, caja básica y tonos de audio.</p>
-                <p>• <b>Modo Pro:</b> QR Empleado y vinculación, multi-sucursal, Cierre Z, Catálogo Web, PDF, OCR, Cobro QR, impresión Bluetooth, respaldo JSON y audio personalizado.</p>
+
+            <div class="grid grid-cols-2 gap-1.5 bg-slate-100 dark:bg-slate-800 p-1 rounded-xl text-xs font-semibold">
+                <button type="button" id="btn-modo-registro-dueno" onclick="alternarModoInicio('registro')" class="py-2 rounded-lg bg-blue-600 text-white transition">Nuevo Negocio</button>
+                <button type="button" id="btn-modo-vincular-equipo" onclick="alternarModoInicio('vincular')" class="py-2 rounded-lg text-slate-600 dark:text-slate-300 transition">Vincular Equipo</button>
             </div>
-            <button type="button" onclick="cerrarOnboarding()" class="w-full bg-blue-600 text-white font-semibold py-2.5 rounded-xl text-xs hover:bg-blue-700 transition">Comenzar</button>
+
+            <!-- Flujo 1: Nuevo Negocio (Dueño) -->
+            <form id="form-registro-dueno" onsubmit="completarRegistroDueno(event)" class="space-y-2.5 text-xs">
+                <div>
+                    <label class="block font-medium text-slate-600 dark:text-slate-300 mb-1">Tu nombre (Dueño)</label>
+                    <input type="text" id="onb-dueno-nombre" required class="w-full p-2.5 border border-slate-200 dark:border-slate-700 dark:bg-slate-800 rounded-xl outline-none" placeholder="Ej. Joelbi Salazar">
+                </div>
+                <div>
+                    <label class="block font-medium text-slate-600 dark:text-slate-300 mb-1">Nombre del negocio</label>
+                    <input type="text" id="onb-negocio-nombre" required class="w-full p-2.5 border border-slate-200 dark:border-slate-700 dark:bg-slate-800 rounded-xl outline-none" placeholder="Ej. Bodega y Catálogo Central">
+                </div>
+                <div>
+                    <label class="block font-medium text-slate-600 dark:text-slate-300 mb-1">WhatsApp del negocio (para el catálogo)</label>
+                    <input type="tel" id="onb-negocio-whatsapp" required class="w-full p-2.5 border border-slate-200 dark:border-slate-700 dark:bg-slate-800 rounded-xl outline-none" placeholder="Ej. 04121234567 o 584121234567">
+                </div>
+                <div class="grid grid-cols-2 gap-2">
+                    <div>
+                        <label class="block font-medium text-slate-600 dark:text-slate-300 mb-1">Capital inicial ($)</label>
+                        <input type="number" step="0.01" id="onb-capital-inicial" class="w-full p-2.5 border border-slate-200 dark:border-slate-700 dark:bg-slate-800 rounded-xl outline-none" placeholder="0.00">
+                    </div>
+                    <div>
+                        <label class="block font-medium text-slate-600 dark:text-slate-300 mb-1">PIN Dueño (4 dígitos)</label>
+                        <input type="password" id="onb-pin-dueno" maxlength="4" minlength="4" required class="w-full p-2.5 border border-slate-200 dark:border-slate-700 dark:bg-slate-800 rounded-xl outline-none font-mono" placeholder="1234">
+                    </div>
+                </div>
+                <button type="submit" class="w-full bg-blue-600 text-white font-semibold py-2.5 rounded-xl text-xs hover:bg-blue-700 transition mt-1">Guardar y entrar al negocio</button>
+            </form>
+
+            <!-- Flujo 2: Vincular como Empleado o Socio -->
+            <div id="panel-vincular-equipo" class="space-y-3 text-xs hidden">
+                <div>
+                    <label class="block font-medium text-slate-600 dark:text-slate-300 mb-1">Conectar como</label>
+                    <select id="onb-rol-vinculo" class="w-full p-2.5 border border-slate-200 dark:border-slate-700 dark:bg-slate-800 rounded-xl outline-none">
+                        <option value="empleado">Empleado (operación diaria en caja y ventas)</option>
+                        <option value="socio">Socio (acceso amplio y gestión compartida)</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block font-medium text-slate-600 dark:text-slate-300 mb-1">Código de vinculación</label>
+                    <div class="flex gap-2">
+                        <input type="text" id="onb-codigo-vinculo" class="flex-1 p-2.5 border border-slate-200 dark:border-slate-700 dark:bg-slate-800 rounded-xl outline-none font-mono" placeholder="Ej. EMP-xxxxxx o SOC-xxxxxx">
+                        <button type="button" onclick="escanearVinculoInicial()" class="bg-indigo-600 text-white px-3 rounded-xl font-semibold">QR</button>
+                    </div>
+                </div>
+                <button type="button" onclick="confirmarVinculoInicial()" class="w-full bg-emerald-600 text-white font-semibold py-2.5 rounded-xl text-xs hover:bg-emerald-700 transition">Vincular a cuenta existente</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Abono de Deuda (sin prompt) -->
+    <div id="modal-abono-deuda" class="fixed inset-0 bg-slate-950/75 z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white dark:bg-slate-900 rounded-2xl max-w-xs w-full p-4 space-y-3 shadow-xl border border-slate-200 dark:border-slate-800">
+            <div class="flex justify-between items-center border-b border-slate-100 dark:border-slate-800 pb-2">
+                <h3 class="text-sm font-bold text-slate-800 dark:text-white">Registrar abono</h3>
+                <button type="button" onclick="cerrarModalAbono()" class="text-xs font-semibold text-slate-500 hover:text-rose-500 px-2 py-1">✕</button>
+            </div>
+            <p id="info-deuda-abono" class="text-xs text-slate-600 dark:text-slate-300"></p>
+            <div>
+                <label class="block text-xs font-medium text-slate-600 dark:text-slate-400 mb-1">Monto a abonar ($)</label>
+                <input type="number" step="0.01" id="input-monto-abono" class="w-full p-2.5 text-xs border border-slate-200 dark:border-slate-700 dark:bg-slate-800 rounded-xl outline-none font-semibold">
+            </div>
+            <div class="grid grid-cols-2 gap-2 pt-1">
+                <button type="button" onclick="cerrarModalAbono()" class="bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 font-medium py-2 rounded-xl text-xs">Cancelar</button>
+                <button type="button" onclick="confirmarAbonoDeuda()" class="bg-emerald-600 text-white font-semibold py-2 rounded-xl text-xs hover:bg-emerald-700">Confirmar abono</button>
+            </div>
         </div>
     </div>
 
@@ -134,19 +182,19 @@
         <div class="bg-white dark:bg-slate-900 rounded-2xl max-w-sm w-full p-4 space-y-3 shadow-xl border border-slate-200 dark:border-slate-800">
             <div class="flex justify-between items-center border-b border-slate-100 dark:border-slate-800 pb-2">
                 <h3 id="titulo-escaner" class="text-sm font-bold text-slate-800 dark:text-white">Escanear Código</h3>
-                <button type="button" onclick="cerrarEscaner()" class="text-xs font-semibold text-slate-500 hover:text-red-500 px-2 py-1 rounded-lg">Cerrar</button>
+                <button type="button" onclick="cerrarEscaner()" class="text-xs font-semibold text-slate-500 hover:text-rose-500 px-2 py-1 rounded-lg">Cerrar</button>
             </div>
             <div id="reader" class="w-full rounded-xl overflow-hidden bg-slate-100 dark:bg-slate-800"></div>
             <p class="text-[11px] text-slate-500 dark:text-slate-400 text-center">Centra el código de barras o QR frente a la cámara.</p>
         </div>
     </div>
 
-    <!-- Modal de Pasarela de Pagos (Suscripciones y Cobros) -->
+    <!-- Modal de Pasarela de Pagos -->
     <div id="modal-pasarela-pago" class="fixed inset-0 bg-slate-950/75 z-50 flex items-center justify-center p-4 hidden">
         <div class="bg-white dark:bg-slate-900 rounded-2xl max-w-sm w-full p-4 space-y-3.5 shadow-xl border border-slate-200 dark:border-slate-800">
             <div class="flex justify-between items-center border-b border-slate-100 dark:border-slate-800 pb-2.5">
                 <h3 class="text-sm font-bold text-slate-800 dark:text-white">Cobro y Suscripción</h3>
-                <button type="button" onclick="cerrarModalPasarela()" class="text-xs font-semibold text-slate-500 hover:text-red-500 px-2 py-1">✕</button>
+                <button type="button" onclick="cerrarModalPasarela()" class="text-xs font-semibold text-slate-500 hover:text-rose-500 px-2 py-1">✕</button>
             </div>
             <div class="space-y-2.5 text-xs">
                 <label class="block font-medium text-slate-600 dark:text-slate-400">Método de pago</label>
@@ -173,7 +221,7 @@
         <div class="bg-white dark:bg-slate-900 rounded-2xl max-w-sm w-full p-4 space-y-3 shadow-xl border border-slate-200 dark:border-slate-800">
             <div class="flex justify-between items-center border-b border-slate-100 dark:border-slate-800 pb-2">
                 <h3 class="text-sm font-bold text-slate-800 dark:text-white">Cierre de Caja (Arqueo Z)</h3>
-                <button type="button" onclick="cerrarModalCierreZ()" class="text-xs font-semibold text-slate-500 hover:text-red-500 px-2 py-1">✕</button>
+                <button type="button" onclick="cerrarModalCierreZ()" class="text-xs font-semibold text-slate-500 hover:text-rose-500 px-2 py-1">✕</button>
             </div>
             <div id="contenido-cierre-z" class="space-y-2 text-xs text-slate-700 dark:text-slate-300"></div>
             <div class="space-y-2 pt-2 border-t border-slate-100 dark:border-slate-800">
@@ -185,14 +233,14 @@
         </div>
     </div>
 
-    <!-- Modal de Mini-Tienda Online -->
+    <!-- Modal de Catálogo Digital -->
     <div id="modal-catalogo-web" class="fixed inset-0 bg-slate-950/75 z-50 flex items-center justify-center p-4 hidden">
         <div class="bg-white dark:bg-slate-900 rounded-2xl max-w-sm w-full p-4 space-y-3 shadow-xl border border-slate-200 dark:border-slate-800">
             <div class="flex justify-between items-center border-b border-slate-100 dark:border-slate-800 pb-2">
                 <h3 class="text-sm font-bold text-slate-800 dark:text-white">Catálogo Digital</h3>
-                <button type="button" onclick="cerrarModalCatalogoWeb()" class="text-xs font-semibold text-slate-500 hover:text-red-500 px-2 py-1">✕</button>
+                <button type="button" onclick="cerrarModalCatalogoWeb()" class="text-xs font-semibold text-slate-500 hover:text-rose-500 px-2 py-1">✕</button>
             </div>
-            <p class="text-xs text-slate-500 dark:text-slate-400">Comparte el enlace de tu catálogo para recibir pedidos directos por WhatsApp.</p>
+            <p id="catalogo-modal-whatsapp-info" class="text-xs text-slate-500 dark:text-slate-400"></p>
             <div class="bg-slate-100 dark:bg-slate-800 p-2 rounded-xl flex items-center gap-2">
                 <input type="text" id="input-enlace-catalogo" readonly class="flex-1 bg-transparent text-[11px] font-mono text-slate-700 dark:text-slate-200 outline-none select-all" value="./catalogo.html">
                 <button type="button" onclick="copiarEnlaceCatalogo()" class="bg-blue-600 text-white px-3 py-1.5 rounded-lg text-xs font-medium hover:bg-blue-700 whitespace-nowrap">Copiar</button>
@@ -203,10 +251,10 @@
         </div>
     </div>
 
-    <!-- Modal de PIN de Empleado / Rol -->
+    <!-- Modal de PIN de Dueño -->
     <div id="modal-pin-rol" class="fixed inset-0 bg-slate-950/80 z-50 flex items-center justify-center p-4 hidden">
         <div class="bg-white dark:bg-slate-900 rounded-2xl max-w-xs w-full p-5 space-y-4 shadow-xl border border-slate-200 dark:border-slate-800 text-center">
-            <h3 class="text-sm font-bold text-slate-800 dark:text-white">Acceso de Administrador</h3>
+            <h3 class="text-sm font-bold text-slate-800 dark:text-white">Acceso de Dueño</h3>
             <p class="text-xs text-slate-500 dark:text-slate-400">Ingresa el PIN de 4 dígitos para activar el modo dueño.</p>
             <input type="password" id="input-pin-admin" maxlength="4" class="w-full p-2.5 text-center text-base tracking-[0.4em] font-mono border border-slate-200 dark:border-slate-700 dark:bg-slate-800 rounded-xl outline-none" placeholder="••••">
             <div class="grid grid-cols-2 gap-2">
@@ -221,7 +269,7 @@
         <div class="bg-white dark:bg-slate-900 rounded-2xl max-w-xs w-full p-4 space-y-3 shadow-xl border border-slate-200 dark:border-slate-800">
             <div class="flex justify-between items-center border-b border-slate-100 dark:border-slate-800 pb-2">
                 <h3 class="text-sm font-bold text-slate-800 dark:text-white">Comprobante</h3>
-                <button type="button" onclick="cerrarModalTicket()" class="text-xs font-semibold text-slate-500 hover:text-red-500 px-2 py-1">✕</button>
+                <button type="button" onclick="cerrarModalTicket()" class="text-xs font-semibold text-slate-500 hover:text-rose-500 px-2 py-1">✕</button>
             </div>
             <div id="ticket-contenido-visual" class="bg-amber-50/70 text-slate-900 p-3 rounded-xl font-mono text-[11px] leading-relaxed border border-dashed border-slate-300 space-y-1"></div>
             <div class="space-y-1.5 pt-1">
@@ -237,13 +285,11 @@
         </div>
     </div>
 
-    <!-- Encabezado Limpio y Compacto con Botón de Menú Lateral (sin Guía duplicada) -->
+    <!-- Encabezado -->
     <header class="bg-blue-600 dark:bg-slate-900 text-white border-b border-blue-700/40 dark:border-slate-800 sticky top-0 z-30 transition-colors">
         <div class="max-w-md mx-auto px-3 py-2.5 flex items-center justify-between gap-2">
             <div class="flex items-start gap-2 min-w-0 flex-1">
-                <button type="button" onclick="abrirMenuLateral()" aria-label="Abrir menú lateral" class="mt-0.5 text-sm bg-white/15 hover:bg-white/25 px-2.5 py-1.5 rounded-lg transition shrink-0 font-bold">
-                    ☰
-                </button>
+                <button type="button" onclick="abrirMenuLateral()" aria-label="Abrir menú lateral" class="mt-0.5 text-sm bg-white/15 hover:bg-white/25 px-2.5 py-1.5 rounded-lg transition shrink-0 font-bold">☰</button>
                 <div class="min-w-0 flex-1">
                     <div class="flex items-center gap-1.5 flex-wrap">
                         <h1 class="text-sm font-bold tracking-tight truncate">Gestor Pro</h1>
@@ -251,8 +297,7 @@
                         <span id="badge-rol-actual" onclick="clicBadgeRol()" class="text-[10px] bg-white/15 hover:bg-white/25 text-white font-medium px-2 py-0.5 rounded-full cursor-pointer whitespace-nowrap shrink-0 transition" title="Toca para cambiar rol">Dueño</span>
                         <span id="badge-offline-status" class="text-[10px] bg-emerald-500/25 text-emerald-100 px-1.5 py-0.5 rounded-full font-medium whitespace-nowrap shrink-0" title="Estado de conexión">Online</span>
                     </div>
-                    <select id="select-negocio-activo" onchange="cambiarNegocioActivo(this.value)" class="mt-1 max-w-full text-xs bg-blue-700/80 dark:bg-slate-800 text-white font-medium px-2.5 py-1 rounded-lg outline-none border border-blue-400/30 dark:border-slate-700 truncate">
-                    </select>
+                    <select id="select-negocio-activo" onchange="cambiarNegocioActivo(this.value)" class="mt-1 max-w-full text-xs bg-blue-700/80 dark:bg-slate-800 text-white font-medium px-2.5 py-1 rounded-lg outline-none border border-blue-400/30 dark:border-slate-700 truncate"></select>
                 </div>
             </div>
             <div class="flex items-center gap-1.5 shrink-0">
@@ -261,10 +306,10 @@
         </div>
     </header>
 
-    <!-- Contenedor Principal (sin barra inferior fija) -->
+    <!-- Contenedor Principal -->
     <main class="flex-1 max-w-md w-full mx-auto px-4 pt-4 pb-24 space-y-4">
-        
-        <!-- Sección 1: Resumen (sin Cierre Z ni Catálogo Web, que viven en el menú lateral) -->
+
+        <!-- Sección 1: Resumen -->
         <section id="tab-resumen" class="space-y-4">
             <div id="alerta-bi-container" class="bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-800/70 text-amber-900 dark:text-amber-200 p-3.5 rounded-2xl text-xs space-y-1 hidden">
                 <p class="font-semibold">Alerta de inventario bajo</p>
@@ -304,7 +349,6 @@
                 </div>
             </div>
 
-            <!-- Gráficos Estadísticos -->
             <div class="bg-white dark:bg-slate-900 p-4 rounded-2xl shadow-xs border border-slate-200/80 dark:border-slate-800 space-y-3">
                 <div class="flex justify-between items-center gap-2">
                     <h3 class="text-sm font-bold text-slate-800 dark:text-white">Rendimiento</h3>
@@ -318,7 +362,6 @@
                 </div>
             </div>
 
-            <!-- Reporte PDF (Función Pro) -->
             <div class="bg-white dark:bg-slate-900 p-4 rounded-2xl shadow-xs border border-slate-200/80 dark:border-slate-800 space-y-2.5 admin-only">
                 <div class="flex items-center justify-between">
                     <h3 class="text-xs font-semibold text-slate-600 dark:text-slate-300">Reportes ejecutivos</h3>
@@ -343,9 +386,7 @@
             <div class="bg-white dark:bg-slate-900 p-4 rounded-2xl shadow-xs border border-slate-200/80 dark:border-slate-800 space-y-3">
                 <div class="flex justify-between items-center gap-2">
                     <h2 class="text-sm font-bold text-slate-800 dark:text-white">Producto</h2>
-                    <button type="button" onclick="escanearCodigoBarrasInventario()" class="bg-indigo-600 text-white text-xs px-3 py-1.5 rounded-xl font-semibold hover:bg-indigo-700 transition whitespace-nowrap">
-                        📷 Escanear
-                    </button>
+                    <button type="button" onclick="escanearCodigoBarrasInventario()" class="bg-indigo-600 text-white text-xs px-3 py-1.5 rounded-xl font-semibold hover:bg-indigo-700 transition whitespace-nowrap">📷 Escanear</button>
                 </div>
                 <form id="form-producto" class="space-y-3">
                     <div>
@@ -420,12 +461,13 @@
                 <div id="lista-proveedores" class="space-y-2 pt-1"></div>
             </div>
 
-            <!-- Carga de factura OCR (Pro) -->
+            <!-- Factura / Comprobante -->
             <div class="bg-white dark:bg-slate-900 p-4 rounded-2xl shadow-xs border border-slate-200/80 dark:border-slate-800 space-y-2">
                 <div class="flex items-center justify-between">
-                    <p class="text-xs font-bold text-slate-700 dark:text-slate-200">Carga rápida desde factura (OCR)</p>
+                    <p class="text-xs font-bold text-slate-700 dark:text-slate-200">Adjuntar foto de factura</p>
                     <span class="pro-tag text-[9px] font-bold bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300 px-1.5 py-0.5 rounded-full">PRO</span>
                 </div>
+                <p class="text-[11px] text-slate-500 dark:text-slate-400">Sin motor OCR externo instalado, la lectura automática no está disponible; al elegir una imagen se enfoca el formulario para cargarlo manualmente.</p>
                 <input type="file" id="input-ocr-factura" accept="image/*" onclick="return interceptarInputOCR(event)" onchange="procesarFacturaOCR(event)" class="w-full text-xs text-slate-500 file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 cursor-pointer">
             </div>
         </section>
@@ -463,9 +505,7 @@
             <div class="bg-white dark:bg-slate-900 p-4 rounded-2xl shadow-xs border border-slate-200/80 dark:border-slate-800 space-y-3">
                 <div class="flex justify-between items-center gap-2">
                     <h2 class="text-sm font-bold text-slate-800 dark:text-white">Nueva venta o fiado</h2>
-                    <button type="button" onclick="escanearVentaCodigoBarras()" class="bg-indigo-600 text-white text-xs px-3 py-1.5 rounded-xl font-semibold hover:bg-indigo-700 transition whitespace-nowrap shrink-0">
-                        📷 Escanear
-                    </button>
+                    <button type="button" onclick="escanearVentaCodigoBarras()" class="bg-indigo-600 text-white text-xs px-3 py-1.5 rounded-xl font-semibold hover:bg-indigo-700 transition whitespace-nowrap shrink-0">📷 Escanear</button>
                 </div>
                 <form id="form-venta" class="space-y-3">
                     <div>
@@ -584,7 +624,7 @@
             </div>
         </section>
 
-        <!-- Sección 5: Audios y Avisos Sonoros -->
+        <!-- Sección 5: Audios -->
         <section id="tab-audios" class="space-y-4 hidden">
             <div class="bg-white dark:bg-slate-900 p-4 rounded-2xl shadow-xs border border-slate-200/80 dark:border-slate-800 space-y-3">
                 <div class="flex justify-between items-center">
@@ -628,7 +668,6 @@
                 </div>
             </div>
 
-            <!-- Audio Personalizado (Función Pro) -->
             <div class="bg-white dark:bg-slate-900 p-4 rounded-2xl shadow-xs border border-slate-200/80 dark:border-slate-800 space-y-2.5">
                 <div class="flex items-center justify-between gap-2">
                     <h3 class="text-sm font-bold text-slate-800 dark:text-white">Audio personalizado de notificación</h3>
@@ -646,11 +685,11 @@
             </div>
         </section>
 
-        <!-- Sección 6: Código QR Empleado y Vinculación (Sección Independiente · Exclusiva Pro) -->
+        <!-- Sección 6: QR Empleado / Socio y Vinculación -->
         <section id="tab-qr-empleado" class="space-y-4 hidden">
             <div id="aviso-bloqueo-qr-pro" class="bg-amber-50 dark:bg-amber-950/40 border border-amber-300 dark:border-amber-800 text-amber-900 dark:text-amber-200 p-3.5 rounded-2xl text-xs space-y-2 hidden">
                 <p class="font-bold">Sección exclusiva de Modo Pro</p>
-                <p class="text-[11px]">Activa el Modo Pro para generar QR de empleado, vincular/desvincular teléfonos y controlar permisos.</p>
+                <p class="text-[11px]">Activa el Modo Pro para generar QR de empleado o socio, vincular/desvincular teléfonos y controlar permisos.</p>
                 <button type="button" onclick="cambiarTab('pro')" class="bg-amber-600 text-white font-semibold px-3 py-1.5 rounded-xl text-xs hover:bg-amber-700 transition">Ir a Modo Pro</button>
             </div>
 
@@ -667,7 +706,7 @@
                     <div class="bg-slate-50 dark:bg-slate-800/80 p-3 rounded-xl border border-slate-200/70 dark:border-slate-700 flex items-center justify-between gap-3">
                         <div class="min-w-0">
                             <p class="text-xs font-semibold text-slate-700 dark:text-slate-200">QR de empleado por empleado</p>
-                            <p id="estado-permiso-qr-empleado" class="text-[11px] text-slate-500 dark:text-slate-400">Decisión del Socio: Bloqueado para empleados</p>
+                            <p id="estado-permiso-qr-empleado" class="text-[11px] text-slate-500 dark:text-slate-400">Decisión del Dueño/Socio: Bloqueado para empleados</p>
                         </div>
                         <label class="inline-flex items-center gap-1.5 text-xs font-semibold cursor-pointer shrink-0">
                             <input type="checkbox" id="chk-socio-permite-qr-empleado" onchange="togglePermisoQrEmpleado()" class="w-4 h-4 accent-blue-600 rounded">
@@ -683,7 +722,7 @@
                         </select>
                     </div>
 
-                    <button type="button" onclick="requierePro(mostrarCodigoQR, 'QR de empleado')" class="w-full bg-blue-600 text-white font-semibold py-2.5 rounded-xl text-xs hover:bg-blue-700 transition">Mostrar código QR</button>
+                    <button type="button" onclick="requierePro(mostrarCodigoQR, 'QR de empleado o socio')" class="w-full bg-blue-600 text-white font-semibold py-2.5 rounded-xl text-xs hover:bg-blue-700 transition">Mostrar código QR</button>
                     <div id="qr-display-container" class="hidden bg-slate-50 dark:bg-slate-800 p-3 rounded-xl text-center space-y-2 border border-slate-200 dark:border-slate-700">
                         <div id="qr-image-box" class="flex justify-center"></div>
                         <p id="qr-text-code" class="text-[11px] font-mono text-slate-600 dark:text-slate-300 select-all bg-white dark:bg-slate-900 p-1.5 rounded-lg"></p>
@@ -703,15 +742,13 @@
                         </div>
                         <span id="contador-dispositivos-vinculados" class="text-[11px] text-slate-400">0 equipos</span>
                     </div>
-
                     <div id="lista-dispositivos-vinculados" class="space-y-2"></div>
-
                     <button type="button" onclick="requierePro(desvincularTodosDispositivos, 'Desvincular teléfonos')" class="w-full bg-rose-600 text-white font-semibold py-2 rounded-xl text-xs hover:bg-rose-700 transition">Desvincular todos los teléfonos</button>
                 </div>
             </div>
         </section>
 
-        <!-- Sección 7: Modo Pro (Ver Anuncios, Pagar y Apagar Anuncios) -->
+        <!-- Sección 7: Modo Pro -->
         <section id="tab-pro" class="space-y-4 hidden">
             <div id="seccion-modo-pro" class="bg-white dark:bg-slate-900 p-4 rounded-2xl shadow-xs border border-amber-300/80 dark:border-amber-700/60 space-y-3">
                 <div class="flex justify-between items-center">
@@ -719,7 +756,7 @@
                     <span id="badge-pro-estado" class="bg-rose-100 text-rose-700 dark:bg-rose-950 dark:text-rose-300 text-[11px] px-2.5 py-0.5 rounded-full font-semibold">Inactivo</span>
                 </div>
                 <p id="texto-pro-estado" class="text-xs text-slate-500 dark:text-slate-400">Sin Modo Pro las funciones Pro quedan bloqueadas y se muestran anuncios. Al activar Modo Pro se apagan los anuncios y se habilitan todas las funciones Pro.</p>
-                
+
                 <div class="bg-slate-50 dark:bg-slate-800/70 p-3 rounded-xl text-xs space-y-1 border border-slate-100 dark:border-slate-800">
                     <p class="font-semibold text-slate-700 dark:text-slate-200">Planes disponibles</p>
                     <p>• <b>Mensual:</b> $5 (promoción: 1er pago incluye 2do mes)</p>
@@ -729,13 +766,32 @@
                 <div class="space-y-2">
                     <button type="button" onclick="abrirModalPasarelaSuscripcion('mensual')" class="w-full bg-emerald-600 text-white font-semibold py-2.5 rounded-xl text-xs hover:bg-emerald-700 transition">Pagar Plan Mensual ($5)</button>
                     <button type="button" onclick="abrirModalPasarelaSuscripcion('anual')" class="w-full bg-blue-600 text-white font-semibold py-2.5 rounded-xl text-xs hover:bg-blue-700 transition">Pagar Plan Anual ($45)</button>
-                    <button type="button" onclick="verAnuncioBonificadoPro()" class="w-full bg-amber-600 text-white font-semibold py-2 rounded-xl text-xs hover:bg-amber-700 transition">Ver anuncio · Activar 12h (apaga anuncios)</button>
+                    <button type="button" onclick="verAnuncioBonificadoPro()" class="w-full bg-amber-600 text-white font-semibold py-2 rounded-xl text-xs hover:bg-amber-700 transition">Bono de prueba 12h (apaga anuncios)</button>
                 </div>
             </div>
         </section>
 
         <!-- Sección 8: Ajustes Generales -->
         <section id="tab-ajustes" class="space-y-4 hidden">
+            <div class="bg-white dark:bg-slate-900 p-4 rounded-2xl shadow-xs border border-slate-200/80 dark:border-slate-800 space-y-3 admin-only">
+                <h2 class="text-sm font-bold text-slate-800 dark:text-white">Datos del negocio y catálogo</h2>
+                <div class="grid grid-cols-1 gap-2.5 text-xs">
+                    <div>
+                        <label class="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-1">Nombre del dueño</label>
+                        <input type="text" id="input-nombre-dueno" class="w-full p-2.5 border border-slate-200 dark:border-slate-700 dark:bg-slate-800 rounded-xl outline-none" placeholder="Nombre del propietario">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-1">Nombre del negocio</label>
+                        <input type="text" id="input-nombre-negocio" class="w-full p-2.5 border border-slate-200 dark:border-slate-700 dark:bg-slate-800 rounded-xl outline-none" placeholder="Nombre de la sucursal">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-1">WhatsApp de pedidos del catálogo</label>
+                        <input type="tel" id="input-whatsapp-negocio" class="w-full p-2.5 border border-slate-200 dark:border-slate-700 dark:bg-slate-800 rounded-xl outline-none" placeholder="Ej. 04121234567 o 584121234567">
+                    </div>
+                </div>
+                <button type="button" onclick="guardarDatosNegocio()" class="w-full bg-blue-600 text-white font-semibold py-2.5 rounded-xl text-xs hover:bg-blue-700 transition">Guardar datos del negocio</button>
+            </div>
+
             <div class="bg-white dark:bg-slate-900 p-4 rounded-2xl shadow-xs border border-slate-200/80 dark:border-slate-800 space-y-3 admin-only">
                 <div class="flex items-center justify-between">
                     <h2 class="text-sm font-bold text-slate-800 dark:text-white">Multi-sucursal</h2>
@@ -763,7 +819,7 @@
                     </div>
                 </div>
                 <div class="space-y-1.5 pt-2 border-t border-slate-100 dark:border-slate-800 admin-only">
-                    <label class="block text-xs font-medium text-slate-500 dark:text-slate-400">PIN de administrador (4 dígitos)</label>
+                    <label class="block text-xs font-medium text-slate-500 dark:text-slate-400">PIN de dueño (4 dígitos)</label>
                     <div class="flex gap-2">
                         <input type="password" id="input-nuevo-pin" maxlength="4" class="flex-1 p-2.5 text-xs border border-slate-200 dark:border-slate-700 dark:bg-slate-800 rounded-xl outline-none" placeholder="Nuevo PIN">
                         <button type="button" onclick="cambiarPinAdmin()" class="bg-slate-800 dark:bg-slate-700 text-white px-3.5 py-2.5 rounded-xl text-xs font-semibold hover:bg-slate-900 transition whitespace-nowrap">Actualizar</button>
@@ -771,7 +827,6 @@
                 </div>
             </div>
 
-            <!-- Respaldos JSON (Función Pro) -->
             <div class="bg-white dark:bg-slate-900 p-4 rounded-2xl shadow-xs border border-slate-200/80 dark:border-slate-800 space-y-2.5">
                 <div class="flex items-center justify-between gap-2">
                     <h2 class="text-sm font-bold text-slate-800 dark:text-white">Respaldo de datos (JSON)</h2>
@@ -794,7 +849,7 @@
 
     </main>
 
-    <!-- Contenedor Fijo de Anuncio Banner AdMob (sin barra inferior) -->
+    <!-- Banner de Anuncio AdMob -->
     <div id="admob-banner-container" class="fixed bottom-0 left-0 right-0 bg-white dark:bg-slate-900 border-t border-slate-200/80 dark:border-slate-800 min-h-[52px] flex flex-col justify-center items-center z-20 max-w-md mx-auto overflow-hidden">
         <ins class="adsbygoogle"
              style="display:inline-block;width:320px;height:50px"
@@ -805,7 +860,7 @@
         </script>
     </div>
 
-    <!-- Script de Firebase Firestore con Control de Concurrencia y Sincronización Segura (Solo Pro) -->
+    <!-- Firebase Firestore (Solo Pro) -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/13.3.0/firebase-app.js";
         import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/13.3.0/firebase-firestore.js";
@@ -823,8 +878,8 @@
         const db = getFirestore(app);
 
         let currentSyncCode = localStorage.getItem('gestorpro_sync_code') || '';
-        if(!currentSyncCode) {
-            currentSyncCode = 'dispositivo_' + Math.random().toString(36).substring(2, 10);
+        if (!currentSyncCode) {
+            currentSyncCode = 'negocio_' + Math.random().toString(36).substring(2, 10);
             localStorage.setItem('gestorpro_sync_code', currentSyncCode);
         }
 
@@ -832,6 +887,7 @@
         let isRemoteUpdate = false;
 
         window.configurarSincronizacionNube = function(code) {
+            if (!code) return;
             currentSyncCode = code;
             localStorage.setItem('gestorpro_sync_code', code);
             if (typeof window.esProActivo === 'function' && window.esProActivo()) {
@@ -850,21 +906,19 @@
             if (typeof window.esProActivo !== 'function' || !window.esProActivo()) return;
 
             const docRef = doc(db, "negocios", code);
-
             unsubscribe = onSnapshot(docRef, (snap) => {
                 if (typeof window.esProActivo !== 'function' || !window.esProActivo()) return;
                 if (snap.exists() && snap.data().data) {
                     try {
-                        const nubeRemotaStr = snap.data().data;
-                        const nubeObj = JSON.parse(nubeRemotaStr);
+                        const nubeObj = JSON.parse(snap.data().data);
                         const remotoTime = nubeObj.lastModified || 0;
-                        const localTime = parseInt(localStorage.getItem('gestorpro_last_modified')) || 0;
+                        const localTime = parseInt(localStorage.getItem('gestorpro_last_modified'), 10) || 0;
 
-                        if (remotoTime > localTime) {
+                        if (remotoTime > localTime && Array.isArray(nubeObj.negocios)) {
                             isRemoteUpdate = true;
-                            negocios = nubeObj.negocios;
-                            localStorage.setItem('multinegocios', JSON.stringify(negocios));
-                            localStorage.setItem('gestorpro_last_modified', remotoTime);
+                            window.negocios = nubeObj.negocios;
+                            localStorage.setItem('multinegocios', JSON.stringify(window.negocios));
+                            localStorage.setItem('gestorpro_last_modified', String(remotoTime));
                             if (typeof window.recargarDatosApp === 'function') {
                                 window.recargarDatosApp();
                             }
@@ -885,22 +939,21 @@
                 const docRef = doc(db, "negocios", currentSyncCode);
                 await setDoc(docRef, { data: datosJsonWrapper, actualizado: Date.now() });
                 actualizarEstadoConexionOffline(true);
-            } catch(e) {
-                console.error("Error al sincronizar con la nube (Modo Offline activo):", e);
+            } catch (e) {
+                console.error("Error al sincronizar con la nube:", e);
                 actualizarEstadoConexionOffline(false);
             }
         };
 
         function actualizarEstadoConexionOffline(online) {
             const badge = document.getElementById('badge-offline-status');
-            if(badge) {
-                if(online) {
-                    badge.innerText = "Online";
-                    badge.className = "text-[10px] bg-emerald-500/25 text-emerald-100 px-1.5 py-0.5 rounded-full font-medium whitespace-nowrap shrink-0";
-                } else {
-                    badge.innerText = "Offline";
-                    badge.className = "text-[10px] bg-amber-500/30 text-amber-100 px-1.5 py-0.5 rounded-full font-medium whitespace-nowrap shrink-0";
-                }
+            if (!badge) return;
+            if (online) {
+                badge.innerText = "Online";
+                badge.className = "text-[10px] bg-emerald-500/25 text-emerald-100 px-1.5 py-0.5 rounded-full font-medium whitespace-nowrap shrink-0";
+            } else {
+                badge.innerText = "Offline";
+                badge.className = "text-[10px] bg-amber-500/30 text-amber-100 px-1.5 py-0.5 rounded-full font-medium whitespace-nowrap shrink-0";
             }
         }
 
@@ -914,12 +967,10 @@
 
     <script>
         if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.getRegistrations().then(function(registrations) {
-                for(let registration of registrations) {
-                    registration.update();
-                }
+            navigator.serviceWorker.getRegistrations().then((registrations) => {
+                registrations.forEach((reg) => reg.update());
             });
-            navigator.serviceWorker.register('./sw.js?v=20261118j').catch(err => console.log('SW error:', err));
+            navigator.serviceWorker.register('./sw.js?v=20261118k').catch((err) => console.log('SW error:', err));
         }
 
         const SECCIONES_VALIDAS = ['resumen', 'inventario', 'ventas', 'finanzas', 'audios', 'qr-empleado', 'pro', 'ajustes'];
@@ -929,7 +980,7 @@
             ventas: 'Ventas',
             finanzas: 'Caja',
             audios: 'Audios',
-            'qr-empleado': 'QR Empleado',
+            'qr-empleado': 'QR Equipo',
             pro: 'Modo Pro',
             ajustes: 'Ajustes'
         };
@@ -943,6 +994,13 @@
             customNombre: ''
         };
         let audioPersonalizadoDataUrl = localStorage.getItem('gestorpro_audio_custom_src') || '';
+
+        function normalizarTelefono(raw) {
+            const limpio = String(raw || '').replace(/\D/g, '');
+            if (!limpio) return '';
+            if (limpio.startsWith('0') && limpio.length === 11) return '58' + limpio.slice(1);
+            return limpio;
+        }
 
         function sincronizarControlesAudio() {
             const hab = document.getElementById('audio-habilitado');
@@ -1132,7 +1190,7 @@
 
         function mostrarToast(mensaje, tipo = 'success') {
             const container = document.getElementById('toast-container');
-            if(!container) return;
+            if (!container) return;
             const toast = document.createElement('div');
             toast.className = `p-3 rounded-xl text-xs font-medium text-white shadow-lg pointer-events-auto transition transform translate-y-1 opacity-0 ${tipo === 'success' ? 'bg-emerald-600' : (tipo === 'error' ? 'bg-rose-600' : 'bg-slate-800')}`;
             toast.innerText = mensaje;
@@ -1141,7 +1199,7 @@
             setTimeout(() => {
                 toast.classList.add('translate-y-1', 'opacity-0');
                 setTimeout(() => toast.remove(), 250);
-            }, 2400);
+            }, 2500);
         }
 
         function esProActivo() {
@@ -1163,7 +1221,7 @@
         function interceptarInputOCR(event) {
             if (!esProActivo()) {
                 event.preventDefault();
-                requierePro(null, 'La carga de factura por OCR');
+                requierePro(null, 'Adjuntar factura');
                 return false;
             }
             return true;
@@ -1225,7 +1283,7 @@
             if (estadoPermiso) {
                 estadoPermiso.innerText = !proOk
                     ? 'Bloqueado (requiere Modo Pro)'
-                    : (permitido ? 'Decisión del Socio: Permitido para empleados' : 'Decisión del Socio: Bloqueado para empleados');
+                    : (permitido ? 'Autorizado para empleados' : 'Bloqueado para empleados');
             }
 
             actualizarEtiquetaTipoConexion();
@@ -1268,6 +1326,9 @@
                 if (rolActual === 'dueño') {
                     badge.innerText = "Dueño";
                     badge.className = "text-[10px] bg-white/15 hover:bg-white/25 text-white font-medium px-2 py-0.5 rounded-full cursor-pointer whitespace-nowrap shrink-0 transition";
+                } else if (rolActual === 'socio') {
+                    badge.innerText = "Socio";
+                    badge.className = "text-[10px] bg-indigo-400/30 text-indigo-100 font-medium px-2 py-0.5 rounded-full cursor-pointer whitespace-nowrap shrink-0 transition";
                 } else {
                     badge.innerText = "Empleado";
                     badge.className = "text-[10px] bg-amber-400/25 text-amber-100 font-medium px-2 py-0.5 rounded-full cursor-pointer whitespace-nowrap shrink-0 transition";
@@ -1287,7 +1348,7 @@
         }
 
         function clicBadgeRol() {
-            if (rolActual === 'empleado') {
+            if (rolActual !== 'dueño') {
                 document.getElementById('modal-pin-rol').classList.remove('hidden');
                 document.getElementById('input-pin-admin').value = '';
                 document.getElementById('input-pin-admin').focus();
@@ -1320,7 +1381,7 @@
         }
 
         function cambiarPinAdmin() {
-            if (rolActual === 'empleado') return mostrarToast('Solo disponible para el Dueño.', 'error');
+            if (rolActual === 'empleado') return mostrarToast('Solo disponible para el Dueño o Socio.', 'error');
             const nuevoPin = document.getElementById('input-nuevo-pin').value.trim();
             if (nuevoPin.length !== 4 || isNaN(nuevoPin)) {
                 return mostrarToast('El PIN debe tener 4 dígitos numéricos.', 'error');
@@ -1352,8 +1413,24 @@
         aplicarTemaInicial();
 
         let negocios = JSON.parse(localStorage.getItem('multinegocios')) || [
-            { id: 1, nombre: 'Mi Negocio Principal', capitalInicial: 0, tasaCambio: 36.50, inventario: [], ventas: [], deudas: [], finanzas: [], proveedores: [], socioPermiteQrEmpleado: false, dispositivosVinculados: [], syncCode: localStorage.getItem('gestorpro_sync_code') || ('dispositivo_' + Math.random().toString(36).substring(2, 10)) }
+            {
+                id: 1,
+                nombre: 'Mi Negocio Principal',
+                duenoNombre: '',
+                whatsapp: '',
+                capitalInicial: 0,
+                tasaCambio: 36.50,
+                inventario: [],
+                ventas: [],
+                deudas: [],
+                finanzas: [],
+                proveedores: [],
+                socioPermiteQrEmpleado: false,
+                dispositivosVinculados: [],
+                syncCode: localStorage.getItem('gestorpro_sync_code') || ('negocio_' + Math.random().toString(36).substring(2, 10))
+            }
         ];
+        window.negocios = negocios;
 
         function purgarRegistrosAntiguos() {
             const UN_ANO_EN_MS = 365 * 24 * 60 * 60 * 1000;
@@ -1361,17 +1438,17 @@
             let huboCambios = false;
 
             negocios.forEach(neg => {
-                if (neg.ventas && Array.isArray(neg.ventas)) {
-                    const ventasFiltradas = neg.ventas.filter(v => (ahora - (v.id || 0)) < UN_ANO_EN_MS);
-                    if (ventasFiltradas.length !== neg.ventas.length) {
-                        neg.ventas = ventasFiltradas;
+                if (Array.isArray(neg.ventas)) {
+                    const filtradas = neg.ventas.filter(v => (ahora - (v.id || 0)) < UN_ANO_EN_MS);
+                    if (filtradas.length !== neg.ventas.length) {
+                        neg.ventas = filtradas;
                         huboCambios = true;
                     }
                 }
-                if (neg.finanzas && Array.isArray(neg.finanzas)) {
-                    const finanzasFiltradas = neg.finanzas.filter(f => (ahora - (f.id || 0)) < UN_ANO_EN_MS);
-                    if (finanzasFiltradas.length !== neg.finanzas.length) {
-                        neg.finanzas = finanzasFiltradas;
+                if (Array.isArray(neg.finanzas)) {
+                    const filtradas = neg.finanzas.filter(f => (ahora - (f.id || 0)) < UN_ANO_EN_MS);
+                    if (filtradas.length !== neg.finanzas.length) {
+                        neg.finanzas = filtradas;
                         huboCambios = true;
                     }
                 }
@@ -1383,44 +1460,165 @@
         }
         purgarRegistrosAntiguos();
 
-        const defaultSync = localStorage.getItem('gestorpro_sync_code') || ('dispositivo_' + Math.random().toString(36).substring(2, 10));
+        const defaultSync = localStorage.getItem('gestorpro_sync_code') || ('negocio_' + Math.random().toString(36).substring(2, 10));
         negocios.forEach(n => {
-            if(!n.syncCode) n.syncCode = defaultSync;
-            if(n.tasaCambio === undefined) n.tasaCambio = 36.50;
-            if(!n.proveedores) n.proveedores = [];
-            if(n.socioPermiteQrEmpleado === undefined) n.socioPermiteQrEmpleado = false;
-            if(!Array.isArray(n.dispositivosVinculados)) n.dispositivosVinculados = [];
+            if (!n.syncCode) n.syncCode = defaultSync;
+            if (n.duenoNombre === undefined) n.duenoNombre = '';
+            if (n.whatsapp === undefined) n.whatsapp = '';
+            if (n.capitalInicial === undefined) n.capitalInicial = 0;
+            if (n.tasaCambio === undefined) n.tasaCambio = 36.50;
+            if (!n.proveedores) n.proveedores = [];
+            if (n.socioPermiteQrEmpleado === undefined) n.socioPermiteQrEmpleado = false;
+            if (!Array.isArray(n.dispositivosVinculados)) n.dispositivosVinculados = [];
         });
 
-        let negocioActualId = parseInt(localStorage.getItem('negocioActualId')) || negocios[0].id;
+        let negocioActualId = parseInt(localStorage.getItem('negocioActualId'), 10) || negocios[0].id;
         if (!esProActivo()) {
             negocioActualId = negocios[0].id;
-            localStorage.setItem('negocioActualId', negocioActualId);
+            localStorage.setItem('negocioActualId', String(negocioActualId));
         }
 
-        let onboardingVisto = localStorage.getItem('onboardingVisto') === 'true';
         let editandoProductoId = null;
         let ticketActualData = null;
         let chartInstance = null;
+        let deudaAbonoPendienteId = null;
+        let vinculoInicialEscaneando = false;
 
-        if (!onboardingVisto) {
-            document.getElementById('modal-onboarding').classList.remove('hidden');
+        // Flujo de Inicio: Registro Dueño vs Vincular Empleado/Socio
+        function alternarModoInicio(modo) {
+            const formDueno = document.getElementById('form-registro-dueno');
+            const panelVincular = document.getElementById('panel-vincular-equipo');
+            const btnReg = document.getElementById('btn-modo-registro-dueno');
+            const btnVinc = document.getElementById('btn-modo-vincular-equipo');
+
+            if (modo === 'vincular') {
+                formDueno?.classList.add('hidden');
+                panelVincular?.classList.remove('hidden');
+                if (btnVinc) btnVinc.className = 'py-2 rounded-lg bg-blue-600 text-white transition';
+                if (btnReg) btnReg.className = 'py-2 rounded-lg text-slate-600 dark:text-slate-300 transition';
+            } else {
+                formDueno?.classList.remove('hidden');
+                panelVincular?.classList.add('hidden');
+                if (btnReg) btnReg.className = 'py-2 rounded-lg bg-blue-600 text-white transition';
+                if (btnVinc) btnVinc.className = 'py-2 rounded-lg text-slate-600 dark:text-slate-300 transition';
+            }
+        }
+
+        function abrirAsistenteInicial() {
+            const neg = obtenerNegocio();
+            const dInput = document.getElementById('onb-dueno-nombre');
+            const nInput = document.getElementById('onb-negocio-nombre');
+            const wInput = document.getElementById('onb-negocio-whatsapp');
+            const cInput = document.getElementById('onb-capital-inicial');
+            if (dInput) dInput.value = neg.duenoNombre || '';
+            if (nInput) nInput.value = neg.nombre || '';
+            if (wInput) wInput.value = neg.whatsapp || '';
+            if (cInput) cInput.value = neg.capitalInicial || '';
+            alternarModoInicio('registro');
+            document.getElementById('modal-onboarding')?.classList.remove('hidden');
+        }
+
+        function completarRegistroDueno(event) {
+            event.preventDefault();
+            const duenoNombre = document.getElementById('onb-dueno-nombre').value.trim();
+            const nombreNeg = document.getElementById('onb-negocio-nombre').value.trim();
+            const whatsapp = normalizarTelefono(document.getElementById('onb-negocio-whatsapp').value.trim());
+            const capitalInicial = parseFloat(document.getElementById('onb-capital-inicial').value) || 0;
+            const pin = document.getElementById('onb-pin-dueno').value.trim();
+
+            if (!duenoNombre || !nombreNeg) {
+                return mostrarToast('Completa tu nombre y el nombre del negocio.', 'error');
+            }
+            if (!whatsapp || whatsapp.length < 8) {
+                return mostrarToast('Ingresa un número de WhatsApp válido para el catálogo.', 'error');
+            }
+            if (pin.length !== 4 || isNaN(pin)) {
+                return mostrarToast('El PIN debe tener 4 dígitos numéricos.', 'error');
+            }
+
+            const neg = negocios[0];
+            neg.duenoNombre = duenoNombre;
+            neg.nombre = nombreNeg;
+            neg.whatsapp = whatsapp;
+            neg.capitalInicial = capitalInicial;
+            negocioActualId = neg.id;
+
+            localStorage.setItem('gestorpro_pin', pin);
+            rolActual = 'dueño';
+            localStorage.setItem('gestorpro_rol', 'dueño');
+            localStorage.setItem('onboardingVisto', 'true');
+            document.getElementById('modal-onboarding')?.classList.add('hidden');
+
+            persistir();
+            mostrarToast('Negocio registrado correctamente.', 'success');
+        }
+
+        function escanearVinculoInicial() {
+            if (!esProActivo()) {
+                return requierePro(null, 'Escanear QR para vincular cuenta');
+            }
+            vinculoInicialEscaneando = true;
+            iniciarEscanerCamara('qr', 'Escanear QR de Cuenta');
+        }
+
+        function confirmarVinculoInicial() {
+            if (!esProActivo()) {
+                return requierePro(null, 'Vincular cuenta existente');
+            }
+            const rolElegido = document.getElementById('onb-rol-vinculo')?.value || 'empleado';
+            let codigo = document.getElementById('onb-codigo-vinculo')?.value.trim();
+            if (!codigo) {
+                return mostrarToast('Ingresa o escanea el código de vinculación.', 'error');
+            }
+
+            const prefijo = rolElegido === 'socio' ? 'SOC' : 'EMP';
+            if (!codigo.toUpperCase().startsWith('EMP-') && !codigo.toUpperCase().startsWith('SOC-')) {
+                codigo = `${prefijo}-${codigo}`;
+            }
+
+            const neg = obtenerNegocio();
+            neg.syncCode = codigo;
+            const yaExiste = neg.dispositivosVinculados.some(d => d.codigo === codigo);
+            if (!yaExiste) {
+                neg.dispositivosVinculados.unshift({
+                    id: Date.now() + Math.floor(Math.random() * 1000),
+                    rol: rolElegido,
+                    codigo,
+                    vinculadoEn: new Date().toLocaleTimeString()
+                });
+            }
+
+            rolActual = rolElegido;
+            localStorage.setItem('gestorpro_rol', rolElegido);
+            localStorage.setItem('onboardingVisto', 'true');
+            document.getElementById('modal-onboarding')?.classList.add('hidden');
+
+            if (typeof window.configurarSincronizacionNube === 'function') {
+                window.configurarSincronizacionNube(codigo);
+            }
+            persistir();
+            mostrarToast(`Vinculado como ${rolElegido === 'socio' ? 'Socio' : 'Empleado'}.`, 'success');
+        }
+
+        if (localStorage.getItem('onboardingVisto') !== 'true') {
+            alternarModoInicio('registro');
+            document.getElementById('modal-onboarding')?.classList.remove('hidden');
         }
 
         window.recargarDatosApp = function() {
             if (!esProActivo()) return;
             negocios = JSON.parse(localStorage.getItem('multinegocios')) || negocios;
-            negocioActualId = parseInt(localStorage.getItem('negocioActualId')) || negocios[0].id;
+            window.negocios = negocios;
+            negocioActualId = parseInt(localStorage.getItem('negocioActualId'), 10) || negocios[0].id;
             renderizarTodo();
         };
-
-        function abrirOnboarding() { document.getElementById('modal-onboarding').classList.remove('hidden'); }
-        function cerrarOnboarding() { localStorage.setItem('onboardingVisto', 'true'); document.getElementById('modal-onboarding').classList.add('hidden'); }
 
         function obtenerNegocio() {
             const idObjetivo = esProActivo() ? negocioActualId : negocios[0].id;
             let neg = negocios.find(n => n.id === idObjetivo);
-            if (!neg) { neg = negocios[0]; }
+            if (!neg) neg = negocios[0];
+            if (neg.duenoNombre === undefined) neg.duenoNombre = '';
+            if (neg.whatsapp === undefined) neg.whatsapp = '';
             if (neg.capitalInicial === undefined) neg.capitalInicial = 0;
             if (neg.tasaCambio === undefined) neg.tasaCambio = 36.50;
             if (!neg.deudas) neg.deudas = [];
@@ -1430,15 +1628,16 @@
             if (!neg.proveedores) neg.proveedores = [];
             if (neg.socioPermiteQrEmpleado === undefined) neg.socioPermiteQrEmpleado = false;
             if (!Array.isArray(neg.dispositivosVinculados)) neg.dispositivosVinculados = [];
-            if (!neg.syncCode) neg.syncCode = 'dispositivo_' + Math.random().toString(36).substring(2, 10);
+            if (!neg.syncCode) neg.syncCode = 'negocio_' + Math.random().toString(36).substring(2, 10);
             return neg;
         }
 
         function persistir() {
+            window.negocios = negocios;
             const timestamp = Date.now();
-            localStorage.setItem('gestorpro_last_modified', timestamp);
+            localStorage.setItem('gestorpro_last_modified', String(timestamp));
             localStorage.setItem('multinegocios', JSON.stringify(negocios));
-            localStorage.setItem('negocioActualId', negocioActualId);
+            localStorage.setItem('negocioActualId', String(negocioActualId));
 
             if (esProActivo()) {
                 const wrapperData = JSON.stringify({ lastModified: timestamp, negocios });
@@ -1447,6 +1646,21 @@
                 }
             }
             renderizarTodo();
+        }
+
+        function guardarDatosNegocio() {
+            if (rolActual === 'empleado') return mostrarToast('Solo disponible para el Dueño o Socio.', 'error');
+            const neg = obtenerNegocio();
+            const duenoNombre = document.getElementById('input-nombre-dueno')?.value.trim() || '';
+            const nombreNeg = document.getElementById('input-nombre-negocio')?.value.trim() || '';
+            const whatsapp = normalizarTelefono(document.getElementById('input-whatsapp-negocio')?.value.trim() || '');
+
+            if (!nombreNeg) return mostrarToast('El nombre del negocio no puede quedar vacío.', 'error');
+            neg.duenoNombre = duenoNombre;
+            neg.nombre = nombreNeg;
+            neg.whatsapp = whatsapp;
+            persistir();
+            mostrarToast('Datos del negocio y catálogo actualizados.', 'success');
         }
 
         let html5QrCode = null;
@@ -1471,9 +1685,8 @@
                         procesarCodigoEscaneado(decodedText);
                         cerrarEscaner();
                     },
-                    (errorMessage) => {}
-                ).catch(err => {
-                    console.error("Error cámara:", err);
+                    () => {}
+                ).catch(() => {
                     mostrarToast("No se pudo acceder a la cámara.", "error");
                     cerrarEscaner();
                 });
@@ -1481,6 +1694,7 @@
         }
 
         function cerrarEscaner() {
+            vinculoInicialEscaneando = false;
             if (html5QrCode) {
                 html5QrCode.stop().then(() => {
                     document.getElementById('modal-escaner').classList.add('hidden');
@@ -1528,45 +1742,33 @@
                 }
             } else if (modoEscaneoActual === 'qr') {
                 if (!esProActivo()) return requierePro(null, 'Vincular teléfono por QR');
-                document.getElementById('token-socio').value = codigo;
-                conectarSocio();
+                if (vinculoInicialEscaneando) {
+                    const inputIni = document.getElementById('onb-codigo-vinculo');
+                    if (inputIni) inputIni.value = codigo;
+                    confirmarVinculoInicial();
+                } else {
+                    document.getElementById('token-socio').value = codigo;
+                    conectarSocio();
+                }
             }
         }
 
         function procesarFacturaOCR(event) {
             if (!esProActivo()) {
                 event.target.value = '';
-                return requierePro(null, 'La carga de factura por OCR');
+                return requierePro(null, 'Adjuntar factura');
             }
             const archivo = event.target.files[0];
-            if(!archivo) return;
-            mostrarToast('Cargando producto desde factura...', 'info');
-            setTimeout(() => {
-                if (!esProActivo()) return requierePro(null, 'La carga de factura por OCR');
-                const neg = obtenerNegocio();
-                const nombreProdAuto = 'Producto Factura ' + Math.floor(Math.random() * 900 + 100);
-                neg.inventario.push({
-                    id: Date.now(),
-                    codigo: 'OCR-' + Math.floor(Math.random() * 90000 + 10000),
-                    nombre: nombreProdAuto,
-                    compra: 5.00,
-                    venta: 8.50,
-                    stock: 20,
-                    gastosExtras: [],
-                    inversionTotal: 100.00
-                });
-                persistir();
-                mostrarToast(`Añadido: "${nombreProdAuto}" (20 uds).`, 'success');
-                event.target.value = '';
-                renderInventario();
-            }, 900);
+            if (!archivo) return;
+            mostrarToast('OCR automático no disponible sin motor externo: completa el nombre, compra, venta y stock del producto.', 'info');
+            document.getElementById('prod-nombre')?.focus();
+            event.target.value = '';
         }
 
         function abrirModalPasarelaSuscripcion(tipoPlan) {
             window.planSeleccionadoActual = tipoPlan;
             const neg = obtenerNegocio();
             const tasa = neg.tasaCambio || 36.50;
-            
             const montoUSD = tipoPlan === 'mensual' ? 5.00 : 45.00;
             const montoBS = montoUSD * tasa;
 
@@ -1601,10 +1803,10 @@
 
         function cerrarModalPasarela() {
             document.getElementById('modal-pasarela-pago').classList.add('hidden');
-            if(window.planSeleccionadoActual) {
+            if (window.planSeleccionadoActual) {
                 const diasExtra = window.planSeleccionadoActual === 'mensual' ? 60 : 365;
                 const tiempoExpiracion = Date.now() + (diasExtra * 24 * 60 * 60 * 1000);
-                localStorage.setItem('proExpira', tiempoExpiracion);
+                localStorage.setItem('proExpira', String(tiempoExpiracion));
                 verificarEstadoPro();
                 persistir();
                 mostrarToast(`Suscripción ${window.planSeleccionadoActual} activada.`, 'success');
@@ -1613,7 +1815,7 @@
         }
 
         document.getElementById('select-metodo-pago')?.addEventListener('change', () => {
-            if(window.planSeleccionadoActual) abrirModalPasarelaSuscripcion(window.planSeleccionadoActual);
+            if (window.planSeleccionadoActual) abrirModalPasarelaSuscripcion(window.planSeleccionadoActual);
             else if (esProActivo()) abrirModalPasarela();
         });
 
@@ -1624,11 +1826,10 @@
             const neg = obtenerNegocio();
             const tasa = neg.tasaCambio || 36.50;
 
-            const recBSenUSD = recBS / tasa;
-            const totalRecibidoUSD = recUSD + recBSenUSD;
+            const totalRecibidoUSD = recUSD + (recBS / tasa);
             const vueltoUSD = totalRecibidoUSD - totalUSD;
-
             const resEl = document.getElementById('calc-resultado-vuelto');
+
             if (vueltoUSD >= 0) {
                 const vueltoBS = vueltoUSD * tasa;
                 resEl.innerHTML = `$${vueltoUSD.toFixed(2)} / Bs. ${vueltoBS.toFixed(2)}`;
@@ -1647,7 +1848,7 @@
             const nombre = document.getElementById('prov-nombre').value.trim();
             const contacto = document.getElementById('prov-contacto').value.trim();
             const producto = document.getElementById('prov-producto').value.trim();
-            if(!nombre) return;
+            if (!nombre) return;
             neg.proveedores.push({ id: Date.now(), nombre, contacto, producto });
             persistir();
             e.target.reset();
@@ -1658,8 +1859,8 @@
         function renderProveedores() {
             const neg = obtenerNegocio();
             const cont = document.getElementById('lista-proveedores');
-            if(!cont) return;
-            if(!neg.proveedores || neg.proveedores.length === 0) {
+            if (!cont) return;
+            if (!neg.proveedores || neg.proveedores.length === 0) {
                 cont.innerHTML = `<p class="text-[11px] text-slate-400 text-center py-1">Sin proveedores registrados.</p>`;
                 return;
             }
@@ -1694,8 +1895,7 @@
 
             window.cajaTeoricaGlobal = cajaTeorica;
 
-            const contenido = document.getElementById('contenido-cierre-z');
-            contenido.innerHTML = `
+            document.getElementById('contenido-cierre-z').innerHTML = `
                 <div class="bg-slate-50 dark:bg-slate-800/80 p-3 rounded-xl space-y-1.5 font-mono border border-slate-200/70 dark:border-slate-700">
                     <p class="flex justify-between"><span>Capital inicial:</span> <b>$${capitalInicial.toFixed(2)}</b></p>
                     <p class="flex justify-between"><span>Ventas contado:</span> <b>$${ventasContado.toFixed(2)}</b></p>
@@ -1734,7 +1934,7 @@
             const contado = parseFloat(document.getElementById('input-efectivo-contado').value);
             if (isNaN(contado)) return mostrarToast('Ingresa el efectivo contado.', 'error');
             const diff = contado - window.cajaTeoricaGlobal;
-            
+
             const neg = obtenerNegocio();
             neg.finanzas.unshift({
                 id: Date.now(),
@@ -1751,9 +1951,17 @@
 
         function abrirModalCatalogoWeb() {
             if (!esProActivo()) return requierePro(null, 'Catálogo Digital');
+            const neg = obtenerNegocio();
             const baseUrl = window.location.href.split('?')[0].replace(/index\.html$/i, '');
             const enlaceCatalogo = `${baseUrl.endsWith('/') ? baseUrl : baseUrl + '/'}catalogo.html`;
             document.getElementById('input-enlace-catalogo').value = enlaceCatalogo;
+            const infoWa = document.getElementById('catalogo-modal-whatsapp-info');
+            if (infoWa) {
+                const tel = normalizarTelefono(neg.whatsapp);
+                infoWa.innerText = tel
+                    ? `Pedidos directos al WhatsApp del negocio: +${tel}`
+                    : 'Configura el WhatsApp del negocio en Ajustes antes de compartir.';
+            }
             document.getElementById('modal-catalogo-web').classList.remove('hidden');
         }
 
@@ -1781,8 +1989,7 @@
             if (!esProActivo()) return requierePro(null, 'Impresión Bluetooth');
             if (!ticketActualData) return;
             if (!navigator.bluetooth) {
-                mostrarToast('Web Bluetooth no disponible en este navegador.', 'error');
-                return;
+                return mostrarToast('Web Bluetooth no disponible en este navegador.', 'error');
             }
             try {
                 mostrarToast('Buscando impresora Bluetooth...', 'info');
@@ -1790,15 +1997,40 @@
                     acceptAllDevices: true,
                     optionalServices: ['000018f0-0000-1000-8000-00805f9b34fb', '0000ff00-0000-1000-8000-00805f9b34fb']
                 });
-                await device.gatt.connect();
-                mostrarToast(`Conectado a ${device.name}.`, 'success');
-                setTimeout(() => {
-                    mostrarToast('Ticket enviado a impresión.', 'success');
+                const server = await device.gatt.connect();
+                const services = await server.getPrimaryServices();
+                let escribio = false;
+
+                const encoder = new TextEncoder();
+                const textoTicket =
+                    `\x1B\x40${ticketActualData.negocio.toUpperCase()}\n` +
+                    `${ticketActualData.fecha}\n` +
+                    `Tipo: ${ticketActualData.tipo}\n` +
+                    `Prod: ${ticketActualData.producto} (x${ticketActualData.cantidad})\n` +
+                    `TOTAL: $${Number(ticketActualData.total || 0).toFixed(2)}\n\n\n`;
+                const bytes = encoder.encode(textoTicket);
+
+                for (const svc of services) {
+                    const chars = await svc.getCharacteristics();
+                    for (const ch of chars) {
+                        if (ch.properties.writeWithoutResponse || ch.properties.write) {
+                            await ch.writeValue(bytes);
+                            escribio = true;
+                            break;
+                        }
+                    }
+                    if (escribio) break;
+                }
+
+                if (escribio) {
+                    mostrarToast(`Ticket enviado a ${device.name || 'impresora'}.`, 'success');
                     cerrarModalTicket();
-                }, 900);
+                } else {
+                    mostrarToast('El dispositivo conectado no expone característica de escritura ESC/POS.', 'error');
+                }
             } catch (error) {
                 console.error('Error Bluetooth:', error);
-                mostrarToast('Impresión cancelada.', 'error');
+                mostrarToast('No se completó la impresión Bluetooth.', 'error');
             }
         }
 
@@ -1812,7 +2044,7 @@
 
             if (!activo && negocioActualId !== negocios[0].id) {
                 negocioActualId = negocios[0].id;
-                localStorage.setItem('negocioActualId', negocioActualId);
+                localStorage.setItem('negocioActualId', String(negocioActualId));
             }
 
             if (typeof window.configurarSincronizacionNube === 'function') {
@@ -1835,14 +2067,24 @@
                 const expira = parseInt(localStorage.getItem('proExpira'), 10);
                 const horasRestantes = Math.ceil((expira - Date.now()) / (1000 * 60 * 60));
                 const diasRestantes = Math.ceil(horasRestantes / 24);
-                
-                if(badge) { badge.innerText = "Activo · Anuncios apagados"; badge.className = "bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300 text-[10px] px-2.5 py-0.5 rounded-full font-semibold"; }
-                if(texto) { texto.innerText = `Activo (${diasRestantes > 3 ? diasRestantes + ' días' : horasRestantes + ' horas'} restantes). Anuncios apagados y funciones Pro habilitadas.`; }
-                if(bannerAd) bannerAd.classList.add('hidden');
+
+                if (badge) {
+                    badge.innerText = "Activo · Anuncios apagados";
+                    badge.className = "bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300 text-[10px] px-2.5 py-0.5 rounded-full font-semibold";
+                }
+                if (texto) {
+                    texto.innerText = `Activo (${diasRestantes > 3 ? diasRestantes + ' días' : horasRestantes + ' horas'} restantes). Anuncios apagados y funciones Pro habilitadas.`;
+                }
+                if (bannerAd) bannerAd.classList.add('hidden');
             } else {
-                if(badge) { badge.innerText = "Inactivo"; badge.className = "bg-rose-100 text-rose-700 dark:bg-rose-950 dark:text-rose-300 text-[11px] px-2.5 py-0.5 rounded-full font-semibold"; }
-                if(texto) { texto.innerText = "Sin Modo Pro las funciones Pro quedan bloqueadas y se muestran anuncios. Al activar Modo Pro se apagan los anuncios y se habilitan todas las funciones Pro."; }
-                if(bannerAd) bannerAd.classList.remove('hidden');
+                if (badge) {
+                    badge.innerText = "Inactivo";
+                    badge.className = "bg-rose-100 text-rose-700 dark:bg-rose-950 dark:text-rose-300 text-[11px] px-2.5 py-0.5 rounded-full font-semibold";
+                }
+                if (texto) {
+                    texto.innerText = "Sin Modo Pro las funciones Pro quedan bloqueadas y se muestran anuncios. Al activar Modo Pro se apagan los anuncios y se habilitan todas las funciones Pro.";
+                }
+                if (bannerAd) bannerAd.classList.remove('hidden');
             }
 
             sincronizarControlesSincronizacion();
@@ -1850,19 +2092,18 @@
         }
 
         function verAnuncioBonificadoPro() {
-            mostrarToast('Activando 12 horas de Modo Pro y apagando anuncios...', 'info');
             const tiempoExpiracion = Date.now() + (12 * 60 * 60 * 1000);
-            localStorage.setItem('proExpira', tiempoExpiracion);
+            localStorage.setItem('proExpira', String(tiempoExpiracion));
             verificarEstadoPro();
             persistir();
-            mostrarToast('Modo Pro activo por 12 horas. Anuncios apagados.', 'success');
+            mostrarToast('Bono de prueba de 12h activado localmente.', 'success');
         }
 
         function guardarTasaCambio() {
-            if (rolActual === 'empleado') return mostrarToast('Solo disponible para el Dueño.', 'error');
+            if (rolActual === 'empleado') return mostrarToast('Solo disponible para el Dueño o Socio.', 'error');
             const neg = obtenerNegocio();
             const tasa = parseFloat(document.getElementById('input-tasa-cambio').value);
-            if(isNaN(tasa) || tasa <= 0) return mostrarToast('Ingresa una tasa válida.', 'error');
+            if (isNaN(tasa) || tasa <= 0) return mostrarToast('Ingresa una tasa válida.', 'error');
             neg.tasaCambio = tasa;
             persistir();
             mostrarToast(`Tasa actualizada: ${tasa} Bs/$`, 'success');
@@ -1870,12 +2111,12 @@
 
         function exportarRespaldoJSON() {
             if (!esProActivo()) return requierePro(null, 'Exportar respaldo JSON');
-            const datos = { version: 'GestorPro_v4_Consolidado', fecha: new Date().toISOString(), negocios };
+            const datos = { version: 'GestorPro_v5', fecha: new Date().toISOString(), negocios };
             const blob = new Blob([JSON.stringify(datos, null, 2)], { type: 'application/json' });
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = `Respaldo_GestorPro_${new Date().toISOString().slice(0,10)}.json`;
+            a.download = `Respaldo_GestorPro_${new Date().toISOString().slice(0, 10)}.json`;
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);
@@ -1888,7 +2129,7 @@
                 event.target.value = '';
                 return requierePro(null, 'Importar respaldo JSON');
             }
-            if (rolActual === 'empleado') return mostrarToast('Solo disponible para el Dueño.', 'error');
+            if (rolActual === 'empleado') return mostrarToast('Solo disponible para el Dueño o Socio.', 'error');
             const archivo = event.target.files[0];
             if (!archivo) return;
             const lector = new FileReader();
@@ -1898,12 +2139,17 @@
                     if (contenido && Array.isArray(contenido.negocios)) {
                         if (confirm('¿Reemplazar los datos actuales con este respaldo?')) {
                             negocios = contenido.negocios;
+                            window.negocios = negocios;
                             negocioActualId = negocios[0].id;
                             persistir();
                             mostrarToast('Datos restaurados.', 'success');
                         }
-                    } else { mostrarToast('Archivo JSON no válido.', 'error'); }
-                } catch (err) { mostrarToast('Error al leer el archivo.', 'error'); }
+                    } else {
+                        mostrarToast('Archivo JSON no válido.', 'error');
+                    }
+                } catch (err) {
+                    mostrarToast('Error al leer el archivo.', 'error');
+                }
                 event.target.value = '';
             };
             lector.readAsText(archivo);
@@ -1912,8 +2158,7 @@
         function abrirModalTicket(datos) {
             const neg = obtenerNegocio();
             ticketActualData = { negocio: neg.nombre, fecha: new Date().toLocaleString(), ...datos };
-            const contenedor = document.getElementById('ticket-contenido-visual');
-            contenedor.innerHTML = `
+            document.getElementById('ticket-contenido-visual').innerHTML = `
                 <div class="text-center font-bold border-b border-dashed border-slate-300 pb-1.5">
                     <p class="text-xs uppercase">${ticketActualData.negocio}</p>
                     <p class="text-[10px] font-normal text-slate-500">${ticketActualData.fecha}</p>
@@ -1936,7 +2181,9 @@
             document.getElementById('modal-ticket').classList.remove('hidden');
         }
 
-        function cerrarModalTicket() { document.getElementById('modal-ticket').classList.add('hidden'); }
+        function cerrarModalTicket() {
+            document.getElementById('modal-ticket').classList.add('hidden');
+        }
 
         function imprimirTicketTermico() {
             if (!ticketActualData) return;
@@ -1950,7 +2197,7 @@
             const canvas = document.createElement('canvas');
             canvas.width = 360; canvas.height = 410;
             const ctx = canvas.getContext('2d');
-            ctx.fillStyle = '#fffbeb'; ctx.fillRect(0,0,360,410);
+            ctx.fillStyle = '#fffbeb'; ctx.fillRect(0, 0, 360, 410);
             ctx.fillStyle = '#0f172a'; ctx.font = 'bold 16px monospace'; ctx.textAlign = 'center';
             ctx.fillText(ticketActualData.negocio.toUpperCase(), 180, 40);
             ctx.font = '12px monospace'; ctx.fillText(ticketActualData.fecha, 180, 68);
@@ -1960,17 +2207,20 @@
             ctx.fillText(`Cantidad: ${ticketActualData.cantidad}`, 25, y); y += 36;
             ctx.font = 'bold 16px monospace'; ctx.fillText(`TOTAL: $${ticketActualData.total.toFixed(2)}`, 25, y); y += 45;
             ctx.font = '11px monospace'; ctx.textAlign = 'center'; ctx.fillText('© 2026 Gestor Pro · Joelbi J. Salazar V.', 180, y);
-            const link = document.createElement('a'); link.download = `Ticket_${Date.now()}.png`; link.href = canvas.toDataURL('image/png'); link.click();
+            const link = document.createElement('a');
+            link.download = `Ticket_${Date.now()}.png`;
+            link.href = canvas.toDataURL('image/png');
+            link.click();
         }
 
         function mostrarCodigoQR() {
-            if (!esProActivo()) return requierePro(null, 'QR de empleado');
+            if (!esProActivo()) return requierePro(null, 'QR de empleado o socio');
             const neg = obtenerNegocio();
             const tipo = obtenerTipoConexionSeleccionado();
 
             if (rolActual === 'empleado' && !neg.socioPermiteQrEmpleado) {
                 document.getElementById('qr-display-container')?.classList.add('hidden');
-                return mostrarToast('El socio no ha autorizado que empleados compartan el código QR.', 'error');
+                return mostrarToast('No tienes permiso para mostrar o compartir el código QR.', 'error');
             }
 
             const prefijo = tipo === 'socio' ? 'SOC' : 'EMP';
@@ -1987,7 +2237,7 @@
             if (!esProActivo()) return requierePro(null, 'Vincular teléfono');
             const tipo = obtenerTipoConexionSeleccionado();
             let codigo = document.getElementById('token-socio').value.trim();
-            if(!codigo) return mostrarToast('Ingresa un código.', 'error');
+            if (!codigo) return mostrarToast('Ingresa un código.', 'error');
             if (rolActual === 'empleado' && codigo.toUpperCase().startsWith('SOC-')) {
                 return mostrarToast('Modo Empleado: solo puedes vincular como empleado.', 'error');
             }
@@ -2041,7 +2291,7 @@
             if (rolActual === 'empleado') {
                 return mostrarToast('Solo el Dueño o Socio puede desvincular todos los teléfonos.', 'error');
             }
-            if(!confirm('¿Desvincular todos los teléfonos conectados a este negocio?')) return;
+            if (!confirm('¿Desvincular todos los teléfonos conectados a este negocio?')) return;
             const neg = obtenerNegocio();
             neg.dispositivosVinculados = [];
             const nuevo = `REV_${Date.now().toString(36)}_${Math.random().toString(36).substring(2, 8)}`;
@@ -2075,7 +2325,7 @@
                     : 'bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300';
                 const btnDesvincular = rolActual !== 'empleado'
                     ? `<button type="button" onclick="desvincularDispositivoPorId(${d.id})" class="bg-rose-50 hover:bg-rose-100 text-rose-600 dark:bg-rose-950/60 dark:text-rose-300 px-2.5 py-1 rounded-lg text-[11px] font-semibold shrink-0 transition">Desvincular</button>`
-                    : `<span class="text-[10px] text-slate-400 shrink-0">Solo dueño</span>`;
+                    : `<span class="text-[10px] text-slate-400 shrink-0">Restringido</span>`;
 
                 return `
                     <div class="bg-slate-50 dark:bg-slate-800/80 px-3 py-2.5 rounded-xl border border-slate-200/70 dark:border-slate-700 flex items-center justify-between gap-2 text-xs">
@@ -2092,48 +2342,46 @@
             }).join('');
         }
 
-        function desvincularTelefono() {
-            desvincularTodosDispositivos();
-        }
-
         function actualizarSelectNegocios() {
             const proOk = esProActivo();
             const negociosDisponibles = proOk ? negocios : [negocios[0]];
             const selectHeader = document.getElementById('select-negocio-activo');
-            if(selectHeader) {
+            if (selectHeader) {
                 selectHeader.innerHTML = negociosDisponibles.map(n => `<option value="${n.id}" ${n.id === obtenerNegocio().id ? 'selected' : ''}>${n.nombre}</option>`).join('');
                 selectHeader.disabled = !proOk;
             }
             const drawerNombre = document.getElementById('drawer-negocio-nombre');
-            if(drawerNombre) drawerNombre.innerText = obtenerNegocio().nombre;
-            
+            if (drawerNombre) drawerNombre.innerText = obtenerNegocio().nombre;
+
             let totalVentasGlobal = 0;
             let totalGananciasGlobal = 0;
             negociosDisponibles.forEach(n => {
-                if(n.ventas) {
-                    totalVentasGlobal += n.ventas.reduce((a,b)=>a+b.total, 0);
-                    totalGananciasGlobal += n.ventas.reduce((a,b)=>a+b.ganancia, 0);
+                if (n.ventas) {
+                    totalVentasGlobal += n.ventas.reduce((a, b) => a + b.total, 0);
+                    totalGananciasGlobal += n.ventas.reduce((a, b) => a + b.ganancia, 0);
                 }
             });
-            
+
             const gV = document.getElementById('global-ventas-totales');
             const gG = document.getElementById('global-ganancias-totales');
-            if(gV) gV.innerText = `$${totalVentasGlobal.toFixed(2)}`;
-            if(gG) gG.innerText = `$${totalGananciasGlobal.toFixed(2)}`;
+            if (gV) gV.innerText = `$${totalVentasGlobal.toFixed(2)}`;
+            if (gG) gG.innerText = `$${totalGananciasGlobal.toFixed(2)}`;
 
             const admin = document.getElementById('lista-negocios-admin');
-            if(admin) admin.innerHTML = negocios.map(n => `
-                <div class="flex justify-between items-center bg-slate-50 dark:bg-slate-800/80 px-3 py-2 rounded-xl border border-slate-200/70 dark:border-slate-700">
-                    <span class="text-xs font-semibold">${n.nombre} ${n.id === obtenerNegocio().id ? '<span class="text-[10px] text-blue-600 dark:text-blue-400">· Activa</span>' : ''}</span>
-                    ${negocios.length > 1 ? `<button type="button" onclick="eliminarNegocio(${n.id})" class="text-rose-600 text-xs font-medium px-2 py-0.5 rounded-lg">Eliminar</button>` : ''}
-                </div>
-            `).join('');
+            if (admin) {
+                admin.innerHTML = negocios.map(n => `
+                    <div class="flex justify-between items-center bg-slate-50 dark:bg-slate-800/80 px-3 py-2 rounded-xl border border-slate-200/70 dark:border-slate-700">
+                        <span class="text-xs font-semibold">${n.nombre} ${n.id === obtenerNegocio().id ? '<span class="text-[10px] text-blue-600 dark:text-blue-400">· Activa</span>' : ''}</span>
+                        ${negocios.length > 1 ? `<button type="button" onclick="eliminarNegocio(${n.id})" class="text-rose-600 text-xs font-medium px-2 py-0.5 rounded-lg">Eliminar</button>` : ''}
+                    </div>
+                `).join('');
+            }
         }
 
         function cambiarNegocioActivo(id) {
             if (!esProActivo()) {
                 negocioActualId = negocios[0].id;
-                localStorage.setItem('negocioActualId', negocioActualId);
+                localStorage.setItem('negocioActualId', String(negocioActualId));
                 actualizarSelectNegocios();
                 return requierePro(null, 'Cambiar de sucursal');
             }
@@ -2147,17 +2395,51 @@
             if (!esProActivo()) return requierePro(null, 'Crear nueva sucursal');
             const input = document.getElementById('nuevo-negocio-nombre');
             const nombre = input.value.trim();
-            if(!nombre) return mostrarToast('Escribe un nombre.', 'error');
+            if (!nombre) return mostrarToast('Escribe un nombre.', 'error');
+            const actual = obtenerNegocio();
             const nuevoId = Date.now();
-            negocios.push({ id: nuevoId, nombre, capitalInicial: 0, tasaCambio: 36.50, inventario: [], ventas: [], deudas: [], finanzas: [], proveedores: [], socioPermiteQrEmpleado: false, dispositivosVinculados: [], syncCode: 'negocio_' + Math.random().toString(36).substring(2, 10) });
-            negocioActualId = nuevoId; input.value = ''; persistir(); mostrarToast('Sucursal creada.', 'success');
+            negocios.push({
+                id: nuevoId,
+                nombre,
+                duenoNombre: actual.duenoNombre || '',
+                whatsapp: actual.whatsapp || '',
+                capitalInicial: 0,
+                tasaCambio: actual.tasaCambio || 36.50,
+                inventario: [],
+                ventas: [],
+                deudas: [],
+                finanzas: [],
+                proveedores: [],
+                socioPermiteQrEmpleado: false,
+                dispositivosVinculados: [],
+                syncCode: 'negocio_' + Math.random().toString(36).substring(2, 10)
+            });
+            negocioActualId = nuevoId;
+            input.value = '';
+            persistir();
+            mostrarToast('Sucursal creada.', 'success');
         }
 
         function eliminarNegocio(id) {
             if (!esProActivo()) return requierePro(null, 'Eliminar sucursal');
-            if(negocios.length <= 1) return mostrarToast('Debe existir al menos una sucursal.', 'error');
+            if (negocios.length <= 1) return mostrarToast('Debe existir al menos una sucursal.', 'error');
             negocios = negocios.filter(n => n.id !== id);
-            negocioActualId = negocios[0].id; persistir();
+            negocioActualId = negocios[0].id;
+            persistir();
+        }
+
+        function sincronizarFormularioAjustes() {
+            const neg = obtenerNegocio();
+            const dEl = document.getElementById('input-nombre-dueno');
+            const nEl = document.getElementById('input-nombre-negocio');
+            const wEl = document.getElementById('input-whatsapp-negocio');
+            const tEl = document.getElementById('input-tasa-cambio');
+            const cEl = document.getElementById('input-capital-negocio');
+            if (dEl) dEl.value = neg.duenoNombre || '';
+            if (nEl) nEl.value = neg.nombre || '';
+            if (wEl) wEl.value = neg.whatsapp || '';
+            if (tEl) tEl.value = neg.tasaCambio || 36.50;
+            if (cEl) cEl.value = neg.capitalInicial || 0;
         }
 
         function cambiarTab(tab) {
@@ -2167,25 +2449,25 @@
             });
             document.getElementById(`tab-${targetTab}`)?.classList.remove('hidden');
             marcarSeccionActivaMenu(targetTab);
-            
-            if(targetTab === 'resumen') { actualizarResumenGeneral(); actualizarGraficos(); verificarAlertaBI(); }
-            if(targetTab === 'inventario') { renderInventario(); renderProveedores(); }
-            if(targetTab === 'ventas') { actualizarSelectVentas(); renderVentas(); renderDeudas(); }
-            if(targetTab === 'finanzas') renderFinanzas();
-            if(targetTab === 'audios') sincronizarControlesAudio();
-            if(targetTab === 'qr-empleado') { sincronizarControlesSincronizacion(); }
-            if(targetTab === 'pro') { verificarEstadoPro(); }
-            if(targetTab === 'ajustes') { actualizarSelectNegocios(); document.getElementById('input-tasa-cambio').value = obtenerNegocio().tasaCambio || 36.50; }
+
+            if (targetTab === 'resumen') { actualizarResumenGeneral(); actualizarGraficos(); verificarAlertaBI(); }
+            if (targetTab === 'inventario') { renderInventario(); renderProveedores(); sincronizarFormularioAjustes(); }
+            if (targetTab === 'ventas') { actualizarSelectVentas(); renderVentas(); renderDeudas(); }
+            if (targetTab === 'finanzas') renderFinanzas();
+            if (targetTab === 'audios') sincronizarControlesAudio();
+            if (targetTab === 'qr-empleado') { sincronizarControlesSincronizacion(); }
+            if (targetTab === 'pro') { verificarEstadoPro(); }
+            if (targetTab === 'ajustes') { actualizarSelectNegocios(); sincronizarFormularioAjustes(); }
         }
 
         function verificarAlertaBI() {
             const neg = obtenerNegocio();
             const alertaBox = document.getElementById('alerta-bi-container');
             const textoAlerta = document.getElementById('texto-alerta-bi');
-            if(!alertaBox || !textoAlerta) return;
+            if (!alertaBox || !textoAlerta) return;
 
             const bajoStock = (neg.inventario || []).filter(p => p.stock <= 5);
-            if(bajoStock.length > 0) {
+            if (bajoStock.length > 0) {
                 textoAlerta.innerHTML = `<b>${bajoStock[0].nombre}</b> tiene solo ${bajoStock[0].stock} unidades disponibles.`;
                 alertaBox.classList.remove('hidden');
             } else {
@@ -2195,7 +2477,7 @@
 
         function agregarCampoGastoExtra(nombre = '', monto = '') {
             const contenedor = document.getElementById('contenedor-gastos-extras');
-            if(!contenedor) return;
+            if (!contenedor) return;
             const div = document.createElement('div');
             div.className = "flex gap-2 items-center";
             div.innerHTML = `
@@ -2209,7 +2491,7 @@
         function calcularPreviewProducto() {
             const compra = parseFloat(document.getElementById('prod-compra').value) || 0;
             const venta = parseFloat(document.getElementById('prod-venta').value) || 0;
-            const stock = parseInt(document.getElementById('prod-stock').value) || 0;
+            const stock = parseInt(document.getElementById('prod-stock').value, 10) || 0;
             let extras = 0;
             document.querySelectorAll('.gasto-monto').forEach(i => extras += parseFloat(i.value) || 0);
             const invTot = (compra * stock) + extras;
@@ -2223,7 +2505,7 @@
         }
 
         function guardarCapitalInicial() {
-            if (rolActual === 'empleado') return mostrarToast('Solo disponible para el Dueño.', 'error');
+            if (rolActual === 'empleado') return mostrarToast('Solo disponible para el Dueño o Socio.', 'error');
             const neg = obtenerNegocio();
             neg.capitalInicial = parseFloat(document.getElementById('input-capital-negocio').value) || 0;
             persistir();
@@ -2233,7 +2515,7 @@
         function prepararEdicionProducto(id) {
             const neg = obtenerNegocio();
             const prod = neg.inventario.find(p => p.id === id);
-            if(!prod) return;
+            if (!prod) return;
             document.getElementById('prod-codigo').value = prod.codigo || '';
             document.getElementById('prod-nombre').value = prod.nombre;
             document.getElementById('prod-compra').value = prod.compra;
@@ -2241,7 +2523,7 @@
             document.getElementById('prod-stock').value = prod.stock;
             const cont = document.getElementById('contenedor-gastos-extras');
             cont.innerHTML = '';
-            if(prod.gastosExtras) prod.gastosExtras.forEach(g => agregarCampoGastoExtra(g.nombre, g.monto));
+            if (prod.gastosExtras) prod.gastosExtras.forEach(g => agregarCampoGastoExtra(g.nombre, g.monto));
             editandoProductoId = id;
             document.getElementById('btn-guardar-producto').innerText = 'Actualizar Producto';
             window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -2254,29 +2536,41 @@
             const nombre = document.getElementById('prod-nombre').value.trim();
             const compra = parseFloat(document.getElementById('prod-compra').value);
             const venta = parseFloat(document.getElementById('prod-venta').value);
-            const stock = parseInt(document.getElementById('prod-stock').value);
+            const stock = parseInt(document.getElementById('prod-stock').value, 10);
 
             let gastosExtras = [], totalExtras = 0;
             document.querySelectorAll('#contenedor-gastos-extras > div').forEach(div => {
-                let n = div.querySelector('.gasto-nombre').value.trim();
-                let m = parseFloat(div.querySelector('.gasto-monto').value) || 0;
-                if(n && m > 0) { gastosExtras.push({ nombre: n, monto: m }); totalExtras += m; }
+                const n = div.querySelector('.gasto-nombre').value.trim();
+                const m = parseFloat(div.querySelector('.gasto-monto').value) || 0;
+                if (n && m > 0) { gastosExtras.push({ nombre: n, monto: m }); totalExtras += m; }
             });
             const inversionTotal = (compra * stock) + totalExtras;
 
             if (editandoProductoId !== null) {
                 const prod = neg.inventario.find(p => p.id === editandoProductoId);
-                if (prod) { prod.codigo = codigo; prod.nombre = nombre; prod.compra = compra; prod.venta = venta; prod.stock = stock; prod.gastosExtras = gastosExtras; prod.inversionTotal = inversionTotal; }
+                if (prod) {
+                    prod.codigo = codigo;
+                    prod.nombre = nombre;
+                    prod.compra = compra;
+                    prod.venta = venta;
+                    prod.stock = stock;
+                    prod.gastosExtras = gastosExtras;
+                    prod.inversionTotal = inversionTotal;
+                }
                 editandoProductoId = null;
                 document.getElementById('btn-guardar-producto').innerText = 'Guardar Producto';
-                e.target.reset(); document.getElementById('contenedor-gastos-extras').innerHTML = '';
+                e.target.reset();
+                document.getElementById('contenedor-gastos-extras').innerHTML = '';
                 document.getElementById('preview-prod-box').classList.add('hidden');
-                persistir(); renderInventario();
+                persistir();
+                renderInventario();
                 mostrarToast('Producto actualizado.', 'success');
             } else {
                 neg.inventario.push({ id: Date.now(), codigo, nombre, compra, venta, stock, gastosExtras, inversionTotal });
                 neg.finanzas.unshift({ id: Date.now(), tipo: 'gasto', categoria: 'Insumos / Mercancía', monto: inversionTotal, desc: `Stock: ${nombre}`, fecha: new Date().toLocaleTimeString() });
-                persistir(); e.target.reset(); document.getElementById('contenedor-gastos-extras').innerHTML = '';
+                persistir();
+                e.target.reset();
+                document.getElementById('contenedor-gastos-extras').innerHTML = '';
                 document.getElementById('preview-prod-box').classList.add('hidden');
                 renderInventario();
                 mostrarToast('Producto guardado.', 'success');
@@ -2288,18 +2582,16 @@
         function filtrarInventario(filtro) {
             const neg = obtenerNegocio();
             const contenedor = document.getElementById('lista-inventario');
-            if(!contenedor) return;
+            if (!contenedor) return;
             const texto = (filtro || '').toLowerCase();
-            
-            let filtrados = (neg.inventario || []).filter(p => p.nombre.toLowerCase().includes(texto) || (p.codigo && p.codigo.toLowerCase().includes(texto)));
-            
-            if(filtrados.length === 0) { 
+            const filtrados = (neg.inventario || []).filter(p => p.nombre.toLowerCase().includes(texto) || (p.codigo && p.codigo.toLowerCase().includes(texto)));
+
+            if (filtrados.length === 0) {
                 contenedor.innerHTML = `<p class="text-xs text-slate-400 text-center py-3">Sin productos registrados.</p>`;
                 return;
             }
 
             const totalMostrados = filtrados.slice(0, 50);
-
             contenedor.innerHTML = totalMostrados.map(prod => `
                 <div class="bg-slate-50 dark:bg-slate-800/70 p-3 rounded-xl border border-slate-200/70 dark:border-slate-700/70 flex justify-between items-center gap-2">
                     <div class="min-w-0">
@@ -2324,14 +2616,17 @@
         function actualizarSelectVentas() {
             const neg = obtenerNegocio();
             const select = document.getElementById('venta-producto');
-            if(!select) return;
-            select.innerHTML = `<option value="">-- Elige un producto --</option>` + 
+            if (!select) return;
+            select.innerHTML = `<option value="">-- Elige un producto --</option>` +
                 (neg.inventario || []).map(p => `<option value="${p.id}">${p.nombre} (${p.stock} disp.) · $${p.venta.toFixed(2)}</option>`).join('');
         }
 
         function toggleCamposFiado(val) {
             const campos = document.getElementById('campos-fiado');
-            if(campos) { if(val === 'fiado') campos.classList.remove('hidden'); else campos.classList.add('hidden'); }
+            if (campos) {
+                if (val === 'fiado') campos.classList.remove('hidden');
+                else campos.classList.add('hidden');
+            }
         }
 
         document.getElementById('form-venta').addEventListener('submit', (e) => {
@@ -2341,69 +2636,106 @@
             const cantidad = parseInt(document.getElementById('venta-cantidad').value, 10);
             const tipo = document.getElementById('venta-tipo').value;
             const producto = neg.inventario.find(p => p.id === prodId);
-            if(!producto) return;
-            if(producto.stock < cantidad) return mostrarToast('Stock insuficiente.', 'error');
+            if (!producto) return;
+            if (producto.stock < cantidad) return mostrarToast('Stock insuficiente.', 'error');
 
+            const stockAnterior = producto.stock;
             producto.stock -= cantidad;
             const total = producto.venta * cantidad;
-            const ganancia = total - ((producto.inversionTotal / (producto.stock + cantidad)) * cantidad);
+            const ganancia = total - ((producto.inversionTotal / stockAnterior) * cantidad);
 
-            if(tipo === 'contado') {
+            if (tipo === 'contado') {
                 neg.ventas.unshift({ id: Date.now(), nombre: producto.nombre, cantidad, total, ganancia, tipo: 'Contado', fecha: new Date().toLocaleTimeString() });
                 neg.finanzas.unshift({ id: Date.now(), tipo: 'ingreso', monto: total, desc: `Venta: ${producto.nombre} (x${cantidad})`, fecha: new Date().toLocaleTimeString() });
-                persistir(); e.target.reset(); renderVentas();
+                persistir();
+                e.target.reset();
+                renderVentas();
                 reproducirSonidoEvento('venta');
                 if (producto.stock <= 5) reproducirSonidoEvento('alerta');
                 mostrarToast('Venta registrada.', 'success');
-                if(confirm('¿Mostrar comprobante?')) abrirModalTicket({ tipo: 'Contado', producto: producto.nombre, cantidad, total });
+                if (confirm('¿Mostrar comprobante?')) abrirModalTicket({ tipo: 'Contado', producto: producto.nombre, cantidad, total });
             } else {
                 const cliente = document.getElementById('fiado-cliente').value.trim() || 'Cliente';
-                const telefono = document.getElementById('fiado-telefono').value.trim() || '';
+                const telefono = normalizarTelefono(document.getElementById('fiado-telefono').value.trim());
                 const abono = parseFloat(document.getElementById('fiado-abono').value) || 0;
-                const pendiente = total - abono;
+                const pendiente = Math.max(0, total - abono);
                 const deudaObj = { id: Date.now(), cliente, telefono, producto: producto.nombre, cantidad, total, abonado: abono, pendiente, fecha: new Date().toLocaleTimeString() };
                 neg.deudas.unshift(deudaObj);
-                if(abono > 0) neg.finanzas.unshift({ id: Date.now(), tipo: 'ingreso', monto: abono, desc: `Abono fiado (${cliente})`, fecha: new Date().toLocaleTimeString() });
-                persistir(); e.target.reset(); document.getElementById('campos-fiado').classList.add('hidden');
-                renderVentas(); renderDeudas();
+                if (abono > 0) neg.finanzas.unshift({ id: Date.now(), tipo: 'ingreso', monto: abono, desc: `Abono fiado (${cliente})`, fecha: new Date().toLocaleTimeString() });
+                persistir();
+                e.target.reset();
+                document.getElementById('campos-fiado').classList.add('hidden');
+                renderVentas();
+                renderDeudas();
                 reproducirSonidoEvento('venta');
                 if (producto.stock <= 5) reproducirSonidoEvento('alerta');
                 mostrarToast('Fiado registrado.', 'success');
-                if(telefono && confirm('¿Enviar detalle por WhatsApp?')) enviarWhatsAppFiado(deudaObj);
+                if (telefono && confirm('¿Enviar detalle por WhatsApp?')) enviarWhatsAppFiado(deudaObj);
                 else abrirModalTicket({ tipo: 'Fiado', cliente, producto: producto.nombre, cantidad, total, abonado: abono, pendiente });
             }
         });
 
         function enviarWhatsAppFiado(deuda) {
+            const tel = normalizarTelefono(deuda.telefono);
+            if (!tel) return mostrarToast('Sin número de WhatsApp válido para este cliente.', 'error');
             const msg = `Detalle de crédito · *${deuda.cliente}*\n• ${deuda.producto} (x${deuda.cantidad})\n• Total: $${deuda.total.toFixed(2)}\n• Pendiente: $${deuda.pendiente.toFixed(2)}`;
-            window.open(`https://api.whatsapp.com/send?phone=${deuda.telefono.replace(/\D/g,'')}&text=${encodeURIComponent(msg)}`, '_blank');
+            window.open(`https://api.whatsapp.com/send?phone=${tel}&text=${encodeURIComponent(msg)}`, '_blank');
         }
 
         function abonarDeuda(id) {
             const neg = obtenerNegocio();
             const deuda = neg.deudas.find(d => d.id === id);
-            if(!deuda) return;
-            let m = parseFloat(prompt(`Pendiente: $${deuda.pendiente.toFixed(2)}\nMonto del abono ($):`, deuda.pendiente));
-            if(isNaN(m) || m <= 0) return;
-            if(m > deuda.pendiente) m = deuda.pendiente;
-            deuda.abonado += m; deuda.pendiente -= m;
+            if (!deuda) return;
+            deudaAbonoPendienteId = id;
+            document.getElementById('info-deuda-abono').innerText = `${deuda.cliente} · Pendiente actual: $${deuda.pendiente.toFixed(2)}`;
+            const inp = document.getElementById('input-monto-abono');
+            inp.value = deuda.pendiente.toFixed(2);
+            document.getElementById('modal-abono-deuda').classList.remove('hidden');
+            inp.focus();
+        }
+
+        function cerrarModalAbono() {
+            deudaAbonoPendienteId = null;
+            document.getElementById('modal-abono-deuda').classList.add('hidden');
+        }
+
+        function confirmarAbonoDeuda() {
+            if (deudaAbonoPendienteId === null) return;
+            const neg = obtenerNegocio();
+            const deuda = neg.deudas.find(d => d.id === deudaAbonoPendienteId);
+            if (!deuda) return cerrarModalAbono();
+
+            let m = parseFloat(document.getElementById('input-monto-abono').value);
+            if (isNaN(m) || m <= 0) return mostrarToast('Ingresa un monto mayor a 0.', 'error');
+            if (m > deuda.pendiente) m = deuda.pendiente;
+
+            deuda.abonado += m;
+            deuda.pendiente = Math.max(0, deuda.pendiente - m);
             neg.finanzas.unshift({ id: Date.now(), tipo: 'ingreso', monto: m, desc: `Abono (${deuda.cliente})`, fecha: new Date().toLocaleTimeString() });
-            if(deuda.pendiente <= 0) {
+
+            if (deuda.pendiente <= 0) {
                 neg.ventas.unshift({ id: Date.now(), nombre: deuda.producto, cantidad: deuda.cantidad, total: deuda.total, ganancia: deuda.total * 0.3, tipo: 'Fiado Pagado', fecha: new Date().toLocaleTimeString() });
-                neg.deudas = neg.deudas.filter(d => d.id !== id);
+                neg.deudas = neg.deudas.filter(d => d.id !== deuda.id);
                 mostrarToast('Crédito saldado.', 'success');
             } else {
                 mostrarToast(`Abono de $${m.toFixed(2)} registrado.`, 'success');
             }
-            persistir(); renderDeudas(); renderVentas();
+
+            cerrarModalAbono();
+            persistir();
+            renderDeudas();
+            renderVentas();
             reproducirSonidoEvento('abono');
         }
 
         function renderDeudas() {
             const neg = obtenerNegocio();
             const cont = document.getElementById('lista-deudas');
-            if(!cont) return;
-            if(!neg.deudas || neg.deudas.length === 0) { cont.innerHTML = `<p class="text-xs text-slate-400 text-center py-2">Sin fiados pendientes.</p>`; return; }
+            if (!cont) return;
+            if (!neg.deudas || neg.deudas.length === 0) {
+                cont.innerHTML = `<p class="text-xs text-slate-400 text-center py-2">Sin fiados pendientes.</p>`;
+                return;
+            }
             cont.innerHTML = neg.deudas.map(d => `
                 <div class="bg-amber-50/70 dark:bg-amber-950/30 p-3 rounded-xl border border-amber-200/80 dark:border-amber-800/60 flex justify-between items-center gap-2">
                     <div class="min-w-0">
@@ -2418,8 +2750,11 @@
         function renderVentas() {
             const neg = obtenerNegocio();
             const cont = document.getElementById('lista-ventas');
-            if(!cont) return;
-            if(!neg.ventas || neg.ventas.length === 0) { cont.innerHTML = `<p class="text-xs text-slate-400 text-center py-2">Sin ventas registradas.</p>`; return; }
+            if (!cont) return;
+            if (!neg.ventas || neg.ventas.length === 0) {
+                cont.innerHTML = `<p class="text-xs text-slate-400 text-center py-2">Sin ventas registradas.</p>`;
+                return;
+            }
             cont.innerHTML = neg.ventas.slice(0, 15).map(v => `
                 <div class="bg-slate-50 dark:bg-slate-800/70 p-3 rounded-xl border border-slate-200/70 dark:border-slate-700/70 flex justify-between items-center gap-2">
                     <div class="min-w-0">
@@ -2433,7 +2768,10 @@
 
         function toggleCategoriaGasto(t) {
             const box = document.getElementById('contenedor-categoria-gasto');
-            if(box) { if(t === 'gasto') box.classList.remove('hidden'); else box.classList.add('hidden'); }
+            if (box) {
+                if (t === 'gasto') box.classList.remove('hidden');
+                else box.classList.add('hidden');
+            }
         }
 
         document.getElementById('form-transaccion-capital').addEventListener('submit', (e) => {
@@ -2444,7 +2782,10 @@
             const desc = document.getElementById('cap-desc').value.trim();
             const categoria = tipo === 'gasto' ? document.getElementById('cap-categoria').value : (tipo === 'empleado' ? 'Nómina' : 'Ingreso');
             neg.finanzas.unshift({ id: Date.now(), tipo, categoria, monto, desc, fecha: new Date().toLocaleTimeString() });
-            persistir(); e.target.reset(); toggleCategoriaGasto('ingreso'); renderFinanzas();
+            persistir();
+            e.target.reset();
+            toggleCategoriaGasto('ingreso');
+            renderFinanzas();
             mostrarToast('Movimiento registrado.', 'success');
         });
 
@@ -2452,25 +2793,26 @@
             const neg = obtenerNegocio();
             const cont = document.getElementById('lista-finanzas');
             const filtro = document.getElementById('filtro-historial-caja')?.value || 'todos';
-            if(!cont) return;
+            if (!cont) return;
             let movs = neg.finanzas || [];
 
-            const ahora = new Date();
-            const hoyStr = ahora.toLocaleDateString();
-
-            if(filtro === 'hoy') {
+            const hoyStr = new Date().toLocaleDateString();
+            if (filtro === 'hoy') {
                 movs = movs.filter(f => (f.fecha && f.fecha.includes(hoyStr)) || (f.id && new Date(f.id).toLocaleDateString() === hoyStr));
-            } else if(filtro === 'semana') {
+            } else if (filtro === 'semana') {
                 const haceUnaSemana = Date.now() - (7 * 24 * 60 * 60 * 1000);
                 movs = movs.filter(f => f.id >= haceUnaSemana);
-            } else if(filtro === 'mes') {
+            } else if (filtro === 'mes') {
                 const haceUnMes = Date.now() - (30 * 24 * 60 * 60 * 1000);
                 movs = movs.filter(f => f.id >= haceUnMes);
-            } else if(filtro !== 'todos') {
+            } else if (filtro !== 'todos') {
                 movs = movs.filter(f => f.tipo === filtro);
             }
 
-            if(movs.length === 0) { cont.innerHTML = `<p class="text-xs text-slate-400 text-center py-3">Sin movimientos.</p>`; return; }
+            if (movs.length === 0) {
+                cont.innerHTML = `<p class="text-xs text-slate-400 text-center py-3">Sin movimientos.</p>`;
+                return;
+            }
             cont.innerHTML = movs.slice(0, 25).map(f => `
                 <div class="bg-slate-50 dark:bg-slate-800/70 p-3 rounded-xl border border-slate-200/70 dark:border-slate-700/70 flex justify-between items-center gap-2">
                     <div class="min-w-0">
@@ -2484,26 +2826,26 @@
 
         function actualizarGraficos() {
             const ctx = document.getElementById('grafico-resumen');
-            if(!ctx) return;
+            if (!ctx) return;
             const neg = obtenerNegocio();
             const tipo = document.getElementById('select-tipo-grafico')?.value || 'ventas';
             const esOsc = document.documentElement.classList.contains('dark');
             const txt = esOsc ? '#cbd5e1' : '#475569';
-            if(chartInstance) chartInstance.destroy();
+            if (chartInstance) chartInstance.destroy();
 
-            if(tipo === 'ventas') {
+            if (tipo === 'ventas') {
                 const ventas = (neg.ventas || []).slice(0, 7).reverse();
                 chartInstance = new Chart(ctx, {
                     type: 'bar',
                     data: {
-                        labels: ventas.length ? ventas.map(v => v.nombre.slice(0,10)) : ['Sin datos'],
+                        labels: ventas.length ? ventas.map(v => v.nombre.slice(0, 10)) : ['Sin datos'],
                         datasets: [{ label: 'Venta ($)', data: ventas.length ? ventas.map(v => v.total) : [0], backgroundColor: '#2563eb', borderRadius: 6 }]
                     },
                     options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { labels: { color: txt, boxWidth: 12 } } }, scales: { x: { ticks: { color: txt } }, y: { ticks: { color: txt } } } }
                 });
             } else {
                 const gastos = (neg.finanzas || []).filter(f => f.tipo !== 'ingreso' && f.monto > 0);
-                const totalGastos = gastos.reduce((a,b) => a + b.monto, 0);
+                const totalGastos = gastos.reduce((a, b) => a + b.monto, 0);
                 chartInstance = new Chart(ctx, {
                     type: 'doughnut',
                     data: {
@@ -2518,11 +2860,11 @@
         function actualizarResumenGeneral() {
             const neg = obtenerNegocio();
             const cap = neg.capitalInicial || 0;
-            const inv = (neg.inventario || []).reduce((a,p) => a + p.inversionTotal, 0);
-            const ventas = (neg.ventas || []).reduce((a,v) => a + v.total, 0);
-            const gan = (neg.ventas || []).reduce((a,v) => a + v.ganancia, 0);
-            const falta = (neg.inventario || []).reduce((a,p) => a + (p.venta * p.stock), 0);
-            const deudas = (neg.deudas || []).reduce((a,d) => a + d.pendiente, 0);
+            const inv = (neg.inventario || []).reduce((a, p) => a + p.inversionTotal, 0);
+            const ventas = (neg.ventas || []).reduce((a, v) => a + v.total, 0);
+            const gan = (neg.ventas || []).reduce((a, v) => a + v.ganancia, 0);
+            const falta = (neg.inventario || []).reduce((a, p) => a + (p.venta * p.stock), 0);
+            const deudas = (neg.deudas || []).reduce((a, d) => a + d.pendiente, 0);
 
             document.getElementById('res-capital-inicial').innerText = `$${cap.toFixed(2)}`;
             document.getElementById('res-invertido-prod').innerText = `$${inv.toFixed(2)}`;
@@ -2531,8 +2873,8 @@
             document.getElementById('res-falta-vender').innerText = `$${falta.toFixed(2)}`;
             document.getElementById('res-deudas').innerText = `$${deudas.toFixed(2)}`;
 
-            let ent = (neg.finanzas || []).filter(f => f.tipo === 'ingreso').reduce((a,f) => a + f.monto, 0);
-            let sal = (neg.finanzas || []).filter(f => f.tipo !== 'ingreso').reduce((a,f) => a + f.monto, 0);
+            const ent = (neg.finanzas || []).filter(f => f.tipo === 'ingreso').reduce((a, f) => a + f.monto, 0);
+            const sal = (neg.finanzas || []).filter(f => f.tipo !== 'ingreso').reduce((a, f) => a + f.monto, 0);
             document.getElementById('stat-entradas').innerText = `$${ent.toFixed(2)}`;
             document.getElementById('stat-caja').innerText = `$${(cap + ent - sal).toFixed(2)}`;
         }
@@ -2577,7 +2919,7 @@
             doc.setFont("helvetica", "normal");
 
             (neg.inventario || []).slice(0, 20).forEach((p, idx) => {
-                if(y > 270) { doc.addPage(); y = 20; }
+                if (y > 270) { doc.addPage(); y = 20; }
                 doc.text(`${idx + 1}. ${p.nombre} · Stock: ${p.stock} · Venta: $${p.venta.toFixed(2)}`, 20, y);
                 y += 6;
             });
@@ -2593,6 +2935,7 @@
         function renderizarTodo() {
             actualizarInterfazRoles();
             actualizarSelectNegocios();
+            sincronizarFormularioAjustes();
             renderInventario();
             renderProveedores();
             actualizarSelectVentas();
@@ -2610,3 +2953,4 @@
     </script>
 </body>
 </html>
+

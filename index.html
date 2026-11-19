@@ -662,14 +662,15 @@
             </div>
         </section>
 
-        <!-- Sección 6: Modo Pro (Separada) -->
+        <!-- Sección 6: Modo Pro (Dividida en bloques independientes) -->
         <section id="tab-pro" class="space-y-4 hidden">
+            <!-- Bloque A: Planes y Activación Pro (apaga anuncios al activar) -->
             <div id="seccion-modo-pro" class="bg-white dark:bg-slate-900 p-4 rounded-2xl shadow-xs border border-amber-300/80 dark:border-amber-700/60 space-y-3">
                 <div class="flex justify-between items-center">
-                    <h2 class="text-sm font-bold text-slate-800 dark:text-white">Gestor Pro — Modo PRO</h2>
+                    <h2 class="text-sm font-bold text-slate-800 dark:text-white">Activar Modo Pro (Sin anuncios)</h2>
                     <span id="badge-pro-estado" class="bg-rose-100 text-rose-700 dark:bg-rose-950 dark:text-rose-300 text-[11px] px-2.5 py-0.5 rounded-full font-semibold">Inactivo</span>
                 </div>
-                <p id="texto-pro-estado" class="text-xs text-slate-500 dark:text-slate-400">Desbloquea Cierre Z, Catálogo Web, OCR, Cobro QR, PDF, Multi-sucursal y sincronización en la nube.</p>
+                <p id="texto-pro-estado" class="text-xs text-slate-500 dark:text-slate-400">Al activar Modo Pro se apagan los anuncios y se desbloquean Cierre Z, Catálogo Web, OCR, Cobro QR, PDF y nube.</p>
                 
                 <div class="bg-slate-50 dark:bg-slate-800/70 p-3 rounded-xl text-xs space-y-1 border border-slate-100 dark:border-slate-800">
                     <p class="font-semibold text-slate-700 dark:text-slate-200">Planes disponibles</p>
@@ -680,15 +681,15 @@
                 <div class="space-y-2">
                     <button type="button" onclick="abrirModalPasarelaSuscripcion('mensual')" class="w-full bg-emerald-600 text-white font-semibold py-2.5 rounded-xl text-xs hover:bg-emerald-700 transition">Plan Mensual ($5)</button>
                     <button type="button" onclick="abrirModalPasarelaSuscripcion('anual')" class="w-full bg-blue-600 text-white font-semibold py-2.5 rounded-xl text-xs hover:bg-blue-700 transition">Plan Anual ($45)</button>
-                    <button type="button" onclick="verAnuncioBonificadoPro()" class="w-full bg-amber-600 text-white font-semibold py-2 rounded-xl text-xs hover:bg-amber-700 transition">Activar 12h con anuncio</button>
+                    <button type="button" onclick="verAnuncioBonificadoPro()" class="w-full bg-amber-600 text-white font-semibold py-2 rounded-xl text-xs hover:bg-amber-700 transition">Activar 12h con anuncio (apaga anuncios)</button>
                 </div>
             </div>
 
-            <!-- Sincronización entre dispositivos: Empleado o Socio (Modo Pro) -->
+            <!-- Bloque B: Códigos QR y Vinculación (Empleado o Socio) -->
             <div class="bg-white dark:bg-slate-900 p-4 rounded-2xl shadow-xs border border-slate-200/80 dark:border-slate-800 space-y-3">
                 <div class="flex items-center justify-between gap-2">
                     <div>
-                        <p class="text-xs font-bold text-slate-800 dark:text-white">Sincronización entre dispositivos</p>
+                        <p class="text-sm font-bold text-slate-800 dark:text-white">QR y vinculación (Empleado / Socio)</p>
                         <p id="sync-perfil-activo" class="text-[11px] text-slate-500 dark:text-slate-400">Conectar teléfono de: Empleado</p>
                     </div>
                     <span class="pro-tag text-[9px] font-bold bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300 px-1.5 py-0.5 rounded-full">PRO</span>
@@ -706,16 +707,16 @@
                     </label>
                 </div>
 
-                <!-- Selector de conexión: Empleado o Socio (restringido a Empleado si el rol actual es Empleado) -->
+                <!-- Selector de conexión: Empleado o Socio -->
                 <div id="contenedor-tipo-conexion-sync" class="space-y-1">
-                    <label class="block text-[11px] font-medium text-slate-600 dark:text-slate-400">Conectar como</label>
+                    <label class="block text-[11px] font-medium text-slate-600 dark:text-slate-400">Seleccionar perfil para vincular o mostrar QR</label>
                     <select id="select-tipo-conexion-sync" onchange="actualizarEtiquetaTipoConexion()" class="w-full p-2 text-xs border border-slate-200 dark:border-slate-700 rounded-xl bg-slate-50 dark:bg-slate-800 outline-none">
-                        <option value="empleado">Empleado (solo conexión de empleado)</option>
-                        <option value="socio" id="opcion-sync-socio">Socio (acceso de socio)</option>
+                        <option value="empleado">Empleado (asociar teléfono de empleado)</option>
+                        <option value="socio" id="opcion-sync-socio">Socio (asociar teléfono de socio)</option>
                     </select>
                 </div>
 
-                <button type="button" onclick="requierePro(mostrarCodigoQR, 'QR de sincronización')" class="w-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 font-semibold py-2 rounded-xl text-xs hover:bg-slate-200 dark:hover:bg-slate-700 transition">Mostrar QR de sincronización</button>
+                <button type="button" onclick="requierePro(mostrarCodigoQR, 'QR de sincronización')" class="w-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 font-semibold py-2 rounded-xl text-xs hover:bg-slate-200 dark:hover:bg-slate-700 transition">Mostrar código QR</button>
                 <div id="qr-display-container" class="hidden bg-slate-50 dark:bg-slate-800 p-3 rounded-xl text-center space-y-2 border border-slate-200 dark:border-slate-700">
                     <div id="qr-image-box" class="flex justify-center"></div>
                     <p id="qr-text-code" class="text-[11px] font-mono text-slate-600 dark:text-slate-300 select-all bg-white dark:bg-slate-900 p-1.5 rounded-lg"></p>
@@ -724,19 +725,22 @@
                     <input type="text" id="token-socio" class="flex-1 p-2 text-xs rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 outline-none" placeholder="Código para vincular teléfono">
                     <button type="button" onclick="requierePro(conectarSocio, 'Vincular teléfono')" class="bg-slate-800 text-white px-3 py-2 rounded-xl text-xs font-semibold hover:bg-slate-900 transition whitespace-nowrap">Vincular</button>
                 </div>
-                <div class="grid grid-cols-2 gap-2">
-                    <button type="button" onclick="requierePro(abrirEscanerQR, 'Escanear QR de sincronización')" class="bg-slate-800 text-white font-semibold py-2 rounded-xl text-xs hover:bg-slate-900 transition">Escanear QR</button>
-                    <button type="button" onclick="desvincularTodosDispositivos()" class="bg-rose-600 text-white font-semibold py-2 rounded-xl text-xs hover:bg-rose-700 transition">Desvincular todos</button>
+                <button type="button" onclick="requierePro(abrirEscanerQR, 'Escanear QR de sincronización')" class="w-full bg-indigo-600 text-white font-semibold py-2 rounded-xl text-xs hover:bg-indigo-700 transition">Escanear QR</button>
+            </div>
+
+            <!-- Bloque C: Teléfonos Vinculados y Desvinculación -->
+            <div class="bg-white dark:bg-slate-900 p-4 rounded-2xl shadow-xs border border-slate-200/80 dark:border-slate-800 space-y-3">
+                <div class="flex items-center justify-between gap-2">
+                    <div>
+                        <p class="text-sm font-bold text-slate-800 dark:text-white">Teléfonos vinculados</p>
+                        <p class="text-[11px] text-slate-500 dark:text-slate-400">Administra quiénes están conectados o sácalos de la cuenta.</p>
+                    </div>
+                    <span id="contador-dispositivos-vinculados" class="text-[11px] text-slate-400">0 equipos</span>
                 </div>
 
-                <!-- Dispositivos vinculados en la sucursal -->
-                <div class="pt-2 border-t border-slate-100 dark:border-slate-800 space-y-2">
-                    <div class="flex items-center justify-between">
-                        <p class="text-xs font-bold text-slate-800 dark:text-white">Teléfonos vinculados</p>
-                        <span id="contador-dispositivos-vinculados" class="text-[11px] text-slate-400">0 equipos</span>
-                    </div>
-                    <div id="lista-dispositivos-vinculados" class="space-y-2"></div>
-                </div>
+                <div id="lista-dispositivos-vinculados" class="space-y-2"></div>
+
+                <button type="button" onclick="desvincularTodosDispositivos()" class="w-full bg-rose-600 text-white font-semibold py-2 rounded-xl text-xs hover:bg-rose-700 transition">Desvincular todos los teléfonos</button>
             </div>
         </section>
 
@@ -915,7 +919,7 @@
                     registration.update();
                 }
             });
-            navigator.serviceWorker.register('./sw.js?v=20261118f').catch(err => console.log('SW error:', err));
+            navigator.serviceWorker.register('./sw.js?v=20261118g').catch(err => console.log('SW error:', err));
         }
 
         const SECCIONES_VALIDAS = ['resumen', 'inventario', 'ventas', 'finanzas', 'audios', 'pro', 'ajustes'];
@@ -1762,22 +1766,22 @@
                 const horasRestantes = Math.ceil((expira - Date.now()) / (1000 * 60 * 60));
                 const diasRestantes = Math.ceil(horasRestantes / 24);
                 
-                if(badge) { badge.innerText = "Activo"; badge.className = "bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300 text-[11px] px-2.5 py-0.5 rounded-full font-semibold"; }
-                if(texto) { texto.innerText = `Activo (${diasRestantes > 3 ? diasRestantes + ' días' : horasRestantes + ' horas'} restantes). Funciones Pro y sin anuncios.`; }
+                if(badge) { badge.innerText = "Activo · Anuncios apagados"; badge.className = "bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300 text-[10px] px-2.5 py-0.5 rounded-full font-semibold"; }
+                if(texto) { texto.innerText = `Activo (${diasRestantes > 3 ? diasRestantes + ' días' : horasRestantes + ' horas'} restantes). Anuncios apagados y funciones Pro habilitadas.`; }
                 if(bannerAd) bannerAd.classList.add('hidden');
             } else {
                 if(badge) { badge.innerText = "Inactivo"; badge.className = "bg-rose-100 text-rose-700 dark:bg-rose-950 dark:text-rose-300 text-[11px] px-2.5 py-0.5 rounded-full font-semibold"; }
-                if(texto) { texto.innerText = "Desbloquea Cierre Z, Catálogo Web, OCR, Cobro QR, PDF, Multi-sucursal y sincronización en la nube."; }
+                if(texto) { texto.innerText = "Al activar Modo Pro se apagan los anuncios y se desbloquean Cierre Z, Catálogo Web, OCR, Cobro QR, PDF y nube."; }
                 if(bannerAd) bannerAd.classList.remove('hidden');
             }
         }
 
         function verAnuncioBonificadoPro() {
-            mostrarToast('Activando 12 horas de Modo Pro...', 'info');
+            mostrarToast('Activando 12 horas de Modo Pro y apagando anuncios...', 'info');
             const tiempoExpiracion = Date.now() + (12 * 60 * 60 * 1000);
             localStorage.setItem('proExpira', tiempoExpiracion);
             verificarEstadoPro();
-            mostrarToast('Modo Pro activo por 12 horas.', 'success');
+            mostrarToast('Modo Pro activo por 12 horas. Anuncios apagados.', 'success');
         }
 
         function guardarTasaCambio() {

@@ -46,9 +46,9 @@
                 <button type="button" onclick="cerrarMenuLateral()" class="text-slate-400 hover:text-rose-500 text-sm font-bold px-2 py-1 rounded-lg">✕</button>
             </div>
 
-            <!-- Secciones Principales -->
+            <!-- Operación Diaria -->
             <div class="space-y-1">
-                <p class="text-[10px] font-bold uppercase tracking-wider text-slate-400 px-2.5 pb-1">Secciones</p>
+                <p class="text-[10px] font-bold uppercase tracking-wider text-slate-400 px-2.5 pb-1">Operación</p>
                 <button type="button" onclick="navegarDesdeMenu('resumen')" id="drawer-btn-resumen" class="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-xs font-semibold bg-blue-50 text-blue-700 dark:bg-blue-950/70 dark:text-blue-300 transition text-left">
                     <span>📊</span>
                     <span>Resumen</span>
@@ -65,9 +65,22 @@
                     <span>💵</span>
                     <span>Caja y movimientos</span>
                 </button>
+            </div>
+
+            <!-- Audios, Modo Pro y Configuración -->
+            <div class="space-y-1 pt-2 border-t border-slate-100 dark:border-slate-800">
+                <p class="text-[10px] font-bold uppercase tracking-wider text-slate-400 px-2.5 pb-1">Secciones especiales</p>
+                <button type="button" onclick="navegarDesdeMenu('audios')" id="drawer-btn-audios" class="w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition text-left">
+                    <span class="flex items-center gap-2.5"><span>🔊</span><span>Audios</span></span>
+                    <span id="drawer-audio-status" class="text-[10px] text-slate-400">ON</span>
+                </button>
+                <button type="button" onclick="navegarDesdeMenu('pro')" id="drawer-btn-pro" class="w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-medium text-amber-800 dark:text-amber-300 bg-amber-50/70 dark:bg-amber-950/30 hover:bg-amber-100/80 dark:hover:bg-amber-950/50 transition text-left">
+                    <span class="flex items-center gap-2.5"><span>⭐</span><span>Modo Pro</span></span>
+                    <span class="pro-tag text-[9px] font-bold bg-amber-200/80 text-amber-900 dark:bg-amber-900 dark:text-amber-200 px-1.5 py-0.5 rounded-full">PRO</span>
+                </button>
                 <button type="button" onclick="navegarDesdeMenu('ajustes')" id="drawer-btn-ajustes" class="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-xs font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition text-left">
                     <span>⚙️</span>
-                    <span>Ajustes y Modo Pro</span>
+                    <span>Ajustes</span>
                 </button>
             </div>
 
@@ -106,9 +119,9 @@
             </div>
             <div class="space-y-2 text-xs text-slate-600 dark:text-slate-300 bg-slate-50 dark:bg-slate-800/70 p-3.5 rounded-xl border border-slate-200/80 dark:border-slate-700/80">
                 <p>• <b>Gratis:</b> Inventario, ventas contado/fiados, vuelto y caja básica.</p>
-                <p>• <b>Modo Pro:</b> Arqueo Z, catálogo web, OCR, cobro QR y PDF.</p>
-                <p>• <b>Multi-sucursal y Nube:</b> Gestiona sucursales y sincroniza equipos.</p>
-                <p>• <b>Respaldos:</b> Exporta e importa tus datos en JSON.</p>
+                <p>• <b>Audios:</b> Alertas de sonido para ventas, abonos y stock bajo.</p>
+                <p>• <b>Modo Pro:</b> Arqueo Z, catálogo web, OCR, cobro QR, PDF y nube.</p>
+                <p>• <b>Menú lateral (☰):</b> Cambia de sección fácilmente con una mano.</p>
             </div>
             <button type="button" onclick="cerrarOnboarding()" class="w-full bg-blue-600 text-white font-semibold py-2.5 rounded-xl text-xs hover:bg-blue-700 transition">Comenzar</button>
         </div>
@@ -227,8 +240,9 @@
                     ☰
                 </button>
                 <div class="min-w-0 flex-1">
-                    <div class="flex items-center gap-1.5">
+                    <div class="flex items-center gap-1.5 flex-wrap">
                         <h1 class="text-sm font-bold tracking-tight truncate">Gestor Pro</h1>
+                        <span id="header-seccion-actual" class="text-[10px] bg-black/15 text-white/95 font-medium px-2 py-0.5 rounded-full whitespace-nowrap">Resumen</span>
                         <span id="badge-rol-actual" onclick="clicBadgeRol()" class="text-[10px] bg-white/15 hover:bg-white/25 text-white font-medium px-2 py-0.5 rounded-full cursor-pointer whitespace-nowrap shrink-0 transition" title="Toca para cambiar rol">Dueño</span>
                         <span id="badge-offline-status" class="text-[10px] bg-emerald-500/25 text-emerald-100 px-1.5 py-0.5 rounded-full font-medium whitespace-nowrap shrink-0" title="Estado de conexión">Online</span>
                     </div>
@@ -243,10 +257,10 @@
         </div>
     </header>
 
-    <!-- Contenedor Principal -->
-    <main class="flex-1 max-w-md w-full mx-auto px-4 pt-4 pb-32 space-y-4">
+    <!-- Contenedor Principal (sin barra inferior fija) -->
+    <main class="flex-1 max-w-md w-full mx-auto px-4 pt-4 pb-24 space-y-4">
         
-        <!-- Pestaña 1: Resumen -->
+        <!-- Sección 1: Resumen -->
         <section id="tab-resumen" class="space-y-4">
             <!-- Tarjeta de Alertas BI -->
             <div id="alerta-bi-container" class="bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-800/70 text-amber-900 dark:text-amber-200 p-3.5 rounded-2xl text-xs space-y-1 hidden">
@@ -328,7 +342,7 @@
             </div>
         </section>
 
-        <!-- Pestaña 2: Inventario & Proveedores -->
+        <!-- Sección 2: Inventario & Proveedores -->
         <section id="tab-inventario" class="space-y-4 hidden">
             <div class="bg-white dark:bg-slate-900 p-4 rounded-2xl shadow-xs border border-slate-200/80 dark:border-slate-800 space-y-2.5 admin-only">
                 <h2 class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Capital inicial</h2>
@@ -426,7 +440,7 @@
             </details>
         </section>
 
-        <!-- Pestaña 3: Ventas, Multidivisa y Fiados -->
+        <!-- Sección 3: Ventas, Multidivisa y Fiados -->
         <section id="tab-ventas" class="space-y-4 hidden">
             <!-- Calculadora Multidivisa y Vuelto -->
             <div class="bg-white dark:bg-slate-900 p-4 rounded-2xl shadow-xs border border-slate-200/80 dark:border-slate-800 space-y-3">
@@ -518,7 +532,7 @@
             </div>
         </section>
 
-        <!-- Pestaña 4: Finanzas y Caja -->
+        <!-- Sección 4: Finanzas y Caja -->
         <section id="tab-finanzas" class="space-y-4 hidden">
             <div class="grid grid-cols-2 gap-2.5">
                 <div class="bg-white dark:bg-slate-900 p-3.5 rounded-2xl shadow-xs border border-slate-200/80 dark:border-slate-800">
@@ -584,7 +598,110 @@
             </div>
         </section>
 
-        <!-- Pestaña 5: Ajustes y Suscripción Modo Pro -->
+        <!-- Sección 5: Audios y Avisos Sonoros (Separada) -->
+        <section id="tab-audios" class="space-y-4 hidden">
+            <div class="bg-white dark:bg-slate-900 p-4 rounded-2xl shadow-xs border border-slate-200/80 dark:border-slate-800 space-y-3">
+                <div class="flex justify-between items-center">
+                    <div>
+                        <h2 class="text-sm font-bold text-slate-800 dark:text-white">Audios y sonidos</h2>
+                        <p class="text-[11px] text-slate-500 dark:text-slate-400">Avisos sonoros locales al operar en el negocio.</p>
+                    </div>
+                    <label class="inline-flex items-center gap-2 text-xs font-semibold cursor-pointer">
+                        <input type="checkbox" id="audio-habilitado" onchange="guardarConfigAudio()" class="w-4 h-4 accent-blue-600 rounded">
+                        <span>Activos</span>
+                    </label>
+                </div>
+
+                <div class="space-y-2 pt-2 border-t border-slate-100 dark:border-slate-800 text-xs">
+                    <label class="flex items-center justify-between py-1 cursor-pointer">
+                        <span>Sonido al registrar venta o fiado</span>
+                        <input type="checkbox" id="audio-venta" onchange="guardarConfigAudio()" class="w-4 h-4 accent-blue-600 rounded">
+                    </label>
+                    <label class="flex items-center justify-between py-1 cursor-pointer">
+                        <span>Sonido al registrar abono de deuda</span>
+                        <input type="checkbox" id="audio-abono" onchange="guardarConfigAudio()" class="w-4 h-4 accent-blue-600 rounded">
+                    </label>
+                    <label class="flex items-center justify-between py-1 cursor-pointer">
+                        <span>Alerta sonora de stock bajo</span>
+                        <input type="checkbox" id="audio-alerta" onchange="guardarConfigAudio()" class="w-4 h-4 accent-blue-600 rounded">
+                    </label>
+                </div>
+
+                <div class="space-y-1.5 pt-2 border-t border-slate-100 dark:border-slate-800">
+                    <div class="flex justify-between text-xs">
+                        <span class="font-medium text-slate-600 dark:text-slate-300">Volumen de alertas</span>
+                        <span id="audio-volumen-label" class="font-mono text-slate-500">70%</span>
+                    </div>
+                    <input type="range" id="audio-volumen" min="0" max="100" step="5" oninput="actualizarEtiquetaVolumen()" onchange="guardarConfigAudio()" class="w-full accent-blue-600">
+                </div>
+
+                <div class="grid grid-cols-3 gap-2 pt-2">
+                    <button type="button" onclick="reproducirSonidoEvento('venta')" class="bg-blue-50 dark:bg-blue-950/60 text-blue-700 dark:text-blue-300 font-semibold py-2 rounded-xl text-[11px] hover:bg-blue-100 transition">Probar Venta</button>
+                    <button type="button" onclick="reproducirSonidoEvento('abono')" class="bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 font-semibold py-2 rounded-xl text-[11px] hover:bg-emerald-100 transition">Probar Abono</button>
+                    <button type="button" onclick="reproducirSonidoEvento('alerta')" class="bg-amber-50 dark:bg-amber-950/60 text-amber-700 dark:text-amber-300 font-semibold py-2 rounded-xl text-[11px] hover:bg-amber-100 transition">Probar Alerta</button>
+                </div>
+            </div>
+
+            <!-- Pistas / Audios Personalizados de Respaldo -->
+            <div class="bg-white dark:bg-slate-900 p-4 rounded-2xl shadow-xs border border-slate-200/80 dark:border-slate-800 space-y-2.5">
+                <h3 class="text-sm font-bold text-slate-800 dark:text-white">Audio personalizado de notificación</h3>
+                <p class="text-[11px] text-slate-500 dark:text-slate-400">Si no eliges un archivo, se usa el tono integrado del teléfono/navegador.</p>
+                <div class="flex items-center justify-between gap-2 bg-slate-50 dark:bg-slate-800/70 p-3 rounded-xl border border-slate-100 dark:border-slate-800 text-xs">
+                    <span id="audio-archivo-nombre" class="truncate text-slate-600 dark:text-slate-300">Tono integrado predeterminado</span>
+                    <button type="button" onclick="limpiarAudioPersonalizado()" class="text-rose-600 dark:text-rose-400 text-[11px] font-semibold shrink-0">Restablecer</button>
+                </div>
+                <label class="block w-full bg-slate-800 dark:bg-slate-700 text-white font-semibold py-2.5 rounded-xl text-xs hover:bg-slate-900 transition text-center cursor-pointer">
+                    Elegir archivo de audio (MP3 / WAV / OGG)
+                    <input type="file" id="input-audio-archivo" accept="audio/*" onchange="cargarAudioPersonalizado(event)" class="hidden">
+                </label>
+            </div>
+        </section>
+
+        <!-- Sección 6: Modo Pro (Separada) -->
+        <section id="tab-pro" class="space-y-4 hidden">
+            <div id="seccion-modo-pro" class="bg-white dark:bg-slate-900 p-4 rounded-2xl shadow-xs border border-amber-300/80 dark:border-amber-700/60 space-y-3">
+                <div class="flex justify-between items-center">
+                    <h2 class="text-sm font-bold text-slate-800 dark:text-white">Gestor Pro — Modo PRO</h2>
+                    <span id="badge-pro-estado" class="bg-rose-100 text-rose-700 dark:bg-rose-950 dark:text-rose-300 text-[11px] px-2.5 py-0.5 rounded-full font-semibold">Inactivo</span>
+                </div>
+                <p id="texto-pro-estado" class="text-xs text-slate-500 dark:text-slate-400">Desbloquea Cierre Z, Catálogo Web, OCR, Cobro QR, PDF, Multi-sucursal y sincronización en la nube.</p>
+                
+                <div class="bg-slate-50 dark:bg-slate-800/70 p-3 rounded-xl text-xs space-y-1 border border-slate-100 dark:border-slate-800">
+                    <p class="font-semibold text-slate-700 dark:text-slate-200">Planes disponibles</p>
+                    <p>• <b>Mensual:</b> $5 (promoción: 1er pago incluye 2do mes)</p>
+                    <p>• <b>Anual:</b> $45 (12 meses)</p>
+                </div>
+
+                <div class="space-y-2">
+                    <button type="button" onclick="abrirModalPasarelaSuscripcion('mensual')" class="w-full bg-emerald-600 text-white font-semibold py-2.5 rounded-xl text-xs hover:bg-emerald-700 transition">Plan Mensual ($5)</button>
+                    <button type="button" onclick="abrirModalPasarelaSuscripcion('anual')" class="w-full bg-blue-600 text-white font-semibold py-2.5 rounded-xl text-xs hover:bg-blue-700 transition">Plan Anual ($45)</button>
+                    <button type="button" onclick="verAnuncioBonificadoPro()" class="w-full bg-amber-600 text-white font-semibold py-2 rounded-xl text-xs hover:bg-amber-700 transition">Activar 12h con anuncio</button>
+                </div>
+            </div>
+
+            <!-- Sincronización entre dispositivos (Modo Pro) -->
+            <div class="bg-white dark:bg-slate-900 p-4 rounded-2xl shadow-xs border border-slate-200/80 dark:border-slate-800 space-y-2.5">
+                <div class="flex items-center justify-between">
+                    <p class="text-xs font-bold text-slate-800 dark:text-white">Sincronización entre dispositivos</p>
+                    <span class="pro-tag text-[9px] font-bold bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300 px-1.5 py-0.5 rounded-full">PRO</span>
+                </div>
+                <button type="button" onclick="requierePro(mostrarCodigoQR, 'QR de sincronización')" class="w-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 font-semibold py-2 rounded-xl text-xs hover:bg-slate-200 dark:hover:bg-slate-700 transition">Mostrar QR de sincronización</button>
+                <div id="qr-display-container" class="hidden bg-slate-50 dark:bg-slate-800 p-3 rounded-xl text-center space-y-2 border border-slate-200 dark:border-slate-700">
+                    <div id="qr-image-box" class="flex justify-center"></div>
+                    <p id="qr-text-code" class="text-[11px] font-mono text-slate-600 dark:text-slate-300 select-all bg-white dark:bg-slate-900 p-1.5 rounded-lg"></p>
+                </div>
+                <div class="flex gap-2">
+                    <input type="text" id="token-socio" class="flex-1 p-2 text-xs rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 outline-none" placeholder="Código de sincronización">
+                    <button type="button" onclick="requierePro(conectarSocio, 'Sincronización con socio')" class="bg-slate-800 text-white px-3 py-2 rounded-xl text-xs font-semibold hover:bg-slate-900 transition whitespace-nowrap">Conectar</button>
+                </div>
+                <div class="grid grid-cols-2 gap-2">
+                    <button type="button" onclick="requierePro(abrirEscanerQR, 'Escanear QR de sincronización')" class="bg-slate-800 text-white font-semibold py-2 rounded-xl text-xs hover:bg-slate-900 transition">Escanear QR</button>
+                    <button type="button" onclick="desvincularTelefono()" class="bg-rose-600 text-white font-semibold py-2 rounded-xl text-xs hover:bg-rose-700 transition">Desvincular</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sección 7: Ajustes Generales -->
         <section id="tab-ajustes" class="space-y-4 hidden">
             <!-- Sucursales (Función Pro) -->
             <div class="bg-white dark:bg-slate-900 p-4 rounded-2xl shadow-xs border border-slate-200/80 dark:border-slate-800 space-y-3 admin-only">
@@ -635,47 +752,6 @@
                 </div>
             </div>
 
-            <!-- Modo Pro -->
-            <div id="seccion-modo-pro" class="bg-white dark:bg-slate-900 p-4 rounded-2xl shadow-xs border border-amber-300/80 dark:border-amber-700/60 space-y-3">
-                <div class="flex justify-between items-center">
-                    <h2 class="text-sm font-bold text-slate-800 dark:text-white">Gestor Pro — Modo PRO</h2>
-                    <span id="badge-pro-estado" class="bg-rose-100 text-rose-700 dark:bg-rose-950 dark:text-rose-300 text-[11px] px-2.5 py-0.5 rounded-full font-semibold">Inactivo</span>
-                </div>
-                <p id="texto-pro-estado" class="text-xs text-slate-500 dark:text-slate-400">Desbloquea Cierre Z, Catálogo Web, OCR, Cobro QR, PDF, Multi-sucursal y sincronización en la nube.</p>
-                
-                <div class="bg-slate-50 dark:bg-slate-800/70 p-3 rounded-xl text-xs space-y-1 border border-slate-100 dark:border-slate-800">
-                    <p class="font-semibold text-slate-700 dark:text-slate-200">Planes disponibles</p>
-                    <p>• <b>Mensual:</b> $5 (promoción: 1er pago incluye 2do mes)</p>
-                    <p>• <b>Anual:</b> $45 (12 meses)</p>
-                </div>
-
-                <div class="space-y-2">
-                    <button type="button" onclick="abrirModalPasarelaSuscripcion('mensual')" class="w-full bg-emerald-600 text-white font-semibold py-2.5 rounded-xl text-xs hover:bg-emerald-700 transition">Plan Mensual ($5)</button>
-                    <button type="button" onclick="abrirModalPasarelaSuscripcion('anual')" class="w-full bg-blue-600 text-white font-semibold py-2.5 rounded-xl text-xs hover:bg-blue-700 transition">Plan Anual ($45)</button>
-                    <button type="button" onclick="verAnuncioBonificadoPro()" class="w-full bg-amber-600 text-white font-semibold py-2 rounded-xl text-xs hover:bg-amber-700 transition">Activar 12h con anuncio</button>
-                    
-                    <div class="pt-3 mt-2 border-t border-slate-100 dark:border-slate-800 space-y-2">
-                        <div class="flex items-center justify-between">
-                            <p class="text-[11px] font-semibold text-slate-500 dark:text-slate-400">Sincronización entre dispositivos</p>
-                            <span class="pro-tag text-[9px] font-bold bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300 px-1.5 py-0.5 rounded-full">PRO</span>
-                        </div>
-                        <button type="button" onclick="requierePro(mostrarCodigoQR, 'QR de sincronización')" class="w-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 font-semibold py-2 rounded-xl text-xs hover:bg-slate-200 dark:hover:bg-slate-700 transition">Mostrar QR de sincronización</button>
-                        <div id="qr-display-container" class="hidden bg-slate-50 dark:bg-slate-800 p-3 rounded-xl text-center space-y-2 border border-slate-200 dark:border-slate-700">
-                            <div id="qr-image-box" class="flex justify-center"></div>
-                            <p id="qr-text-code" class="text-[11px] font-mono text-slate-600 dark:text-slate-300 select-all bg-white dark:bg-slate-900 p-1.5 rounded-lg"></p>
-                        </div>
-                        <div class="flex gap-2">
-                            <input type="text" id="token-socio" class="flex-1 p-2 text-xs rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 outline-none" placeholder="Código de sincronización">
-                            <button type="button" onclick="requierePro(conectarSocio, 'Sincronización con socio')" class="bg-slate-800 text-white px-3 py-2 rounded-xl text-xs font-semibold hover:bg-slate-900 transition whitespace-nowrap">Conectar</button>
-                        </div>
-                        <div class="grid grid-cols-2 gap-2">
-                            <button type="button" onclick="requierePro(abrirEscanerQR, 'Escanear QR de sincronización')" class="bg-slate-800 text-white font-semibold py-2 rounded-xl text-xs hover:bg-slate-900 transition">Escanear QR</button>
-                            <button type="button" onclick="desvincularTelefono()" class="bg-rose-600 text-white font-semibold py-2 rounded-xl text-xs hover:bg-rose-700 transition">Desvincular</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
             <!-- Autoría -->
             <div class="text-center py-2 space-y-0.5 text-[11px] text-slate-400">
                 <p class="font-semibold text-slate-500 dark:text-slate-300">Gestor Pro · © 2026</p>
@@ -685,8 +761,8 @@
 
     </main>
 
-    <!-- Contenedor Fijo de Anuncio Banner AdMob -->
-    <div id="admob-banner-container" class="fixed bottom-14 left-0 right-0 bg-white dark:bg-slate-900 border-t border-slate-200/80 dark:border-slate-800 min-h-[52px] flex flex-col justify-center items-center z-20 max-w-md mx-auto overflow-hidden">
+    <!-- Contenedor Fijo de Anuncio Banner AdMob (sin barra inferior) -->
+    <div id="admob-banner-container" class="fixed bottom-0 left-0 right-0 bg-white dark:bg-slate-900 border-t border-slate-200/80 dark:border-slate-800 min-h-[52px] flex flex-col justify-center items-center z-20 max-w-md mx-auto overflow-hidden">
         <ins class="adsbygoogle"
              style="display:inline-block;width:320px;height:50px"
              data-ad-client="ca-app-pub-3645077961178424~5519013340"
@@ -695,17 +771,6 @@
              (adsbygoogle = window.adsbygoogle || []).push({});
         </script>
     </div>
-
-    <!-- Barra de Navegación Inferior -->
-    <nav class="bg-white/95 dark:bg-slate-900/95 backdrop-blur-xs border-t border-slate-200/90 dark:border-slate-800 fixed bottom-0 left-0 right-0 z-30 transition-colors">
-        <div class="max-w-md mx-auto grid grid-cols-5 px-1 py-1">
-            <button type="button" onclick="cambiarTab('resumen')" id="btn-tab-resumen" class="text-center py-2 text-[11px] font-semibold text-blue-600 dark:text-blue-400 border-t-2 border-blue-600 dark:border-blue-400 truncate">Resumen</button>
-            <button type="button" onclick="cambiarTab('inventario')" id="btn-tab-inventario" class="text-center py-2 text-[11px] font-medium text-slate-500 dark:text-slate-400 border-t-2 border-transparent truncate">Stock</button>
-            <button type="button" onclick="cambiarTab('ventas')" id="btn-tab-ventas" class="text-center py-2 text-[11px] font-medium text-slate-500 dark:text-slate-400 border-t-2 border-transparent truncate">Ventas</button>
-            <button type="button" onclick="cambiarTab('finanzas')" id="btn-tab-finanzas" class="text-center py-2 text-[11px] font-medium text-slate-500 dark:text-slate-400 border-t-2 border-transparent truncate">Caja</button>
-            <button type="button" onclick="cambiarTab('ajustes')" id="btn-tab-ajustes" class="text-center py-2 text-[11px] font-medium text-slate-500 dark:text-slate-400 border-t-2 border-transparent truncate">Ajustes</button>
-        </div>
-    </nav>
 
     <!-- Script de Firebase Firestore con Control de Concurrencia y Sincronización Segura -->
     <script type="module">
@@ -811,7 +876,145 @@
                     registration.update();
                 }
             });
-            navigator.serviceWorker.register('./sw.js?v=20261118c').catch(err => console.log('SW error:', err));
+            navigator.serviceWorker.register('./sw.js?v=20261118d').catch(err => console.log('SW error:', err));
+        }
+
+        const SECCIONES_VALIDAS = ['resumen', 'inventario', 'ventas', 'finanzas', 'audios', 'pro', 'ajustes'];
+        const NOMBRES_SECCION = {
+            resumen: 'Resumen',
+            inventario: 'Stock',
+            ventas: 'Ventas',
+            finanzas: 'Caja',
+            audios: 'Audios',
+            pro: 'Modo Pro',
+            ajustes: 'Ajustes'
+        };
+
+        // Configuración de Audios
+        let audioConfig = JSON.parse(localStorage.getItem('gestorpro_audio_config')) || {
+            habilitado: true,
+            venta: true,
+            abono: true,
+            alerta: true,
+            volumen: 70,
+            customNombre: ''
+        };
+        let audioPersonalizadoDataUrl = localStorage.getItem('gestorpro_audio_custom_src') || '';
+
+        function sincronizarControlesAudio() {
+            const hab = document.getElementById('audio-habilitado');
+            const vta = document.getElementById('audio-venta');
+            const abn = document.getElementById('audio-abono');
+            const alt = document.getElementById('audio-alerta');
+            const vol = document.getElementById('audio-volumen');
+            const lbl = document.getElementById('audio-volumen-label');
+            const nom = document.getElementById('audio-archivo-nombre');
+            const drawerStatus = document.getElementById('drawer-audio-status');
+
+            if (hab) hab.checked = !!audioConfig.habilitado;
+            if (vta) vta.checked = !!audioConfig.venta;
+            if (abn) abn.checked = !!audioConfig.abono;
+            if (alt) alt.checked = !!audioConfig.alerta;
+            if (vol) vol.value = audioConfig.volumen ?? 70;
+            if (lbl) lbl.innerText = `${audioConfig.volumen ?? 70}%`;
+            if (nom) nom.innerText = audioConfig.customNombre || 'Tono integrado predeterminado';
+            if (drawerStatus) drawerStatus.innerText = audioConfig.habilitado ? 'ON' : 'OFF';
+        }
+
+        function actualizarEtiquetaVolumen() {
+            const vol = document.getElementById('audio-volumen');
+            const lbl = document.getElementById('audio-volumen-label');
+            if (vol && lbl) lbl.innerText = `${vol.value}%`;
+        }
+
+        function guardarConfigAudio() {
+            audioConfig = {
+                habilitado: !!document.getElementById('audio-habilitado')?.checked,
+                venta: !!document.getElementById('audio-venta')?.checked,
+                abono: !!document.getElementById('audio-abono')?.checked,
+                alerta: !!document.getElementById('audio-alerta')?.checked,
+                volumen: parseInt(document.getElementById('audio-volumen')?.value ?? 70, 10),
+                customNombre: audioConfig.customNombre || ''
+            };
+            localStorage.setItem('gestorpro_audio_config', JSON.stringify(audioConfig));
+            sincronizarControlesAudio();
+        }
+
+        function cargarAudioPersonalizado(event) {
+            const archivo = event.target.files[0];
+            if (!archivo) return;
+            if (archivo.size > 1500000) {
+                mostrarToast('Elige un archivo de audio menor a 1.5 MB.', 'error');
+                event.target.value = '';
+                return;
+            }
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                audioPersonalizadoDataUrl = e.target.result;
+                audioConfig.customNombre = archivo.name;
+                localStorage.setItem('gestorpro_audio_custom_src', audioPersonalizadoDataUrl);
+                localStorage.setItem('gestorpro_audio_config', JSON.stringify(audioConfig));
+                sincronizarControlesAudio();
+                mostrarToast('Audio personalizado guardado.', 'success');
+            };
+            reader.readAsDataURL(archivo);
+            event.target.value = '';
+        }
+
+        function limpiarAudioPersonalizado() {
+            audioPersonalizadoDataUrl = '';
+            audioConfig.customNombre = '';
+            localStorage.removeItem('gestorpro_audio_custom_src');
+            localStorage.setItem('gestorpro_audio_config', JSON.stringify(audioConfig));
+            sincronizarControlesAudio();
+            mostrarToast('Restablecido a tono integrado.', 'info');
+        }
+
+        function reproducirSonidoEvento(tipo) {
+            if (!audioConfig.habilitado) return;
+            if (tipo === 'venta' && !audioConfig.venta) return;
+            if (tipo === 'abono' && !audioConfig.abono) return;
+            if (tipo === 'alerta' && !audioConfig.alerta) return;
+
+            const ganancia = Math.max(0, Math.min(1, (audioConfig.volumen ?? 70) / 100));
+            if (ganancia === 0) return;
+
+            if (audioPersonalizadoDataUrl) {
+                const audioEl = new Audio(audioPersonalizadoDataUrl);
+                audioEl.volume = ganancia;
+                audioEl.play().catch(() => {});
+                return;
+            }
+
+            try {
+                const AudioCtx = window.AudioContext || window.webkitAudioContext;
+                if (!AudioCtx) return;
+                const ctx = new AudioCtx();
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+
+                const ahora = ctx.currentTime;
+                if (tipo === 'venta') {
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(660, ahora);
+                    osc.frequency.setValueAtTime(880, ahora + 0.08);
+                } else if (tipo === 'abono') {
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(523.25, ahora);
+                    osc.frequency.setValueAtTime(783.99, ahora + 0.09);
+                } else {
+                    osc.type = 'sawtooth';
+                    osc.frequency.setValueAtTime(340, ahora);
+                    osc.frequency.setValueAtTime(260, ahora + 0.12);
+                }
+
+                gain.gain.setValueAtTime(ganancia * 0.25, ahora);
+                gain.gain.exponentialRampToValueAtTime(0.001, ahora + 0.24);
+                osc.start(ahora);
+                osc.stop(ahora + 0.25);
+            } catch (e) {}
         }
 
         function abrirMenuLateral() {
@@ -827,6 +1030,7 @@
                     ? 'text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300'
                     : 'text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-300';
             }
+            sincronizarControlesAudio();
             backdrop?.classList.remove('hidden');
             requestAnimationFrame(() => {
                 menu?.classList.remove('-translate-x-full');
@@ -848,11 +1052,16 @@
         }
 
         function marcarSeccionActivaMenu(tab) {
-            ['resumen', 'inventario', 'ventas', 'finanzas', 'ajustes'].forEach(t => {
+            const badgeSec = document.getElementById('header-seccion-actual');
+            if (badgeSec) badgeSec.innerText = NOMBRES_SECCION[tab] || 'Resumen';
+
+            SECCIONES_VALIDAS.forEach(t => {
                 const btn = document.getElementById(`drawer-btn-${t}`);
                 if (!btn) return;
                 if (t === tab) {
                     btn.className = 'w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-xs font-semibold bg-blue-50 text-blue-700 dark:bg-blue-950/70 dark:text-blue-300 transition text-left';
+                } else if (t === 'pro') {
+                    btn.className = 'w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-medium text-amber-800 dark:text-amber-300 bg-amber-50/70 dark:bg-amber-950/30 hover:bg-amber-100/80 dark:hover:bg-amber-950/50 transition text-left';
                 } else {
                     btn.className = 'w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-xs font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition text-left';
                 }
@@ -889,10 +1098,7 @@
                 return true;
             }
             mostrarToast(`${nombreFuncion} forma parte del Modo Pro.`, 'error');
-            cambiarTab('ajustes');
-            setTimeout(() => {
-                document.getElementById('seccion-modo-pro')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            }, 120);
+            cambiarTab('pro');
             return false;
         }
 
@@ -1638,19 +1844,20 @@
         }
 
         function cambiarTab(tab) {
-            ['resumen', 'inventario', 'ventas', 'finanzas', 'ajustes'].forEach(t => {
-                document.getElementById(`tab-${t}`).classList.add('hidden');
-                document.getElementById(`btn-tab-${t}`).className = "text-center py-2 text-[11px] font-medium text-slate-500 dark:text-slate-400 border-t-2 border-transparent truncate";
+            const targetTab = SECCIONES_VALIDAS.includes(tab) ? tab : 'resumen';
+            SECCIONES_VALIDAS.forEach(t => {
+                document.getElementById(`tab-${t}`)?.classList.add('hidden');
             });
-            document.getElementById(`tab-${tab}`).classList.remove('hidden');
-            document.getElementById(`btn-tab-${tab}`).className = "text-center py-2 text-[11px] font-semibold text-blue-600 dark:text-blue-400 border-t-2 border-blue-600 dark:border-blue-400 truncate";
-            marcarSeccionActivaMenu(tab);
+            document.getElementById(`tab-${targetTab}`)?.classList.remove('hidden');
+            marcarSeccionActivaMenu(targetTab);
             
-            if(tab === 'resumen') { actualizarResumenGeneral(); actualizarGraficos(); verificarAlertaBI(); }
-            if(tab === 'inventario') { renderInventario(); renderProveedores(); }
-            if(tab === 'ventas') { actualizarSelectVentas(); renderVentas(); renderDeudas(); }
-            if(tab === 'finanzas') renderFinanzas();
-            if(tab === 'ajustes') { verificarEstadoPro(); document.getElementById('input-tasa-cambio').value = obtenerNegocio().tasaCambio || 36.50; }
+            if(targetTab === 'resumen') { actualizarResumenGeneral(); actualizarGraficos(); verificarAlertaBI(); }
+            if(targetTab === 'inventario') { renderInventario(); renderProveedores(); }
+            if(targetTab === 'ventas') { actualizarSelectVentas(); renderVentas(); renderDeudas(); }
+            if(targetTab === 'finanzas') renderFinanzas();
+            if(targetTab === 'audios') sincronizarControlesAudio();
+            if(targetTab === 'pro') verificarEstadoPro();
+            if(targetTab === 'ajustes') { actualizarSelectNegocios(); document.getElementById('input-tasa-cambio').value = obtenerNegocio().tasaCambio || 36.50; }
         }
 
         function verificarAlertaBI() {
@@ -1827,6 +2034,8 @@
                 neg.ventas.unshift({ id: Date.now(), nombre: producto.nombre, cantidad, total, ganancia, tipo: 'Contado', fecha: new Date().toLocaleTimeString() });
                 neg.finanzas.unshift({ id: Date.now(), tipo: 'ingreso', monto: total, desc: `Venta: ${producto.nombre} (x${cantidad})`, fecha: new Date().toLocaleTimeString() });
                 persistir(); e.target.reset(); renderVentas();
+                reproducirSonidoEvento('venta');
+                if (producto.stock <= 5) reproducirSonidoEvento('alerta');
                 mostrarToast('Venta registrada.', 'success');
                 if(confirm('¿Mostrar comprobante?')) abrirModalTicket({ tipo: 'Contado', producto: producto.nombre, cantidad, total });
             } else {
@@ -1839,6 +2048,8 @@
                 if(abono > 0) neg.finanzas.unshift({ id: Date.now(), tipo: 'ingreso', monto: abono, desc: `Abono fiado (${cliente})`, fecha: new Date().toLocaleTimeString() });
                 persistir(); e.target.reset(); document.getElementById('campos-fiado').classList.add('hidden');
                 renderVentas(); renderDeudas();
+                reproducirSonidoEvento('venta');
+                if (producto.stock <= 5) reproducirSonidoEvento('alerta');
                 mostrarToast('Fiado registrado.', 'success');
                 if(telefono && confirm('¿Enviar detalle por WhatsApp?')) enviarWhatsAppFiado(deudaObj);
                 else abrirModalTicket({ tipo: 'Fiado', cliente, producto: producto.nombre, cantidad, total, abonado: abono, pendiente });
@@ -1867,6 +2078,7 @@
                 mostrarToast(`Abono de $${m.toFixed(2)} registrado.`, 'success');
             }
             persistir(); renderDeudas(); renderVentas();
+            reproducirSonidoEvento('abono');
         }
 
         function renderDeudas() {
@@ -2070,6 +2282,7 @@
             renderVentas();
             renderDeudas();
             renderFinanzas();
+            sincronizarControlesAudio();
             verificarEstadoPro();
             verificarAlertaBI();
         }

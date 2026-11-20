@@ -1,7 +1,7 @@
 {
   "name": "Gestor Pro - Control Total de Negocio",
   "short_name": "Gestor Pro",
-  "description": "Sistema integral de inventario, ventas, caja multi-sucursal y control comercial.",
+  "description": "Sistema integral de inventario, ventas, caja multi-sucursal y catálogo digital.",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",

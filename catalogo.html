@@ -2,154 +2,310 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
+    <meta name="author" content="Joelbi José Salazar Vargas (C.I. 30.022.434)">
+    <meta name="copyright" content="© 2026 Gestor Pro. Todos los derechos reservados. Joelbi José Salazar Vargas (C.I. 30.022.434)">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Catálogo Digital - Gestor Pro</title>
+    <title>Gestor Pro · Catálogo</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-slate-50 text-slate-800 min-h-screen p-4 flex flex-col items-center">
-    <div class="max-w-md w-full space-y-4 pb-24">
-        <header class="bg-blue-600 text-white p-4 rounded-xl text-center shadow space-y-1">
-            <h1 id="titulo-catalogo" class="text-lg font-bold">Catálogo Online</h1>
-            <p id="subtitulo-catalogo" class="text-xs text-blue-100">Selecciona tus productos para hacer pedidos por WhatsApp</p>
-            <p id="whatsapp-catalogo-badge" class="text-[11px] text-blue-50/90 font-mono"></p>
-        </header>
+<body class="bg-slate-100 text-slate-800 min-h-screen flex flex-col">
 
-        <div id="catalogo-productos" class="space-y-3"></div>
-    </div>
-
-    <div class="fixed bottom-0 left-0 right-0 p-3 bg-white/95 backdrop-blur border-t border-slate-200">
-        <div class="max-w-md mx-auto space-y-2">
-            <div class="flex justify-between items-center text-xs font-bold">
-                <span>Total del Pedido:</span>
-                <span id="lbl-total-pedido" class="text-emerald-600 text-sm">$0.00</span>
+    <header class="bg-blue-600 text-white p-4 shadow-md sticky top-0 z-20">
+        <div class="max-w-md mx-auto flex justify-between items-center gap-2">
+            <div class="min-w-0">
+                <h1 id="catalogo-titulo" class="text-lg font-extrabold tracking-tight truncate">Catálogo</h1>
+                <p id="catalogo-subtitulo" class="text-xs text-blue-100 truncate">Gestor Pro</p>
             </div>
-            <button type="button" onclick="enviarPedidoWhatsApp()" class="w-full bg-emerald-600 text-white font-semibold py-2.5 rounded-xl text-xs hover:bg-emerald-700 transition">
+            <div class="flex items-center gap-2 shrink-0">
+                <select id="select-lang-cat" onchange="cambiarIdiomaCatalogo(this.value)" class="bg-blue-700 text-white text-xs px-2 py-1.5 rounded-full font-semibold outline-none"></select>
+                <button type="button" onclick="abrirCarrito()" class="bg-white text-blue-600 px-3 py-1.5 rounded-full text-xs font-bold shadow flex items-center gap-1">
+                    🛒 <span id="contador-carrito">0</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-1 max-w-md w-full mx-auto p-4 space-y-4">
+        <input type="text" id="buscar-catalogo" oninput="filtrarCatalogo(this.value)" class="w-full p-3 text-xs border border-slate-200 rounded-xl bg-white shadow-sm outline-none" placeholder="Buscar producto...">
+        <div id="grid-productos" class="grid grid-cols-1 gap-3"></div>
+    </main>
+
+    <!-- Modal Carrito de Compras -->
+    <div id="modal-carrito" class="fixed inset-0 bg-slate-900/75 z-50 flex items-center justify-center p-4 hidden overflow-y-auto">
+        <div class="bg-white rounded-2xl max-w-sm w-full p-4 space-y-3 shadow-2xl my-auto">
+            <div class="flex justify-between items-center border-b pb-2">
+                <h3 id="lbl-cart-title" class="text-sm font-bold">Tu Pedido</h3>
+                <button type="button" onclick="cerrarCarrito()" class="text-xs font-bold text-slate-400 px-2 py-1">✕</button>
+            </div>
+            <div id="lista-carrito" class="space-y-2 max-h-48 overflow-y-auto text-xs"></div>
+            <div class="border-t pt-2 flex justify-between font-bold text-sm">
+                <span id="lbl-cart-total">Total:</span>
+                <span id="total-carrito" class="text-emerald-600">$0.00</span>
+            </div>
+
+            <div class="space-y-2 text-xs">
+                <input type="text" id="cliente-nombre-catalogo" class="w-full p-2.5 border border-slate-200 rounded-xl outline-none" placeholder="Tu nombre y apellido">
+                <input type="tel" id="cliente-telefono-catalogo" class="w-full p-2.5 border border-slate-200 rounded-xl outline-none" placeholder="Tu teléfono / WhatsApp">
+
+                <div class="grid grid-cols-2 gap-2">
+                    <div>
+                        <label class="block text-[11px] font-semibold text-slate-500 mb-1">Entrega</label>
+                        <select id="pedido-entrega-catalogo" onchange="actualizarInfoPagoCatalogo()" class="w-full p-2 border border-slate-200 rounded-xl bg-slate-50 outline-none">
+                            <option value="Retiro en tienda">Retiro en tienda</option>
+                            <option value="Delivery">Delivery</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-semibold text-slate-500 mb-1">Método de pago</label>
+                        <select id="pedido-pago-catalogo" onchange="actualizarInfoPagoCatalogo()" class="w-full p-2 border border-slate-200 rounded-xl bg-slate-50 outline-none">
+                            <option value="Efectivo ($)">Efectivo ($)</option>
+                            <option value="Efectivo Local">Efectivo Local</option>
+                            <option value="Pago Móvil">Pago Móvil</option>
+                            <option value="Transferencia">Transferencia</option>
+                            <option value="Tarjeta / POS">Tarjeta / POS</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div id="bloque-direccion-delivery" class="hidden">
+                    <input type="text" id="cliente-direccion-catalogo" class="w-full p-2.5 border border-slate-200 rounded-xl outline-none" placeholder="Dirección exacta para el delivery">
+                </div>
+
+                <div id="bloque-datos-cuenta-cat" class="hidden bg-blue-50 border border-blue-200 text-blue-900 p-2.5 rounded-xl text-[11px] space-y-1">
+                    <p class="font-bold">Datos de cuenta / Pago Móvil del comercio:</p>
+                    <p id="texto-cuenta-comercio" class="font-mono break-words"></p>
+                    <input type="text" id="pedido-referencia-catalogo" class="w-full p-2 mt-1 border border-blue-200 rounded-lg bg-white text-slate-800 outline-none" placeholder="Número de referencia de pago (opcional)">
+                </div>
+
+                <div id="aviso-delivery-efectivo" class="hidden bg-amber-50 border border-amber-200 text-amber-900 p-2.5 rounded-xl text-[11px]">
+                    ⏳ <b>Pago contra entrega:</b> El pedido quedará pendiente por confirmar hasta que el delivery entregue y reciba el efectivo.
+                </div>
+            </div>
+
+            <button type="button" onclick="enviarPedidoWhatsApp()" id="btn-send-order" class="w-full bg-emerald-600 text-white font-bold py-2.5 rounded-xl text-xs shadow hover:bg-emerald-700 transition">
                 Enviar Pedido por WhatsApp
             </button>
         </div>
     </div>
 
+    <footer class="text-center py-4 text-[10px] text-slate-400">
+        © 2026 Gestor Pro · Joelbi José Salazar Vargas (C.I. 30.022.434)
+    </footer>
+
     <script>
-        const negocios = JSON.parse(localStorage.getItem('multinegocios')) || [];
-        const negocioActualId = parseInt(localStorage.getItem('negocioActualId'), 10) || (negocios[0] ? negocios[0].id : 1);
-        const neg = negocios.find(n => n.id === negocioActualId) || negocios[0] || {
-            nombre: 'Tienda',
-            whatsapp: '',
-            inventario: []
+        const LANGS_CAT = [
+            { code: 'es', label: 'ES' }, { code: 'en', label: 'EN' }, { code: 'pt', label: 'PT' },
+            { code: 'hi', label: 'HI' }, { code: 'id', label: 'ID' }, { code: 'ru', label: 'RU' },
+            { code: 'ar', label: 'AR' }, { code: 'fr', label: 'FR' }, { code: 'de', label: 'DE' },
+            { code: 'ja', label: 'JA' }
+        ];
+
+        const DICT_CAT = {
+            es: { sub: 'Catálogo Oficial', search: 'Buscar producto...', stock: 'Disponibles:', add: '+ Agregar', order: 'Tu Pedido', total: 'Total:', name: 'Tu nombre', send: 'Enviar Pedido por WhatsApp', empty: 'Sin productos publicados en el catálogo.', emptyCart: 'Carrito vacío.' },
+            en: { sub: 'Official Catalog', search: 'Search product...', stock: 'Available:', add: '+ Add', order: 'Your Order', total: 'Total:', name: 'Your name', send: 'Send Order via WhatsApp', empty: 'No products published in catalog.', emptyCart: 'Empty cart.' },
+            pt: { sub: 'Catálogo Oficial', search: 'Buscar produto...', stock: 'Disponíveis:', add: '+ Adicionar', order: 'Seu Pedido', total: 'Total:', name: 'Seu nome', send: 'Enviar Pedido pelo WhatsApp', empty: 'Sem produtos no catálogo.', emptyCart: 'Carrinho vazio.' }
         };
 
-        let carrito = {};
+        let langCat = localStorage.getItem('gestorpro_lang') || 'es';
+        function tc(k) { return (DICT_CAT[langCat] || DICT_CAT.es)[k] || DICT_CAT.es[k] || k; }
 
-        function normalizarTelefonoWhatsApp(raw) {
+        const selLangCat = document.getElementById('select-lang-cat');
+        if (selLangCat) selLangCat.innerHTML = LANGS_CAT.map(l => `<option value="${l.code}">${l.label}</option>`).join('');
+
+        const params = new URLSearchParams(window.location.search);
+        const negocioParamId = parseInt(params.get('neg'), 10);
+        const negocios = JSON.parse(localStorage.getItem('multinegocios')) || [];
+        const negocioActualId = negocioParamId || parseInt(localStorage.getItem('negocioActualId'), 10);
+        const negocio = negocios.find(n => n.id === negocioActualId) || negocios[0] || { nombre: 'Gestor Pro', whatsapp: '', cuentaBancaria: '', inventario: [] };
+
+        function normalizarTelefono(raw) {
             const limpio = String(raw || '').replace(/\D/g, '');
             if (!limpio) return '';
-            if (limpio.startsWith('0') && limpio.length === 11) {
-                return '58' + limpio.slice(1);
-            }
+            if (limpio.startsWith('0') && limpio.length === 11) return '58' + limpio.slice(1);
             return limpio;
         }
 
-        function renderCatalogo() {
-            const titulo = document.getElementById('titulo-catalogo');
-            const badgeWa = document.getElementById('whatsapp-catalogo-badge');
-            if (titulo) titulo.innerText = `Catálogo · ${neg.nombre}`;
+        function escaparHTML(texto) {
+            return String(texto ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+        }
 
-            const telNormalizado = normalizarTelefonoWhatsApp(neg.whatsapp);
-            if (badgeWa) {
-                badgeWa.innerText = telNormalizado
-                    ? `WhatsApp de pedidos: +${telNormalizado}`
-                    : 'Configura el WhatsApp del negocio en Ajustes para recibir pedidos directos';
-            }
+        document.getElementById('catalogo-titulo').innerText = negocio.nombre || 'Gestor Pro';
+        let carrito = [];
 
-            const cont = document.getElementById('catalogo-productos');
-            if (!neg.inventario || neg.inventario.length === 0) {
-                cont.innerHTML = `<p class="text-center text-xs text-slate-400 py-8 bg-white rounded-xl border">No hay productos disponibles en este momento.</p>`;
+        function aplicarIdiomaCatalogo() {
+            document.documentElement.lang = langCat;
+            document.documentElement.dir = langCat === 'ar' ? 'rtl' : 'ltr';
+            document.getElementById('catalogo-subtitulo').innerText = tc('sub');
+            document.getElementById('buscar-catalogo').placeholder = tc('search');
+            document.getElementById('lbl-cart-title').innerText = tc('order');
+            document.getElementById('lbl-cart-total').innerText = tc('total');
+            document.getElementById('cliente-nombre-catalogo').placeholder = tc('name');
+            document.getElementById('btn-send-order').innerText = tc('send');
+            if (selLangCat) selLangCat.value = langCat;
+            renderCatalogo(document.getElementById('buscar-catalogo').value.toLowerCase());
+        }
+
+        function cambiarIdiomaCatalogo(val) {
+            langCat = val;
+            localStorage.setItem('gestorpro_lang', val);
+            aplicarIdiomaCatalogo();
+        }
+
+        function renderCatalogo(filtro = '') {
+            const grid = document.getElementById('grid-productos');
+            // Solo muestra los productos que el dueño agregó/activó en el catálogo y tienen stock
+            const productos = (negocio.inventario || []).filter(p =>
+                p.enCatalogo === true &&
+                (parseInt(p.stock, 10) || 0) > 0 &&
+                p.nombre.toLowerCase().includes(filtro)
+            );
+
+            if (productos.length === 0) {
+                grid.innerHTML = `<p class="text-xs text-slate-400 text-center py-8">${escaparHTML(tc('empty'))}</p>`;
                 return;
             }
 
-            cont.innerHTML = neg.inventario.map(p => {
-                const stockDisp = Math.max(0, parseInt(p.stock, 10) || 0);
-                const cantActual = carrito[p.id] || 0;
-                const fotoHtml = (p.foto && p.mostrarFotoPdf !== false)
-                    ? `<img src="${p.foto}" alt="${p.nombre}" class="w-12 h-12 object-cover rounded-lg border border-slate-200 shrink-0">`
-                    : `<div class="w-12 h-12 rounded-lg bg-slate-100 flex items-center justify-center text-base shrink-0">🛍️</div>`;
-
-                return `
-                    <div class="bg-white p-3.5 rounded-xl shadow-xs border border-slate-200 flex justify-between items-center gap-3">
-                        <div class="flex items-center gap-2.5 min-w-0">
-                            ${fotoHtml}
-                            <div class="min-w-0">
-                                <h3 class="text-sm font-semibold text-slate-800 truncate">${p.nombre}</h3>
-                                <p class="text-xs text-emerald-600 font-bold mt-0.5">$${Number(p.venta || 0).toFixed(2)} <span class="text-[11px] text-slate-400 font-normal">(${stockDisp} disp.)</span></p>
-                            </div>
-                        </div>
-                        <div class="flex items-center gap-2 shrink-0">
-                            <button type="button" onclick="cambiarCantidad(${p.id}, -1)" class="bg-slate-100 hover:bg-slate-200 px-2.5 py-1.5 rounded-lg text-xs font-bold">-</button>
-                            <span id="cant-${p.id}" class="text-xs font-bold w-5 text-center">${cantActual}</span>
-                            <button type="button" onclick="cambiarCantidad(${p.id}, 1)" class="bg-blue-600 hover:bg-blue-700 text-white px-2.5 py-1.5 rounded-lg text-xs font-bold">+</button>
+            grid.innerHTML = productos.map(p => `
+                <div class="bg-white p-3.5 rounded-2xl shadow-sm border border-slate-100 flex justify-between items-center gap-3">
+                    <div class="flex items-center gap-3 min-w-0">
+                        ${(p.foto && p.mostrarEnPdf !== false) ? `<img src="${p.foto}" alt="" class="w-12 h-12 object-cover rounded-xl border border-slate-200 shrink-0">` : ''}
+                        <div class="min-w-0">
+                            <p class="text-xs font-bold text-slate-800 truncate">${escaparHTML(p.nombre)}</p>
+                            <p class="text-[11px] text-slate-500">${escaparHTML(tc('stock'))} ${p.stock}</p>
+                            <p class="text-sm font-extrabold text-blue-600 mt-1">$${Number(p.venta || 0).toFixed(2)}</p>
                         </div>
                     </div>
-                `;
-            }).join('');
-            calcularTotal();
+                    <button type="button" onclick="agregarAlCarrito(${p.id})" class="bg-blue-600 text-white px-3 py-2 rounded-xl text-xs font-bold shadow hover:bg-blue-700 transition shrink-0">
+                        ${escaparHTML(tc('add'))}
+                    </button>
+                </div>
+            `).join('');
         }
 
-        function cambiarCantidad(id, delta) {
-            const prod = (neg.inventario || []).find(p => p.id === id);
+        function filtrarCatalogo(texto) { renderCatalogo(texto.toLowerCase()); }
+
+        function agregarAlCarrito(id) {
+            const prod = (negocio.inventario || []).find(p => p.id === id);
             if (!prod) return;
-            const stockMax = Math.max(0, parseInt(prod.stock, 10) || 0);
-            let actual = carrito[id] || 0;
-            actual += delta;
-            if (actual < 0) actual = 0;
-            if (actual > stockMax) {
-                alert(`Solo hay ${stockMax} unidades disponibles de ${prod.nombre}.`);
-                actual = stockMax;
+            const existente = carrito.find(c => c.id === id);
+            if (existente) {
+                if (existente.cantidad < prod.stock) existente.cantidad++;
+            } else {
+                carrito.push({ id: prod.id, nombre: prod.nombre, precio: Number(prod.venta || 0), cantidad: 1 });
             }
-            if (actual === 0) delete carrito[id];
-            else carrito[id] = actual;
-
-            const span = document.getElementById(`cant-${id}`);
-            if (span) span.innerText = actual;
-            calcularTotal();
+            actualizarBadgeCarrito();
         }
 
-        function calcularTotal() {
-            let total = 0;
-            for (const id in carrito) {
-                const prod = (neg.inventario || []).find(p => String(p.id) === String(id));
-                if (prod) total += Number(prod.venta || 0) * carrito[id];
-            }
-            document.getElementById('lbl-total-pedido').innerText = `$${total.toFixed(2)}`;
+        function actualizarBadgeCarrito() {
+            document.getElementById('contador-carrito').innerText = carrito.reduce((a, b) => a + b.cantidad, 0);
         }
+
+        function actualizarInfoPagoCatalogo() {
+            const entrega = document.getElementById('pedido-entrega-catalogo').value;
+            const pago = document.getElementById('pedido-pago-catalogo').value;
+            const esDelivery = entrega === 'Delivery';
+            const esEfectivo = pago.startsWith('Efectivo');
+            const esDigital = ['Pago Móvil', 'Transferencia', 'Tarjeta / POS'].includes(pago);
+
+            document.getElementById('bloque-direccion-delivery').classList.toggle('hidden', !esDelivery);
+            document.getElementById('aviso-delivery-efectivo').classList.toggle('hidden', !(esDelivery && esEfectivo));
+
+            const bloqueCuenta = document.getElementById('bloque-datos-cuenta-cat');
+            const txtCuenta = document.getElementById('texto-cuenta-comercio');
+            if (esDigital && negocio.cuentaBancaria) {
+                txtCuenta.innerText = negocio.cuentaBancaria;
+                bloqueCuenta.classList.remove('hidden');
+            } else {
+                bloqueCuenta.classList.add('hidden');
+            }
+        }
+
+        function abrirCarrito() {
+            const lista = document.getElementById('lista-carrito');
+            if (carrito.length === 0) {
+                lista.innerHTML = `<p class="text-slate-400 text-center py-4">${escaparHTML(tc('emptyCart'))}</p>`;
+            } else {
+                lista.innerHTML = carrito.map((c, idx) => `
+                    <div class="flex justify-between items-center bg-slate-50 p-2 rounded-lg">
+                        <span>${escaparHTML(c.nombre)} (x${c.cantidad})</span>
+                        <div class="flex items-center gap-2">
+                            <span class="font-bold">$${(c.precio * c.cantidad).toFixed(2)}</span>
+                            <button type="button" onclick="eliminarItemCarrito(${idx})" class="text-rose-500 font-bold">✕</button>
+                        </div>
+                    </div>
+                `).join('');
+            }
+            const total = carrito.reduce((a, b) => a + (b.precio * b.cantidad), 0);
+            document.getElementById('total-carrito').innerText = `$${total.toFixed(2)}`;
+            actualizarInfoPagoCatalogo();
+            document.getElementById('modal-carrito').classList.remove('hidden');
+        }
+
+        function eliminarItemCarrito(idx) {
+            carrito.splice(idx, 1);
+            actualizarBadgeCarrito();
+            abrirCarrito();
+        }
+
+        function cerrarCarrito() { document.getElementById('modal-carrito').classList.add('hidden'); }
 
         function enviarPedidoWhatsApp() {
-            const items = Object.keys(carrito);
-            if (items.length === 0) {
-                alert('Selecciona al menos un producto.');
-                return;
-            }
-            const telefonoComercio = normalizarTelefonoWhatsApp(neg.whatsapp);
-            if (!telefonoComercio) {
-                alert('El negocio aún no tiene un número de WhatsApp configurado en Ajustes.');
-                return;
+            if (carrito.length === 0) return;
+            const cliente = document.getElementById('cliente-nombre-catalogo').value.trim() || 'Cliente';
+            const telefonoCliente = document.getElementById('cliente-telefono-catalogo').value.trim();
+            const entrega = document.getElementById('pedido-entrega-catalogo').value;
+            const direccion = document.getElementById('cliente-direccion-catalogo').value.trim();
+            const metodoPago = document.getElementById('pedido-pago-catalogo').value;
+            const referencia = document.getElementById('pedido-referencia-catalogo').value.trim();
+            const total = carrito.reduce((a, b) => a + (b.precio * b.cantidad), 0);
+
+            const esContraEntrega = entrega === 'Delivery' && metodoPago.startsWith('Efectivo');
+            const estadoPedido = esContraEntrega ? 'pendiente_delivery' : 'pendiente_confirmacion';
+
+            // Guarda el pedido pendiente en la cola local para que el dueño confirme entrega/pago y descuente stock
+            const idxNeg = negocios.findIndex(n => n.id === negocio.id);
+            if (idxNeg !== -1) {
+                if (!Array.isArray(negocios[idxNeg].pedidosCatalogo)) negocios[idxNeg].pedidosCatalogo = [];
+                negocios[idxNeg].pedidosCatalogo.unshift({
+                    id: Date.now(),
+                    cliente,
+                    telefonoCliente,
+                    entrega,
+                    direccion,
+                    metodoPago,
+                    referencia,
+                    estado: estadoPedido,
+                    items: carrito.map(i => ({ ...i })),
+                    total,
+                    fecha: new Date().toLocaleString()
+                });
+                localStorage.setItem('multinegocios', JSON.stringify(negocios));
+                localStorage.setItem('gestorpro_last_modified', String(Date.now()));
             }
 
-            let texto = `Hola, deseo realizar un pedido en *${neg.nombre}*:\n`;
-            let total = 0;
-            items.forEach(id => {
-                const prod = (neg.inventario || []).find(p => String(p.id) === String(id));
-                if (!prod) return;
-                const cant = carrito[id];
-                const sub = Number(prod.venta || 0) * cant;
-                total += sub;
-                texto += `• ${prod.nombre} (x${cant}) - $${sub.toFixed(2)}\n`;
+            let mensaje = `*PEDIDO · ${negocio.nombre}*\n`;
+            mensaje += `Cliente: ${cliente}${telefonoCliente ? ` (${telefonoCliente})` : ''}\n`;
+            mensaje += `Entrega: ${entrega}${direccion ? ` · ${direccion}` : ''}\n`;
+            mensaje += `Pago: ${metodoPago}${referencia ? ` (Ref: ${referencia})` : ''}\n`;
+            if (esContraEntrega) mensaje += `Estado: Pendiente por confirmar entrega del delivery\n`;
+            mensaje += `\n`;
+            carrito.forEach(c => {
+                mensaje += `• ${c.nombre} (x${c.cantidad}) - $${(c.precio * c.cantidad).toFixed(2)}\n`;
             });
-            texto += `\n*Total estimado: $${total.toFixed(2)}*`;
+            mensaje += `\n*TOTAL: $${total.toFixed(2)}*`;
 
-            window.open(`https://api.whatsapp.com/send?phone=${telefonoComercio}&text=${encodeURIComponent(texto)}`, '_blank');
+            const telefonoNegocio = normalizarTelefono(negocio.whatsapp);
+            const urlWa = telefonoNegocio
+                ? `https://api.whatsapp.com/send?phone=${telefonoNegocio}&text=${encodeURIComponent(mensaje)}`
+                : `https://api.whatsapp.com/send?text=${encodeURIComponent(mensaje)}`;
+
+            carrito = [];
+            actualizarBadgeCarrito();
+            cerrarCarrito();
+            window.open(urlWa, '_blank');
         }
 
-        renderCatalogo();
+        aplicarIdiomaCatalogo();
     </script>
 </body>
 </html>

@@ -1,8 +1,10 @@
-const CACHE_NAME = 'gestorpro-v9-cache';
+const CACHE_NAME = 'gestorpro-v11-cache';
 const ASSETS_TO_CACHE = [
   './index.html',
   './catalogo.html',
   './manifest.json',
+  './icon-192.png',
+  './icon-512.png',
   'https://cdn.tailwindcss.com',
   'https://unpkg.com/html5-qrcode',
   'https://cdn.jsdelivr.net/npm/chart.js',
@@ -19,15 +21,15 @@ self.addEventListener('install', (event) => {
 
 self.addEventListener('activate', (event) => {
   event.waitUntil(
-    caches.keys().then((cacheNames) => {
-      return Promise.all(
+    caches.keys().then((cacheNames) =>
+      Promise.all(
         cacheNames.map((cacheName) => {
           if (cacheName !== CACHE_NAME) {
             return caches.delete(cacheName);
           }
         })
-      );
-    }).then(() => self.clients.claim())
+      )
+    ).then(() => self.clients.claim())
   );
 });
 
@@ -40,23 +42,22 @@ self.addEventListener('fetch', (event) => {
   }
 
   event.respondWith(
-    caches.match(event.request)
-      .then((cachedResponse) => {
-        if (cachedResponse) {
-          return cachedResponse;
-        }
-        return fetch(event.request).then((networkResponse) => {
+    caches.match(event.request).then((cachedResponse) => {
+      if (cachedResponse) return cachedResponse;
+      return fetch(event.request)
+        .then((networkResponse) => {
           if (!networkResponse || networkResponse.status !== 200 || networkResponse.type === 'opaque') {
             return networkResponse;
           }
           const clone = networkResponse.clone();
           caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone));
           return networkResponse;
-        }).catch(() => {
+        })
+        .catch(() => {
           if (event.request.headers.get('accept')?.includes('text/html')) {
             return caches.match('./index.html');
           }
         });
-      })
+    })
   );
 });
